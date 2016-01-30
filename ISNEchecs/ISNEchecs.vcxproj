@@ -58,7 +58,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;sfml-network.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -79,30 +79,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-<<<<<<< Updated upstream
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Case.cpp" />
+    <ClCompile Include="Client.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Piece.cpp" />
+    <ClCompile Include="Server.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
     <ClInclude Include="Case.h" />
     <ClInclude Include="CaseID.h" />
-    <ClInclude Include="MainGame.h" />
-    <ClInclude Include="Piece.h" />
-=======
-    <ClCompile Include="Client.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MainGame.cpp" />
-    <ClCompile Include="Server.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Client.h" />
     <ClInclude Include="MainGame.h" />
+    <ClInclude Include="Piece.h" />
     <ClInclude Include="Server.h" />
->>>>>>> Stashed changes
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

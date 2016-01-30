@@ -21,7 +21,6 @@
     <ClCompile Include="MainGame.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-<<<<<<< Updated upstream
     <ClCompile Include="Case.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -29,12 +28,12 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Piece.cpp">
-=======
-    <ClCompile Include="Server.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Client.cpp">
->>>>>>> Stashed changes
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Server.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -42,7 +41,6 @@
     <ClInclude Include="MainGame.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-<<<<<<< Updated upstream
     <ClInclude Include="Case.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -53,12 +51,12 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="CaseID.h">
-=======
-    <ClInclude Include="Server.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Client.h">
->>>>>>> Stashed changes
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Server.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
