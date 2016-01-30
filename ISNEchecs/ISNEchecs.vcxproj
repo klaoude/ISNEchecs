@@ -41,8 +41,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>E:\Code\Git\ISNEchecs\deps\include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\Code\Git\ISNEchecs\deps\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\deps\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\deps\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
