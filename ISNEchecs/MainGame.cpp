@@ -36,7 +36,6 @@ void MainGame::handleInput()
 
 
 	while (_window->pollEvent(event)){
-		//Handle events here
 		if (event.type == sf::Event::EventType::Closed)
 			_window->close();
 		if (event.type == sf::Event::EventType::KeyPressed)

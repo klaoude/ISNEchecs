@@ -1,4 +1,4 @@
-#include <iostream> //cc c'est moi
+#include <iostream>
 
 #include "MainGame.h"
 
