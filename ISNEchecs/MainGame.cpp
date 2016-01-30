@@ -17,7 +17,7 @@ void MainGame::start()
 
 void MainGame::init()
 {
-	_window = new sf::RenderWindow(sf::VideoMode(200, 200), "Chess");
+	_window = new sf::RenderWindow(sf::VideoMode(800, 800), "Chess");
 }
 
 void MainGame::gameLoop()
