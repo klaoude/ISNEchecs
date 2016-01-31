@@ -26,6 +26,10 @@ void MainGame::gameLoop()
 	while (_window->isOpen())
 	{
 		handleInput();
+		int id;
+		std::cin >> id;
+
+		board.getPiece(id);
 
 		draw();
 	}
