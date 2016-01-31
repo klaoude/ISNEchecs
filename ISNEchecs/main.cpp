@@ -29,6 +29,7 @@ int main(int argc, char** argv)
 
 	else if (choice == 2)
 	{
+		//whala
 		std::cout << "Enter Case : ";
 		std::cin >> choice;
 		Board board;
