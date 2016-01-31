@@ -9,7 +9,8 @@ class Board
 public:
 	Board();
 	~Board();
-	Case get_case(int ID);
+	Case getCase(int ID);
+	void getPiece(int ID);
 
 private:
 	std::vector<Case> m_board;

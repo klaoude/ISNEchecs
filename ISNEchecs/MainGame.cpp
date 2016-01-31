@@ -1,5 +1,6 @@
 #include "MainGame.h"
 #include <iostream>
+#include "CaseID.h"
 
 MainGame::MainGame()
 {
@@ -25,6 +26,10 @@ void MainGame::gameLoop()
 	while (_window->isOpen())
 	{
 		handleInput();
+		int id;
+		std::cin >> id;
+
+		board.getPiece(id);
 
 		draw();
 	}
