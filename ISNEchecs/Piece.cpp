@@ -2,12 +2,11 @@
 #include "CaseID.h"
 #include "Board.h"
 
-Piece::Piece(Type type, Couleur color, int ID) : m_case(0, 0, 0)
+Piece::Piece(Type type, Couleur color, int ID )
 {
 	m_type = type;
 	m_color = color;
 	m_ID = ID;
-	//m_case = ;
 }
 
 
@@ -38,7 +37,7 @@ void Piece::move(Board* board, int ID)
 			{
 				board->getBoard().at(m_ID).delPiece(); //del la piece de la case
 				board->getBoard().at(m_ID).setEmpty(1); //rend la case libre
-				m_ID == ID; //set le nouvel ID de la piece
+				m_ID = ID; //set le nouvel ID de la piece
 				board->getBoard().at(m_ID).setPiece(*this); //deplace le pion
 				board->getBoard().at(ID).setEmpty(0); //rend la nouvelle case prise
 			}
@@ -50,7 +49,7 @@ void Piece::move(Board* board, int ID)
 
 				board->getBoard().at(ID).delPiece(); //del la piece ennemie de la case
 
-				m_ID == ID; //set le nouvel ID de la piece
+				m_ID = ID; //set le nouvel ID de la piece
 				board->getBoard().at(m_ID).setPiece(this); //deplace le pion
 				board->getBoard().at(ID).setEmpty(0); //rend la nouvelle case prise
 			}

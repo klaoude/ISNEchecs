@@ -1,8 +1,6 @@
 #pragma once
 #include <iostream>
 
-#include "Case.h"
-#include "Board.h"
 
 enum Type 
 {
@@ -31,14 +29,14 @@ public:
 	Couleur getColor() { return m_color; }
 	void setType(Type type);
 	void setColor(Couleur couleur);
-	void move(Board* board, int ID);
+	//void move(Board* board, int ID);
 	int getID() { return m_ID; }
 	
 
 private:
 	Type m_type;
 	Couleur m_color;
-	Case m_case;
+	//Case m_case;
 	int m_ID;
 };
 
