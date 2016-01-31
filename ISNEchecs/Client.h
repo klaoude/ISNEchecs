@@ -10,6 +10,7 @@ public:
 	~Client();
 
 	void connect(sf::IpAddress ip, unsigned short port);
+	void send(char* msg);
 private:
 	sf::TcpSocket _socket;
 };

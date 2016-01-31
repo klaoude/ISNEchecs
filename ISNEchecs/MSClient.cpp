@@ -1,19 +1,19 @@
 #include "MSClient.h"
 
-MSClient::MSClient()
+MSClient::MSClient(sf::IpAddress ip, unsigned short port)
 {
+	_ipaddr = ip;
+	_port = port;
 }
 
 MSClient::~MSClient()
 {
 }
 
-void MSClient::connect(sf::IpAddress ip, unsigned short port)
+void MSClient::send(char* msg)
 {
 	sf::Packet packet;
-	std::string msg = "coucou";
+	packet.append(msg, strlen(msg));
 
-
-	packet.append(msg.c_str(), sizeof(msg));
-	_socket.send(packet, ip, 4269);
+	_socket.send(packet, _ipaddr, _port);
 }

@@ -5,12 +5,14 @@
 class MSClient
 {
 public:
-	MSClient();
+	MSClient(sf::IpAddress ip, unsigned short port);
 	~MSClient();
 
-	void connect(sf::IpAddress ip, unsigned short port);
+	void send(char* msg);
 
 private:
 	sf::UdpSocket _socket;
+	sf::IpAddress _ipaddr;
+	unsigned short _port;
 };
 
