@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML\Graphics.hpp>
+#include "Board.h"
 
 class MainGame
 {
@@ -15,6 +16,8 @@ private:
 
 	void handleInput();
 	void draw();
+
+	Board board;
 
 	sf::RenderWindow* _window;
 	int _screenWidth;
