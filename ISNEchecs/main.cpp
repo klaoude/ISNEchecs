@@ -15,6 +15,7 @@ int main(int argc, char** argv)
 	{
 		std::cout << "Client (1) or Server (2) ? ";
 		std::cin >> choice;
+
 		if (choice == 2)
 		{
 			Server server;
@@ -22,14 +23,14 @@ int main(int argc, char** argv)
 		}
 		else
 		{
+			sf::IpAddress ip = sf::IpAddress::getLocalAddress();
 			Client client;
-			client.connect("192.168.0.151", 1337);
+			client.connect(ip, 1337);
 		}
 	}
 
 	else if (choice == 2)
 	{
-		//whala
 		std::cout << "Enter Case : ";
 		std::cin >> choice;
 		Board board;

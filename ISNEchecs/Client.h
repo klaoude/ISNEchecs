@@ -9,7 +9,7 @@ public:
 	Client();
 	~Client();
 
-	void connect(std::string ip, int port);
+	void connect(sf::IpAddress ip, unsigned short port);
 private:
 	sf::TcpSocket _socket;
 };

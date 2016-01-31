@@ -13,5 +13,7 @@ public:
 private:
 	sf::TcpListener _listener;
 	sf::TcpSocket _client;
-	unsigned short _port = 1337;
+
+	char _buffer[2000];
+	std::size_t _received;
 };
