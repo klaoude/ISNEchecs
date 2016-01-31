@@ -33,7 +33,9 @@ int main(int argc, char** argv)
 		std::cout << "Enter Case : ";
 		std::cin >> choice;
 		Board board;
-		board.getPiece(choice);
+		board.getTyCo(choice);
+		//board.getCase(choice).getPiece().move(&board, ID)
+		
 	}
 
 	else 
