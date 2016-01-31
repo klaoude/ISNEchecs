@@ -8,7 +8,7 @@ int main(int argc, char** argv)
 {
 	int choice;
 	std::cout << "You are in debug mode" << std::endl;
-	std::cout << "enter (1) if you want to debug server" << std::endl;
+	std::cout << "enter (1) if you want to debug server, (2) for debug board and (3) for debug graphics" << std::endl;
 	std::cin >> choice;
 
 	if (choice == 1) 
@@ -26,6 +26,15 @@ int main(int argc, char** argv)
 			client.connect("192.168.0.151", 1337);
 		}
 	}
+
+	else if (choice == 2)
+	{
+		std::cout << "Enter Case : ";
+		std::cin >> choice;
+		Board board;
+		board.getPiece(choice);
+	}
+
 	else 
 	{
 		MainGame game;
