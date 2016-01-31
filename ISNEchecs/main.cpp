@@ -3,6 +3,7 @@
 #include "MainGame.h"
 #include "Server.h"
 #include "Client.h"
+#include "MSClient.h"
 
 int main(int argc, char** argv)
 {
@@ -13,7 +14,7 @@ int main(int argc, char** argv)
 
 	if (choice == 1) 
 	{
-		std::cout << "Client (1) or Server (2) ? ";
+		std::cout << "Client (1), Server (2) or MasterServerClient(3) ? ";
 		std::cin >> choice;
 
 		if (choice == 2)
@@ -21,11 +22,17 @@ int main(int argc, char** argv)
 			Server server;
 			server.create();
 		}
-		else
+		else if (choice == 1)
 		{
 			sf::IpAddress ip = sf::IpAddress::getLocalAddress();
 			Client client;
 			client.connect(ip, 1337);
+		}
+		else if (choice == 3)
+		{
+			sf::IpAddress ip = sf::IpAddress::getLocalAddress();
+			MSClient client;
+			client.connect(ip, 4269);
 		}
 	}
 

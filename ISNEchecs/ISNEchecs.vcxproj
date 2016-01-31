@@ -84,6 +84,7 @@
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="MSClient.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="Server.cpp" />
   </ItemGroup>
@@ -93,8 +94,12 @@
     <ClInclude Include="CaseID.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="MainGame.h" />
+    <ClInclude Include="MSClient.h" />
     <ClInclude Include="Piece.h" />
     <ClInclude Include="Server.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MasterServer.js" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

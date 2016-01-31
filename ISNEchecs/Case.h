@@ -9,6 +9,7 @@ public:
 	bool isEmpty() { return m_empty; }
 	bool setEmpty(bool choice) { m_empty = choice; }
 	void setPiece(Piece piece);
+	void setPiece(Piece* piece);
 	void delPiece();
 	Piece getPiece();
 	int getID() { return m_ID; }

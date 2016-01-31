@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
+
 #include "Case.h"
+#include "Board.h"
 
 enum Type 
 {
@@ -23,7 +25,6 @@ enum Couleur
 class Piece
 {
 public:
-
 	Piece(Type type, Couleur color, int ID);
 	~Piece();
 	Type getType() { return m_type; }

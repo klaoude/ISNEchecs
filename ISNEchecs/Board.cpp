@@ -47,7 +47,6 @@ Board::Board()
 	m_board.at(4).setPiece(Piece(REINE, BLANC,5));
 	m_board.at(59).setPiece(Piece(ROI, NOIR,60));
 	m_board.at(60).setPiece(Piece(REINE, NOIR,61));
-
 }
 
 

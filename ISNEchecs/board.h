@@ -1,8 +1,8 @@
 #pragma once
-#include "Case.h"
+
 #include <vector>
 
-
+#include "Case.h"
 
 class Board
 {
