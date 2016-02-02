@@ -3,11 +3,9 @@
 #include "MainGame.h"
 
 int main(int argc, char** argv)
-{
-	
-		MainGame game;
-		game.start();
-	}
+{	
+	MainGame game;
+	game.start();
 
 	system("Pause");
 

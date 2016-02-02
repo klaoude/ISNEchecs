@@ -53,6 +53,10 @@ void MainGame::start()
 		//board.getCase(choice).getPiece().move(&board, ID)
 
 	}
+	else if (choice == 3)
+	{
+		
+	}
 	else
 	{
 		init();
@@ -62,16 +66,14 @@ void MainGame::start()
 
 void MainGame::init()
 {
-	_window = new sf::RenderWindow(sf::VideoMode(800, 800), "Chess");
+	_window.create(sf::VideoMode(800, 800), "Chess");
 }
 
 void MainGame::gameLoop()
 {
-	while (_window->isOpen())
+	while (_window.isOpen())
 	{
-		handleInput();
-
-		
+		handleInput();		
 
 		draw();
 	}
@@ -82,9 +84,9 @@ void MainGame::handleInput()
 	sf::Event event;
 
 
-	while (_window->pollEvent(event)){
+	while (_window.pollEvent(event)){
 		if (event.type == sf::Event::EventType::Closed)
-			_window->close();
+			_window.close();
 		if (event.type == sf::Event::EventType::KeyPressed)
 		{
 			if (event.key.code == sf::Keyboard::Space)
@@ -97,9 +99,7 @@ void MainGame::handleInput()
 
 void MainGame::draw()
 {
-	_window->clear();
+	_window.clear();
 
-
-
-	_window->display();
+	_window.display();
 }

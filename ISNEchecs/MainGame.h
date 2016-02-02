@@ -19,7 +19,7 @@ private:
 
 	Board board;
 
-	sf::RenderWindow* _window;
+	sf::RenderWindow _window;
 	int _screenWidth;
 	int _screenHeight;
 
