@@ -8,11 +8,10 @@ public:
 	~Case();
 	bool isEmpty() { return m_empty; }
 	bool setEmpty(bool choice) { m_empty = choice; }
-	void setPiece(Piece piece);
-	void setPiece(Piece* piece);
-	void delPiece();
-	Piece getPiece();
 	int getID() { return m_ID; }
+	void setPieceCase(Type type, Couleur color, int ID);
+	Piece getPiece() { return m_piece; }
+
 
 private:
 	int m_sx;
@@ -20,7 +19,7 @@ private:
 	int m_px;
 	int m_py;
 	bool m_empty;
-	Piece m_piece;
 	int m_ID;
+	Piece m_piece;
 };
 

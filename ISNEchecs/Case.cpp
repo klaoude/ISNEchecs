@@ -1,8 +1,9 @@
 #include "Case.h"
-#include "Piece.h"
-#include "Board.h"
+#include "PieceInfo.h"
 
-Case::Case(int px, int py, int ID) : m_piece(Type::NONE,Couleur::NONEc, 0)
+
+
+Case::Case(int px, int py, int ID)
 {
 	m_sx = 100;
 	m_sy = 100;
@@ -15,25 +16,9 @@ Case::~Case()
 }
 
 
-void Case::setPiece(Piece piece)
+void Case::setPieceCase(Type type, Couleur color, int ID)
 {
-	m_empty = 0;
-	m_piece = piece;
-}
-
-void Case::setPiece(Piece* piece)
-{
-	m_empty = 0;
-	m_piece = *piece;
-}
-
-void Case::delPiece()
-{
-	m_empty = 1;
-	m_piece = Piece(Type::NONE, Couleur::NONEc, 0);
-}
-
-Piece Case::getPiece()
-{
-	return m_piece;
+	m_piece.setType(type);
+	m_piece.setColor(color);
+	m_ID = ID; 
 }
