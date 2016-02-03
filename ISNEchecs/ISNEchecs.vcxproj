@@ -98,6 +98,7 @@
     <ClInclude Include="MSClient.h" />
     <ClInclude Include="Piece.h" />
     <ClInclude Include="Server.h" />
+    <ClInclude Include="PieceInfo.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="account.json" />

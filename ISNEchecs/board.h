@@ -2,15 +2,16 @@
 
 #include <vector>
 #include "Case.h"
+#include "Piece.h"
+#include "PieceInfo.h"
 
 class Board
 {
 public:
 	Board();
 	~Board();
-	Case getCase(int ID);
-	void getTyCo(int ID);
-	std::vector<Case> getBoard() { return m_board; }
+	void setPiece(int ID, Type type, Couleur color); 
+	void movePiece(Piece piece, int ID);
 
 private:
 	std::vector<Case> m_board;

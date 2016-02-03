@@ -1,7 +1,9 @@
 #include "Board.h"
 #include "Case.h"
 #include "Piece.h"
-#include "CaseID.h"
+#include "PieceInfo.h"
+
+
 
 Board::Board()
 {
@@ -21,32 +23,32 @@ Board::Board()
 		x += 100;
 	}
 
+
 	for (int i = 0; i < 8; i++) //Placement des pions
 	{
-		m_board.at(i+8).setPiece(Piece(PION, BLANC,i+8));
-		m_board.at(i+48).setPiece(Piece(PION, NOIR,i+48));
-
+		setPiece(i + 9, Type::PION, Couleur::BLANC);
+		setPiece(i + 49, Type::PION, Couleur::NOIR);
 	}
 
-	m_board.at(0).setPiece(Piece(TOUR, BLANC,1));
-	m_board.at(7).setPiece(Piece(TOUR, BLANC,8));
-	m_board.at(56).setPiece(Piece(TOUR, NOIR,57));
-	m_board.at(63).setPiece(Piece(TOUR, NOIR,64));
+	setPiece(1, Type::TOUR, Couleur::BLANC); //Placement des tours
+	setPiece(8, Type::TOUR, Couleur::BLANC);
+	setPiece(57, Type::TOUR, Couleur::NOIR);
+	setPiece(64, Type::TOUR, Couleur::NOIR);
 
-	m_board.at(1).setPiece(Piece(CAVALIER, BLANC,2));
-	m_board.at(6).setPiece(Piece(CAVALIER, BLANC,7));
-	m_board.at(57).setPiece(Piece(CAVALIER, NOIR,58));
-	m_board.at(62).setPiece(Piece(CAVALIER, NOIR,63));
+	setPiece(2, Type::CAVALIER, Couleur::BLANC); //Placement des cavaliers
+	setPiece(7, Type::CAVALIER, Couleur::BLANC);
+	setPiece(58, Type::CAVALIER, Couleur::NOIR);
+	setPiece(63, Type::CAVALIER, Couleur::NOIR);
 
-	m_board.at(2).setPiece(Piece(FOU, BLANC,3));
-	m_board.at(5).setPiece(Piece(FOU, BLANC,6));
-	m_board.at(58).setPiece(Piece(FOU, NOIR,59));
-	m_board.at(61).setPiece(Piece(FOU, NOIR,62));
+	setPiece(3, Type::FOU, Couleur::BLANC); //Placement des fous
+	setPiece(6, Type::FOU, Couleur::BLANC);
+	setPiece(59, Type::FOU, Couleur::NOIR);
+	setPiece(62, Type::FOU, Couleur::NOIR);
 
-	m_board.at(3).setPiece(Piece(ROI, BLANC,4));
-	m_board.at(4).setPiece(Piece(REINE, BLANC,5));
-	m_board.at(59).setPiece(Piece(ROI, NOIR,60));
-	m_board.at(60).setPiece(Piece(REINE, NOIR,61));
+	setPiece(4, Type::ROI, Couleur::BLANC); //Placement des rois/reines
+	setPiece(5, Type::REINE, Couleur::BLANC);
+	setPiece(60, Type::ROI, Couleur::NOIR);
+	setPiece(61, Type::REINE, Couleur::NOIR);
 }
 
 
@@ -54,12 +56,36 @@ Board::~Board()
 {
 }
 
-Case Board::getCase(int ID)
+
+void Board::setPiece(int ID, Type type, Couleur color)
 {
-	return m_board.at(ID - 1);
+	m_board.at(ID).setEmpty(0);
+	m_board.at(ID).setPieceCase(type, color, ID);
 }
 
-void Board::getTyCo(int ID)
+
+void Board::movePiece(Piece piece, int ID)
 {
-	std::cout << m_board.at(ID - 1).getPiece().getType() << " " << m_board.at(ID - 1).getPiece().getColor() << std::endl;
+	if (m_board.at(ID).isEmpty() == 1)
+	{
+		bool isPossible(int ID, int ID2, Type type, Couleur color);
+
+		if (isPossible(piece.getID(), ID, piece.getType(), piece.getColor()) == true)
+		{
+			m_board.at(piece.getID()).setEmpty(1);
+			m_board.at(piece.getID()).setPieceCase(Type::NONEt, Couleur::NONEc,NULL);
+			piece.setID(ID);
+			m_board.at(ID).setEmpty(0);
+			m_board.at(ID).setPieceCase(piece.getType(), piece.getColor(), piece.getID());
+		}
+	}
+
+	if (m_board.at(ID).getPiece().getColor() == piece.getColor())
+	{
+		;
+	}
+	if (m_board.at(ID).getPiece().getColor() != piece.getColor())
+	{
+		; //PUT OLD PIECE IN TRASH (TODO)
+	} 
 }
