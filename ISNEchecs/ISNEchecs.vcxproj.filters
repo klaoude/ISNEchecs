@@ -70,5 +70,8 @@
     <None Include="MasterServer.js">
       <Filter>Fichiers de ressources</Filter>
     </None>
+    <None Include="account.json">
+      <Filter>Fichiers de ressources</Filter>
+    </None>
   </ItemGroup>
 </Project>

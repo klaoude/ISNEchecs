@@ -1,5 +1,6 @@
-#include "MainGame.h"
 #include <iostream>
+
+#include "MainGame.h"
 #include "CaseID.h"
 #include "Server.h"
 #include "Client.h"
