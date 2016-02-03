@@ -42,7 +42,7 @@ void MainGame::start()
 		{
 			sf::IpAddress ip = sf::IpAddress::getLocalAddress();
 			MSClient client(ip, 4269);
-			client.send("yolo");
+			client.connect("klaoude", "test");
 		}
 	}
 	else if (choice == 2)

@@ -1,6 +1,7 @@
 {
 "Account" :
 	[
-	{"Username" : "klaoude", "Password" : "test"}
+	{"Username" : "klaoude", "Password" : "test"},
+	{"Username" : "admin", "Password" : "admin"}
 	]
 }

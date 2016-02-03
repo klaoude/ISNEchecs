@@ -31,11 +31,18 @@ server.on("message", function(msg, rinfo) {
     }
 
     var bool = false;
+    
+    console.log(jsonData.Action);
+    console.log(jsonData.Password);
+    console.log(jsonData.Username);
+    console.log(account.Account.lenght);
 
-    switch (jsonData.action) {
-        case "connect":
+    switch (jsonData.Action) {
+        case "connect":            
             for (var i = 0; i < account.Account.lenght; i++) {
-                if(account.Account[i].Username == jsonData.Username &&
+                console.log(account.Account[i].Username + " | " + jsonData.Username);
+                console.log(account.Account[i].Password + " | " + jsonData.Password);
+                if (account.Account[i].Username == jsonData.Username &&
                     account.Account[i].Password == jsonData.Password) {
                     console.log("True");
                     bool = true;

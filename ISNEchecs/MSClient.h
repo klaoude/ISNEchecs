@@ -1,6 +1,6 @@
 #pragma once
 #include <SFML\Network.hpp>
-#include <JSON\JSON.h>
+#include "../deps/include/JSON/JSON.h"
 
 class MSClient
 {
