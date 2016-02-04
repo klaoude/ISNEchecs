@@ -15,9 +15,7 @@ Piece::Piece(int ID, Type type, Couleur color)
 	{
 	case Type::REINE:
 		if (color == Couleur::BLANC) 
-			setTexture("Sprite/White_Queen.png");
-			
-			
+			setTexture("Sprites/White_Queen.png");
 		break;
 	}
 }

@@ -11,14 +11,14 @@ class Board
 {
 public:
 	Board();
-	Board(GameObjectManager gom);
+	Board(GameObjectManager* gom);
 	~Board();
 
-	void setPiece(Piece piece); 
+	void setPiece(Piece* piece); 
 
-	void movePiece(Piece piece, int ID);
+	void movePiece(Piece* piece, int ID);
 
 private:
 	std::vector<Case> m_board;
-	GameObjectManager _gom;
+	GameObjectManager* _gom;
 };

@@ -23,11 +23,21 @@ void GameObjectManager::remove(std::string name)
 	}
 }
 
+GameObject* GameObjectManager::get(std::string name)
+{
+	std::map<std::string, GameObject*>::const_iterator results = _gameObjects.find(name);
+	if (results == _gameObjects.end())
+		return NULL;
+	return results->second;
+}
+
+
 void GameObjectManager::draw(sf::RenderWindow& window)
 {
 	std::map<std::string, GameObject*>::const_iterator itr = _gameObjects.begin();
 	while (itr != _gameObjects.end())
 	{
+		std::cout << "draw " << itr->first << std::endl;
 		itr->second->draw(window);
 		itr++;
 	}

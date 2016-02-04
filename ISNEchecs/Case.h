@@ -10,11 +10,11 @@ public:
 	void setEmpty(bool choice) { m_empty = choice; }
 
 	int getID() { return m_ID; }
-	Piece getPiece() { return m_piece; }
+	Piece* getPiece() { return m_piece; }
 
 	bool isEmpty() { return m_empty; }	
 	
-	void setPieceCase(Piece piece);
+	void setPieceCase(Piece* piece);
 	void delPiece();
 
 private:
@@ -27,6 +27,6 @@ private:
 
 	bool m_empty;
 
-	Piece m_piece;
+	Piece* m_piece;
 };
 

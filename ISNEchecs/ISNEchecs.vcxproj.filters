@@ -77,12 +77,6 @@
     <ClInclude Include="MSClient.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\deps\include\JSON\JSON.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\deps\include\JSON\JSONValue.h">
-      <Filter>Fichiers sources</Filter>
-    </ClInclude>
     <ClInclude Include="PieceInfo.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -90,6 +84,12 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="GameObjectManager.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\deps\include\JSON\JSON.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="..\deps\include\JSON\JSONValue.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

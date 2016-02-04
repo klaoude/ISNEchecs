@@ -21,12 +21,14 @@ private:
 
 	Board board;
 
-	sf::RenderWindow _window;
+	static sf::RenderWindow _window;
 	int _screenWidth;
 	int _screenHeight;
 
 	std::string _windowTitle = "Chess";
 
 	static GameObjectManager _gameObjectManager;
+
+	sf::Sprite _sprite;
 };
 
