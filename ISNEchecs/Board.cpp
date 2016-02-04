@@ -29,29 +29,6 @@ Board::Board(GameObjectManager gom) : _gom(gom)
 		setPiece(Piece(i + 49, Type::PION, Couleur::NOIR));
 	}
 
-<<<<<<< HEAD
-	setPiece(1, Type::TOUR, Couleur::BLANC); //Placement des tours
-	setPiece(8, Type::TOUR, Couleur::BLANC);
-	setPiece(57, Type::TOUR, Couleur::NOIR);
-	setPiece(64, Type::TOUR, Couleur::NOIR);
-
-	setPiece(2, Type::CAVALIER, Couleur::BLANC); //Placement des cavaliers
-	setPiece(7, Type::CAVALIER, Couleur::BLANC);
-	setPiece(58, Type::CAVALIER, Couleur::NOIR);
-	setPiece(63, Type::CAVALIER, Couleur::NOIR);
-
-	setPiece(3, Type::FOU, Couleur::BLANC); //Placement des fous
-	setPiece(6, Type::FOU, Couleur::BLANC);
-	setPiece(59, Type::FOU, Couleur::NOIR);
-	setPiece(62, Type::FOU, Couleur::NOIR);
-
-	setPiece(4, Type::ROI, Couleur::BLANC); //Placement des rois/reines
-	_gom.add("WhiteQuenn", &m_board.at(3).getPiece());
-	setPiece(5, Type::REINE, Couleur::BLANC);
-	setPiece(60, Type::ROI, Couleur::NOIR);
-	setPiece(61, Type::REINE, Couleur::NOIR);
-=======
-
 	setPiece(Piece(1, Type::TOUR, Couleur::BLANC)); //Placement des tours
 	setPiece(Piece(8, Type::TOUR, Couleur::BLANC));
 	setPiece(Piece(57, Type::TOUR, Couleur::NOIR));
@@ -69,11 +46,9 @@ Board::Board(GameObjectManager gom) : _gom(gom)
 
 	setPiece(Piece(4, Type::ROI, Couleur::BLANC)); //Placement des rois/reines
 	setPiece(Piece(5, Type::REINE, Couleur::BLANC));
+	_gom.add("WhiteQuenn", &m_board.at(3).getPiece());
 	setPiece(Piece(60, Type::ROI, Couleur::NOIR));
 	setPiece(Piece(61, Type::REINE, Couleur::NOIR));
-
-
->>>>>>> f90137dc68accbe702fcaacde0260b94442bc0ec
 }
 
 Board::~Board()
