@@ -14,7 +14,7 @@ public:
 	Board(GameObjectManager gom);
 	~Board();
 
-	void setPiece(int ID, Type type, Couleur color); 
+	void setPiece(Piece piece); 
 
 	void movePiece(Piece piece, int ID);
 
