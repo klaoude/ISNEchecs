@@ -8,6 +8,7 @@
 
 MainGame::MainGame()
 {
+
 }
 
 MainGame::~MainGame()
@@ -49,14 +50,14 @@ void MainGame::start()
 	{
 		std::cout << "Enter Case : ";
 		std::cin >> choice;
-		Board board;
+		Board board(_gameObjectManager);
 		//board.getTyCo(choice);
 		//board.getCase(choice).getPiece().move(&board, ID)
 
 	}
 	else if (choice == 3)
 	{
-		
+		//Board board(_gameObjectManager);
 	}
 	else
 	{
@@ -68,6 +69,7 @@ void MainGame::start()
 void MainGame::init()
 {
 	_window.create(sf::VideoMode(800, 800), "Chess");
+	Board board(_gameObjectManager);
 }
 
 void MainGame::gameLoop()
@@ -102,5 +104,9 @@ void MainGame::draw()
 {
 	_window.clear();
 
+	_gameObjectManager.draw(_window);
+
 	_window.display();
 }
+
+GameObjectManager MainGame::_gameObjectManager;

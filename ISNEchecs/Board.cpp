@@ -2,6 +2,11 @@
 
 Board::Board()
 {
+
+}
+
+Board::Board(GameObjectManager gom) : _gom(gom)
+{
 	int x=0;
 	int y=0;
 
@@ -12,7 +17,6 @@ Board::Board()
 			y += 100;
 			x = 0;
 		}
-
 
 		m_board.push_back(Case(x, y, i+1));
 		x += 100;
@@ -41,6 +45,7 @@ Board::Board()
 	setPiece(62, Type::FOU, Couleur::NOIR);
 
 	setPiece(4, Type::ROI, Couleur::BLANC); //Placement des rois/reines
+	_gom.add("WhiteQuenn", &m_board.at(3).getPiece());
 	setPiece(5, Type::REINE, Couleur::BLANC);
 	setPiece(60, Type::ROI, Couleur::NOIR);
 	setPiece(61, Type::REINE, Couleur::NOIR);

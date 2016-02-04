@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML\Graphics.hpp>
+
 #include "Board.h"
+#include "GameObjectManager.h"
 
 class MainGame
 {
@@ -24,5 +26,7 @@ private:
 	int _screenHeight;
 
 	std::string _windowTitle = "Chess";
+
+	static GameObjectManager _gameObjectManager;
 };
 

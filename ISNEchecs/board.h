@@ -5,11 +5,13 @@
 #include "Case.h"
 #include "Piece.h"
 #include "PieceInfo.h"
+#include "GameObjectManager.h"
 
 class Board
 {
 public:
 	Board();
+	Board(GameObjectManager gom);
 	~Board();
 
 	void setPiece(int ID, Type type, Couleur color); 
@@ -18,4 +20,5 @@ public:
 
 private:
 	std::vector<Case> m_board;
+	GameObjectManager _gom;
 };

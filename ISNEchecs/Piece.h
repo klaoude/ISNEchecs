@@ -2,8 +2,9 @@
 #include <iostream>
 
 #include "PieceInfo.h"
+#include "GameObject.h"
 
-class Piece
+class Piece : public GameObject
 {
 public:
 	Piece();
@@ -16,7 +17,9 @@ public:
 
 	void setType(Type type) { m_type = type; }
 	void setColor(Couleur couleur) { m_color = couleur; }	
-	void setID(int ID) { ID = m_ID; }	
+	void setID(int ID) { m_ID = ID; }
+
+	void draw(sf::RenderWindow& window);
 
 private:
 	Type m_type;
