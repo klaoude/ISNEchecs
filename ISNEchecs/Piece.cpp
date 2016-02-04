@@ -4,7 +4,7 @@ Piece::Piece()
 {
 }
 
-Piece::Piece(Type type, Couleur color, int ID)
+Piece::Piece(int ID, Type type, Couleur color)
 {
 	m_type = type;
 	m_color = color;

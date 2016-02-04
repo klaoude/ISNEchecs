@@ -21,29 +21,32 @@ Board::Board()
 
 	for (int i = 0; i < 8; i++) //Placement des pions
 	{
-		setPiece(i + 9, Type::PION, Couleur::BLANC);
-		setPiece(i + 49, Type::PION, Couleur::NOIR);
+		setPiece(Piece(i + 9, Type::PION, Couleur::BLANC));
+		setPiece(Piece(i + 49, Type::PION, Couleur::NOIR));
 	}
 
-	setPiece(1, Type::TOUR, Couleur::BLANC); //Placement des tours
-	setPiece(8, Type::TOUR, Couleur::BLANC);
-	setPiece(57, Type::TOUR, Couleur::NOIR);
-	setPiece(64, Type::TOUR, Couleur::NOIR);
 
-	setPiece(2, Type::CAVALIER, Couleur::BLANC); //Placement des cavaliers
-	setPiece(7, Type::CAVALIER, Couleur::BLANC);
-	setPiece(58, Type::CAVALIER, Couleur::NOIR);
-	setPiece(63, Type::CAVALIER, Couleur::NOIR);
+	setPiece(Piece(1, Type::TOUR, Couleur::BLANC)); //Placement des tours
+	setPiece(Piece(8, Type::TOUR, Couleur::BLANC));
+	setPiece(Piece(57, Type::TOUR, Couleur::NOIR));
+	setPiece(Piece(64, Type::TOUR, Couleur::NOIR));
 
-	setPiece(3, Type::FOU, Couleur::BLANC); //Placement des fous
-	setPiece(6, Type::FOU, Couleur::BLANC);
-	setPiece(59, Type::FOU, Couleur::NOIR);
-	setPiece(62, Type::FOU, Couleur::NOIR);
+	setPiece(Piece(2, Type::CAVALIER, Couleur::BLANC)); //Placement des cavaliers
+	setPiece(Piece(7, Type::CAVALIER, Couleur::BLANC));
+	setPiece(Piece(58, Type::CAVALIER, Couleur::NOIR));
+	setPiece(Piece(63, Type::CAVALIER, Couleur::NOIR));
 
-	setPiece(4, Type::ROI, Couleur::BLANC); //Placement des rois/reines
-	setPiece(5, Type::REINE, Couleur::BLANC);
-	setPiece(60, Type::ROI, Couleur::NOIR);
-	setPiece(61, Type::REINE, Couleur::NOIR);
+	setPiece(Piece(3, Type::FOU, Couleur::BLANC)); //Placement des fous
+	setPiece(Piece(6, Type::FOU, Couleur::BLANC));
+	setPiece(Piece(59, Type::FOU, Couleur::NOIR));
+	setPiece(Piece(62, Type::FOU, Couleur::NOIR));
+
+	setPiece(Piece(4, Type::ROI, Couleur::BLANC)); //Placement des rois/reines
+	setPiece(Piece(5, Type::REINE, Couleur::BLANC));
+	setPiece(Piece(60, Type::ROI, Couleur::NOIR));
+	setPiece(Piece(61, Type::REINE, Couleur::NOIR));
+
+	
 }
 
 
@@ -52,11 +55,12 @@ Board::~Board()
 }
 
 
-void Board::setPiece(int ID, Type type, Couleur color)
+void Board::setPiece(Piece piece)
 {
-	ID--;
-	m_board.at(ID).setEmpty(0);
-	m_board.at(ID).setPieceCase(type, color, ID);
+
+	m_board.at(piece.getID()-1).setEmpty(0);
+	m_board.at(piece.getID()-1).setPieceCase(piece);
+
 }
 
 
@@ -69,10 +73,10 @@ void Board::movePiece(Piece piece, int ID)
 		if (isPossible(piece.getID(), ID, piece.getType(), piece.getColor()) == true)
 		{
 			m_board.at(piece.getID()).setEmpty(1);
-			m_board.at(piece.getID()).setPieceCase(Type::NONEt, Couleur::NONEc,NULL);
+			m_board.at(piece.getID()).delPiece();
 			piece.setID(ID);
 			m_board.at(ID).setEmpty(0);
-			m_board.at(ID).setPieceCase(piece.getType(), piece.getColor(), piece.getID());
+			m_board.at(ID).setPieceCase(piece);
 		}
 	}
 

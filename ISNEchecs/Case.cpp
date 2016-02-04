@@ -13,9 +13,14 @@ Case::~Case()
 }
 
 
-void Case::setPieceCase(Type type, Couleur color, int ID)
+void Case::setPieceCase(Piece piece)
 {
-	m_piece.setType(type);
-	m_piece.setColor(color);
-	m_ID = ID; 
+	m_piece = piece;
+}
+
+void Case::delPiece()
+{
+	m_piece.setColor(NONEc);
+	m_piece.setType(NONEt);
+	m_piece.setID(NULL);
 }

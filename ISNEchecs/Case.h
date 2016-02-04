@@ -14,7 +14,8 @@ public:
 
 	bool isEmpty() { return m_empty; }	
 	
-	void setPieceCase(Type type, Couleur color, int ID);
+	void setPieceCase(Piece piece);
+	void delPiece();
 
 private:
 	int m_sx;

@@ -7,7 +7,7 @@ class Piece
 {
 public:
 	Piece();
-	Piece(Type type, Couleur color, int ID);
+	Piece(int ID, Type type, Couleur color);
 	~Piece();
 
 	Type getType() { return m_type; }
