@@ -1,3 +1,5 @@
+#pragma once
+
 enum Type
 {
 	NONEt,
@@ -17,7 +19,7 @@ enum Couleur
 };
 
 
-bool isPossible(int ID, int ID2, Type type, Couleur color)
+inline bool isPossible(int ID, int ID2, Type type, Couleur color)
 {
 	if (type == CAVALIER) //CAVALIER
 	{

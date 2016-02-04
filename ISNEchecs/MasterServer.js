@@ -31,25 +31,19 @@ server.on("message", function(msg, rinfo) {
     }
 
     var bool = false;
-    
-    console.log(jsonData.Action);
-    console.log(jsonData.Password);
-    console.log(jsonData.Username);
-    console.log(account.Account.lenght);
+
+    var size = Object.keys(account.Account).length;
 
     switch (jsonData.Action) {
         case "connect":            
-            for (var i = 0; i < account.Account.lenght; i++) {
-                console.log(account.Account[i].Username + " | " + jsonData.Username);
-                console.log(account.Account[i].Password + " | " + jsonData.Password);
+            for (var i = 0; i < size; i++) {
                 if (account.Account[i].Username == jsonData.Username &&
                     account.Account[i].Password == jsonData.Password) {
-                    console.log("True");
                     bool = true;
                 }
             }
             if (!bool)
-                console.log("False");
+                ;
             break;
     }
 });

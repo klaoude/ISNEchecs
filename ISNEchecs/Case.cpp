@@ -1,7 +1,4 @@
 #include "Case.h"
-#include "PieceInfo.h"
-
-
 
 Case::Case(int px, int py, int ID)
 {

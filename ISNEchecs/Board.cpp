@@ -1,9 +1,4 @@
 #include "Board.h"
-#include "Case.h"
-#include "Piece.h"
-#include "PieceInfo.h"
-
-
 
 Board::Board()
 {
@@ -59,6 +54,7 @@ Board::~Board()
 
 void Board::setPiece(int ID, Type type, Couleur color)
 {
+	ID--;
 	m_board.at(ID).setEmpty(0);
 	m_board.at(ID).setPieceCase(type, color, ID);
 }
@@ -84,7 +80,7 @@ void Board::movePiece(Piece piece, int ID)
 	{
 		;
 	}
-	if (m_board.at(ID).getPiece().getColor() != piece.getColor())
+	else
 	{
 		; //PUT OLD PIECE IN TRASH (TODO)
 	} 

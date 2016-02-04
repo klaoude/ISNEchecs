@@ -50,7 +50,7 @@ void MainGame::start()
 		std::cout << "Enter Case : ";
 		std::cin >> choice;
 		Board board;
-		board.getTyCo(choice);
+		//board.getTyCo(choice);
 		//board.getCase(choice).getPiece().move(&board, ID)
 
 	}
