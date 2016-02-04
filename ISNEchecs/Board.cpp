@@ -46,11 +46,9 @@ Board::Board()
 	setPiece(61, Type::REINE, Couleur::NOIR);
 }
 
-
 Board::~Board()
 {
 }
-
 
 void Board::setPiece(int ID, Type type, Couleur color)
 {
@@ -58,7 +56,6 @@ void Board::setPiece(int ID, Type type, Couleur color)
 	m_board.at(ID).setEmpty(0);
 	m_board.at(ID).setPieceCase(type, color, ID);
 }
-
 
 void Board::movePiece(Piece piece, int ID)
 {
