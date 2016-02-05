@@ -5,6 +5,7 @@
 #include "Server.h"
 #include "Client.h"
 #include "MSClient.h"
+#include "Global.h"
 
 MainGame::MainGame()
 {
@@ -43,7 +44,19 @@ void MainGame::start()
 		{
 			sf::IpAddress ip = sf::IpAddress::getLocalAddress();
 			MSClient client(ip, 4269);
-			client.connect("klaoude", "test");
+			
+			char* username;
+			char* password;
+			
+			std::cout << "Username : ";
+			std::cin >> username;
+			std::cout << "Password : ";
+			std::cin >> password;
+
+			client.connect(username, password);
+		
+			std::string recv = client.recv();
+			std::cout << recv << std::endl;
 		}
 	}
 	else if (choice == 2)
@@ -74,7 +87,7 @@ void MainGame::start()
 
 void MainGame::init()
 {
-	_window.create(sf::VideoMode(800, 800), "Chess");
+	_window.create(sf::VideoMode(SCREEN_HEIGHT, SCREEN_WIDTH), "Chess");
 	Board board(&_gameObjectManager);
 }
 
@@ -92,8 +105,8 @@ void MainGame::handleInput()
 {
 	sf::Event event;
 
-
-	while (_window.pollEvent(event)){
+	while (_window.pollEvent(event))
+	{
 		if (event.type == sf::Event::EventType::Closed)
 			_window.close();
 		if (event.type == sf::Event::EventType::KeyPressed)
@@ -102,6 +115,10 @@ void MainGame::handleInput()
 			{
 				std::cout << "space bar press" << std::endl;
 			}
+		}
+		if (event.type == sf::Event::MouseButtonPressed)
+		{
+			std::cout << "Click : x = " << event.mouseButton.x << " y = " << event.mouseButton.y << std::endl;
 		}
 	}
 }

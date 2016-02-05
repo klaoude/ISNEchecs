@@ -17,5 +17,5 @@ void Client::send(char* msg)
 
 void Client::connect(sf::IpAddress ip, unsigned short port)
 {
-	_socket.connect(ip, port);	
+	_socket.connect(ip, port);
 }

@@ -92,6 +92,9 @@
     <ClInclude Include="..\deps\include\JSON\JSONValue.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="Global.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="MasterServer.js">

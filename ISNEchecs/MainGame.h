@@ -22,8 +22,6 @@ private:
 	Board board;
 
 	static sf::RenderWindow _window;
-	int _screenWidth;
-	int _screenHeight;
 
 	std::string _windowTitle = "Chess";
 

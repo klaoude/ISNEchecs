@@ -4,6 +4,7 @@ MSClient::MSClient(sf::IpAddress ip, unsigned short port)
 {
 	_ipaddr = ip;
 	_port = port;
+	_socket.bind(_port);
 }
 
 MSClient::~MSClient()
@@ -45,4 +46,16 @@ void MSClient::connect(char* username, char* password)
 	packet.append(packetData.c_str(), packetData.length());
 
 	send(packet);
+}
+
+std::string MSClient::recv()
+{
+	char buffer[512];
+	sf::IpAddress ipAddr;
+	size_t recvSize;
+
+	_socket.receive(buffer, 512, recvSize, ipAddr, _port);
+
+	std::string recvString(buffer, recvSize);
+	return recvString;
 }

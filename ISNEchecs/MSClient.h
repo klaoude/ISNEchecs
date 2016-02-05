@@ -13,6 +13,8 @@ public:
 
 	void connect(char* username, char* password);
 
+	std::string recv();
+
 private:
 	sf::UdpSocket _socket;
 	sf::IpAddress _ipaddr;
