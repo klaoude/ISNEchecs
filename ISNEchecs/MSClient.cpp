@@ -4,7 +4,6 @@ MSClient::MSClient(sf::IpAddress ip, unsigned short port)
 {
 	_ipaddr = ip;
 	_port = port;
-	_socket.bind(_port);
 }
 
 MSClient::~MSClient()

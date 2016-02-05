@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 #include "MainGame.h"
 #include "CaseID.h"
@@ -45,15 +46,19 @@ void MainGame::start()
 			sf::IpAddress ip = sf::IpAddress::getLocalAddress();
 			MSClient client(ip, 4269);
 			
-			char* username;
-			char* password;
+			std::string username;
+			std::string password;
 			
 			std::cout << "Username : ";
-			std::cin >> username;
+			std::cin.ignore();
+			std::getline(std::cin, username);
 			std::cout << "Password : ";
-			std::cin >> password;
+			//std::cin.ignore();
+			std::getline(std::cin, password);
 
-			client.connect(username, password);
+
+			std::cout << (char*)username.c_str() << " " << (char*)password.c_str() << std::endl;
+			client.connect((char*)username.c_str(), (char*)password.c_str());
 		
 			std::string recv = client.recv();
 			std::cout << recv << std::endl;

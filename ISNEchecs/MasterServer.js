@@ -42,8 +42,26 @@ server.on("message", function(msg, rinfo) {
                     bool = true;
                 }
             }
-            if (!bool)
-                ;
+            var buffer = new Buffer(4);
+            bool ? buffer.write("True") : buffer.write("False");
+            if (bool) {
+                server.send(buffer, 0, buffer.length, rinfo.port, rinfo.address,
+                    function (err, sent) {
+                        if (err)
+                            console.log("Error sending packet");
+                        else
+                            console.log("Client connected");
+                    });
+            }
+            else {
+                server.send(buffer, 0, buffer.length, rinfo.port, rinfo.address,
+                    function (err, sent) {
+                        if (err)
+                            console.log("Error sending packet");
+                        else
+                            console.log("Client send wrong info");
+                    });
+            }
             break;
     }
 });
