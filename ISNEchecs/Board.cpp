@@ -24,7 +24,7 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 		x += 100;
 	}
 
-	GameObject* board = new GameObject("Sprites/board.jpg");
+	GameObject* board = new GameObject("Sprites/Chess_Board.png");
 	_gom->add("Board", board);
 
 	for (int i = 0; i < 8; i++) //Placement des pions
