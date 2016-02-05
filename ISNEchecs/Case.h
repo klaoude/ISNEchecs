@@ -17,6 +17,9 @@ public:
 	void setPieceCase(Piece* piece);
 	void delPiece();
 
+	int get_px(){ return m_px; }
+	int get_py(){ return m_py; }
+
 private:
 	int m_sx;
 	int m_sy;

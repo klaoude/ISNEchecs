@@ -18,6 +18,7 @@ public:
 
 	void movePiece(Piece* piece, int ID);
 
+	Case getCase(int x, int y);
 private:
 	std::vector<Case> m_board;
 	GameObjectManager* _gom;
