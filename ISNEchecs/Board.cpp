@@ -70,8 +70,6 @@ void Board::movePiece(Piece* piece, int ID)
 {
 	if (m_board.at(ID).isEmpty() == 1)
 	{
-		bool isPossible(int ID, int ID2, Type type, Couleur color);
-
 		if (isPossible(piece->getID(), ID, piece->getType(), piece->getColor()) == true)
 		{
 			m_board.at(piece->getID()).setEmpty(1);
