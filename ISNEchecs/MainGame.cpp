@@ -94,7 +94,6 @@ void MainGame::init()
 {
 	_window.create(sf::VideoMode(SCREEN_HEIGHT, SCREEN_WIDTH), "Chess");
 	m_board = Board(&_gameObjectManager);
-	_gameObjectManager.get("WhiteQueen")->setPosition(0, 100);
 }
 
 void MainGame::gameLoop()
@@ -135,7 +134,6 @@ void MainGame::draw()
 {
 	_window.clear();
 
-	_window.draw(_sprite);
 	_gameObjectManager.draw(_window);
 
 	_window.display();
