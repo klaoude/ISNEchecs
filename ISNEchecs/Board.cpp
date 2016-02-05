@@ -73,20 +73,20 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 	//SET POSITION
 	for (size_t i = 0; i < 8; i++)
 	{
-		_gom->get("WhitePawn"+i+1)->setPosition(100, 100*i);
+		_gom->get("WhitePawn" + i + 1)->setPosition(SCREEN_WIDTH / 8*i, SCREEN_WIDTH / 8);
 	}
 
 	_gom->get("WhiteRook1")->setPosition(0, 0);
-	_gom->get("WhiteRook2")->setPosition(0, 700);
+	_gom->get("WhiteRook2")->setPosition(SCREEN_WIDTH / 8*7, 0);
 
-	_gom->get("WhiteBishop1")->setPosition(0, 100);
-	_gom->get("WhiteBishop2")->setPosition(0, 600);
+	_gom->get("WhiteBishop1")->setPosition(SCREEN_WIDTH / 8, 0);
+	_gom->get("WhiteBishop2")->setPosition(SCREEN_WIDTH / 8*6, 0);
 
-	_gom->get("WhiteKnight1")->setPosition(0, 200);
-	_gom->get("WhiteKnight2")->setPosition(0, 500);
+	_gom->get("WhiteKnight1")->setPosition(SCREEN_WIDTH / 8*2, 0);
+	_gom->get("WhiteKnight2")->setPosition(SCREEN_WIDTH / 8*5, 0);
 
-	_gom->get("WhiteKing")->setPosition(0, 400);
-	_gom->get("WhiteQueen")->setPosition(0, 300);
+	_gom->get("WhiteKing")->setPosition(SCREEN_WIDTH / 8*4, 0);
+	_gom->get("WhiteQueen")->setPosition(SCREEN_WIDTH / 8*3, 0);
 }
 
 Board::~Board()

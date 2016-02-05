@@ -14,6 +14,7 @@ GameObject::GameObject(sf::Texture texture)
 GameObject::GameObject(std::string texturePath)
 {
 	_texture.loadFromFile(texturePath);
+	_texture.setSmooth(true);
 	_sprite.setTexture(_texture);
 	_isLoaded = true;
 }
