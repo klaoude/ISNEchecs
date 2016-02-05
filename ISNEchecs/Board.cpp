@@ -50,9 +50,43 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 
 	setPiece(new Piece(4, Type::ROI, Couleur::BLANC)); //Placement des rois/reines
 	setPiece(new Piece(5, Type::REINE, Couleur::BLANC));
-	_gom->add("WhiteQueen", m_board.at(4).getPiece());
 	setPiece(new Piece(60, Type::ROI, Couleur::NOIR));
 	setPiece(new Piece(61, Type::REINE, Couleur::NOIR));
+
+	for (size_t i = 0; i < 8; i++)
+	{
+		_gom->add("WhitePawn"+i+1, m_board.at(i+8).getPiece());
+	}
+	_gom->add("WhiteRook1", m_board.at(0).getPiece());
+	_gom->add("WhiteRook2", m_board.at(7).getPiece());
+
+	_gom->add("WhiteBishop1", m_board.at(2).getPiece());
+	_gom->add("WhiteBishop2", m_board.at(5).getPiece());
+
+	_gom->add("WhiteKnight1", m_board.at(1).getPiece());
+	_gom->add("WhiteKnight2", m_board.at(6).getPiece());
+
+	_gom->add("WhiteKing", m_board.at(4).getPiece());
+	_gom->add("WhiteQueen", m_board.at(3).getPiece());
+
+
+	//SET POSITION
+	for (size_t i = 0; i < 8; i++)
+	{
+		_gom->get("WhitePawn"+i+1)->setPosition(100, 100*i);
+	}
+
+	_gom->get("WhiteRook1")->setPosition(0, 0);
+	_gom->get("WhiteRook2")->setPosition(0, 700);
+
+	_gom->get("WhiteBishop1")->setPosition(0, 100);
+	_gom->get("WhiteBishop2")->setPosition(0, 600);
+
+	_gom->get("WhiteKnight1")->setPosition(0, 200);
+	_gom->get("WhiteKnight2")->setPosition(0, 500);
+
+	_gom->get("WhiteKing")->setPosition(0, 400);
+	_gom->get("WhiteQueen")->setPosition(0, 300);
 }
 
 Board::~Board()
