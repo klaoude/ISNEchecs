@@ -16,7 +16,7 @@ public:
 
 	void setPiece(Piece* piece); 
 
-	void movePiece(Piece* piece, int ID);
+	void movePiece(Piece* piece, Case caze);
 
 	Case getCase(int x, int y);
 private:

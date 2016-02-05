@@ -5,11 +5,12 @@ Piece::Piece()
 
 }
 
-Piece::Piece(int ID, Type type, Couleur color)
+Piece::Piece(int ID, Type type, Couleur color, std::string textureID)
 {
 	m_type = type;
 	m_color = color;
 	m_ID = ID;
+	_textureID = textureID;
 	
 	switch (type)
 	{

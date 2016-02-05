@@ -1,12 +1,18 @@
 #include "Case.h"
+#include "Global.h"
+
 
 Case::Case(int px, int py, int ID)
 {
-	m_sx = 100;
-	m_sy = 100;
+	m_sx = SCREEN_HEIGHT / 8;
+	m_sy = SCREEN_WIDTH / 8;
 	m_ID = ID;
 	m_px = px;
 	m_py = py;
+
+	m_empty = true;
+
+	m_piece = new Piece(NULL, NONEt, NONEc, "");
 }
 
 

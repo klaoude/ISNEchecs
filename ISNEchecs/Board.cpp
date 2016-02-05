@@ -29,31 +29,38 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 
 	for (int i = 0; i < 8; i++) //Placement des pions
 	{
-		setPiece(new Piece(i + 9, Type::PION, Couleur::BLANC));
-		setPiece(new Piece(i + 49, Type::PION, Couleur::NOIR));
+		setPiece(new Piece(i + 9, Type::PION, Couleur::BLANC, "WhitePawn" + i + 1));
+		setPiece(new Piece(i + 49, Type::PION, Couleur::NOIR, "BlackPawn" + i + 1));
 	}
 
-	setPiece(new Piece(1, Type::TOUR, Couleur::BLANC)); //Placement des tours
-	setPiece(new Piece(8, Type::TOUR, Couleur::BLANC));
-	setPiece(new Piece(57, Type::TOUR, Couleur::NOIR));
-	setPiece(new Piece(64, Type::TOUR, Couleur::NOIR));
+	setPiece(new Piece(1, Type::TOUR, Couleur::BLANC, "WhiteRook1")); //Placement des tours
+	setPiece(new Piece(8, Type::TOUR, Couleur::BLANC, "WhiteRook2"));
+	setPiece(new Piece(57, Type::TOUR, Couleur::NOIR, "BlackRook1"));
+	setPiece(new Piece(64, Type::TOUR, Couleur::NOIR, "BlackRook2"));
 
-	setPiece(new Piece(2, Type::CAVALIER, Couleur::BLANC)); //Placement des cavaliers
-	setPiece(new Piece(7, Type::CAVALIER, Couleur::BLANC));
-	setPiece(new Piece(58, Type::CAVALIER, Couleur::NOIR));
-	setPiece(new Piece(63, Type::CAVALIER, Couleur::NOIR));
+	setPiece(new Piece(2, Type::CAVALIER, Couleur::BLANC, "WhiteKnight1")); //Placement des cavaliers
+	setPiece(new Piece(7, Type::CAVALIER, Couleur::BLANC, "WhiteKnight2"));
+	setPiece(new Piece(58, Type::CAVALIER, Couleur::NOIR, "BlackKnight1"));
+	setPiece(new Piece(63, Type::CAVALIER, Couleur::NOIR, "BlackKnight2"));
 
-	setPiece(new Piece(3, Type::FOU, Couleur::BLANC)); //Placement des fous
-	setPiece(new Piece(6, Type::FOU, Couleur::BLANC));
-	setPiece(new Piece(59, Type::FOU, Couleur::NOIR));
-	setPiece(new Piece(62, Type::FOU, Couleur::NOIR));
+	setPiece(new Piece(3, Type::FOU, Couleur::BLANC, "WhiteBishop1")); //Placement des fous
+	setPiece(new Piece(6, Type::FOU, Couleur::BLANC, "WhiteBishop2"));
+	setPiece(new Piece(59, Type::FOU, Couleur::NOIR, "BlackBishop1"));
+	setPiece(new Piece(62, Type::FOU, Couleur::NOIR, "BlackBishop2"));
 
-	setPiece(new Piece(4, Type::ROI, Couleur::BLANC)); //Placement des rois/reines
-	setPiece(new Piece(5, Type::REINE, Couleur::BLANC));
-	setPiece(new Piece(60, Type::ROI, Couleur::NOIR));
-	setPiece(new Piece(61, Type::REINE, Couleur::NOIR));
+	setPiece(new Piece(4, Type::ROI, Couleur::BLANC, "WhiteKing")); //Placement des rois/reines
+	setPiece(new Piece(5, Type::REINE, Couleur::BLANC, "WhiteQueen"));
+	setPiece(new Piece(60, Type::ROI, Couleur::NOIR, "BlackKing"));
+	setPiece(new Piece(61, Type::REINE, Couleur::NOIR, "BlackQueen"));
 
-	for (size_t i = 0; i < 8; i++)
+	for (size_t i = 0; i < m_board.size(); i++)
+	{
+		if (i < 16 || i > 48)
+			_gom->add(m_board.at(i).getPiece()->getTextureID(), m_board.at(i).getPiece());
+	}
+		
+
+	/*for (size_t i = 0; i < 8; i++)
 	{
 		_gom->add("WhitePawn"+i+1, m_board.at(i+8).getPiece());
 	}
@@ -68,7 +75,7 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 
 	_gom->add("WhiteKing", m_board.at(4).getPiece());
 	_gom->add("WhiteQueen", m_board.at(3).getPiece());
-
+	*/
 
 	//SET POSITION
 	for (size_t i = 0; i < 8; i++)
@@ -87,6 +94,8 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 
 	_gom->get("WhiteKing")->setPosition(SCREEN_WIDTH / 8*4, 0);
 	_gom->get("WhiteQueen")->setPosition(SCREEN_WIDTH / 8*3, 0);
+
+	movePiece(m_board.at(7).getPiece(), m_board.at(16));
 }
 
 Board::~Board()
@@ -100,27 +109,34 @@ void Board::setPiece(Piece* piece)
 	m_board.at(piece->getID() - 1).setPieceCase(piece);
 }
 
-void Board::movePiece(Piece* piece, int ID)
+void Board::movePiece(Piece* piece, Case caze)
 {
-	if (m_board.at(ID).isEmpty() == 1)
+	if (caze.isEmpty())
 	{
-		if (isPossible(piece->getID(), ID, piece->getType(), piece->getColor()) == true)
+		if (isPossible(piece->getID(), caze.getID(), piece->getType(), piece->getColor()))
 		{
 			m_board.at(piece->getID()).setEmpty(1);
 			m_board.at(piece->getID()).delPiece();
-			piece->setID(ID);
-			m_board.at(ID).setEmpty(0);
-			m_board.at(ID).setPieceCase(piece);
+			piece->setID(caze.getID());
+			caze.setEmpty(0);
+			caze.setPieceCase(piece);
+			_gom->get(m_board.at(piece->getID()).getPiece()->getTextureID())->setPosition(caze.get_px(), caze.get_py());
+			std::cout << "deplacement effectuer" << std::endl;
+			return;
 		}
+		else
+			std::cout << "deplacement impossible" << std::endl;
 	}
 
-	if (m_board.at(ID).getPiece()->getColor() == piece->getColor())
+	std::cout << caze.getPiece()->getColor() << std::endl;
+	std::cout << piece->getColor() << std::endl;
+	if (caze.getPiece()->getColor() == piece->getColor())
 	{
-		;
+		std::cout << "meme color" << std::endl;
 	}
 	else
 	{
-		; //PUT OLD PIECE IN TRASH (TODO)
+		std::cout << "piece manger" << std::endl; //PUT OLD PIECE IN TRASH (TODO)
 	} 
 }
 
