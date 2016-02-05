@@ -5,6 +5,8 @@ Case::Case(int px, int py, int ID)
 	m_sx = 100;
 	m_sy = 100;
 	m_ID = ID;
+	m_px = px;
+	m_py = py;
 }
 
 

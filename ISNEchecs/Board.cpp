@@ -1,4 +1,5 @@
 #include "Board.h"
+#include "Global.h"
 
 Board::Board()
 {
@@ -14,6 +15,7 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 	{
 		if (i % 8 == 0 && i != 0)
 		{
+			std::cout << i << std::endl;
 			y += 100;
 			x = 0;
 		}
@@ -46,7 +48,7 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 
 	setPiece(new Piece(4, Type::ROI, Couleur::BLANC)); //Placement des rois/reines
 	setPiece(new Piece(5, Type::REINE, Couleur::BLANC));
-	_gom->add("WhiteQuenn", m_board.at(4).getPiece());
+	_gom->add("WhiteQueen", m_board.at(4).getPiece());
 	setPiece(new Piece(60, Type::ROI, Couleur::NOIR));
 	setPiece(new Piece(61, Type::REINE, Couleur::NOIR));
 }
@@ -58,8 +60,8 @@ Board::~Board()
 
 void Board::setPiece(Piece* piece)
 {
-	m_board.at(piece->getID()-1).setEmpty(0);
-	m_board.at(piece->getID()-1).setPieceCase(piece);
+	m_board.at(piece->getID() - 1).setEmpty(0);
+	m_board.at(piece->getID() - 1).setPieceCase(piece);
 }
 
 void Board::movePiece(Piece* piece, int ID)
@@ -86,4 +88,23 @@ void Board::movePiece(Piece* piece, int ID)
 	{
 		; //PUT OLD PIECE IN TRASH (TODO)
 	} 
+}
+
+Case Board::getCase(int x, int y)
+{
+	int a=0; // a->x
+	int b=0; // b->y
+	for (size_t i = 0; i < 8; i++)
+	{
+		if (m_board.at(i).get_px() < x && x < m_board.at(i).get_px() + (SCREEN_WIDTH / 8))
+			a = i;
+	}
+
+	for (size_t i = 0; i < 8; i++)
+	{
+		if (m_board.at(i*8).get_py() < y && y < m_board.at(i*8).get_py() + (SCREEN_WIDTH / 8))
+			b = i;
+	}
+	return m_board.at(a + (b*8));
+
 }

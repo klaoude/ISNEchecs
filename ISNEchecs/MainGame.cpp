@@ -93,7 +93,8 @@ void MainGame::start()
 void MainGame::init()
 {
 	_window.create(sf::VideoMode(SCREEN_HEIGHT, SCREEN_WIDTH), "Chess");
-	Board board(&_gameObjectManager);
+	m_board = Board(&_gameObjectManager);
+	_gameObjectManager.get("WhiteQueen")->setPosition(0, 100);
 }
 
 void MainGame::gameLoop()
@@ -124,6 +125,8 @@ void MainGame::handleInput()
 		if (event.type == sf::Event::MouseButtonPressed)
 		{
 			std::cout << "Click : x = " << event.mouseButton.x << " y = " << event.mouseButton.y << std::endl;
+			std::cout << m_board.getCase(event.mouseButton.x, event.mouseButton.y).get_px() << std::endl;
+			std::cout << m_board.getCase(event.mouseButton.x, event.mouseButton.y).get_py() << std::endl;
 		}
 	}
 }

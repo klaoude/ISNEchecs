@@ -28,5 +28,7 @@ private:
 	static GameObjectManager _gameObjectManager;
 
 	sf::Sprite _sprite;
+
+	Board m_board;
 };
 
