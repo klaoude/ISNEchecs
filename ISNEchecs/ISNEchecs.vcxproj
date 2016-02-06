@@ -94,6 +94,7 @@
     <ClCompile Include="Server\Server.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Fonctions.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Graphics\GameObject.h" />
     <ClInclude Include="Graphics\GameObjectManager.h" />

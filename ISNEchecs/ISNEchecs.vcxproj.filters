@@ -119,6 +119,9 @@
     <ClInclude Include="Server\JSONValue.h">
       <Filter>Fichiers d%27en-tête\Server</Filter>
     </ClInclude>
+    <ClInclude Include="Fonctions.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Server\account.json">

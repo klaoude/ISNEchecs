@@ -1,5 +1,7 @@
 #include "../Main/Board.h"
 #include "../Global.h"
+#include "../Fonctions.h"
+#include "../Main/CaseID.h"
 
 Board::Board()
 {
@@ -95,7 +97,7 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 	_gom->get("WhiteKing")->setPosition(SCREEN_WIDTH / 8*4, 0);
 	_gom->get("WhiteQueen")->setPosition(SCREEN_WIDTH / 8*3, 0);
 
-	movePiece(m_board.at(7).getPiece(), m_board.at(16));
+	movePiece(m_board.at(B1).getPiece(), m_board.at(C1));
 }
 
 Board::~Board()
