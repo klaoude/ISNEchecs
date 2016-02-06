@@ -122,7 +122,7 @@ void Board::movePiece(Piece* piece, Case caze)
 			piece->setID(caze.getID());
 			caze.setEmpty(0);
 			caze.setPieceCase(piece);
-			_gom->get(m_board.at(piece->getID()).getPiece()->getTextureID())->setPosition(caze.get_px(), caze.get_py());
+			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py());
 			std::cout << "deplacement effectuer" << std::endl;
 			return;
 		}
