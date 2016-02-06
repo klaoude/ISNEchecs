@@ -82,6 +82,7 @@ void MainGame::start()
 		texture.loadFromFile("Sprites/White_Queen.png");
 
 		_sprite.setTexture(texture);
+		_sprite.scale(2, 2);
 
 		init();
 		gameLoop();
@@ -137,6 +138,7 @@ void MainGame::draw()
 {
 	_window.clear();
 
+	//_window.draw(_sprite);
 	_gameObjectManager.draw(_window);
 
 	_window.display();

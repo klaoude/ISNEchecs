@@ -1,6 +1,41 @@
 #pragma once
-#include "Main/PieceInfo.h"
+
 #include <iostream>
+#include <SFML\Graphics.hpp>
+
+#include "Main/PieceInfo.h"
+#include "Global.h"
+
+inline void setScale(GameObject* go, int code)
+{
+	/*
+	Code : 1 = Board
+		   2 = Piece
+	*/
+	sf::Vector2u textureSize = go->getTextureSize();
+	int x, y;
+	if (textureSize.x != 0 && textureSize.y != 0)
+	{
+		switch (code)
+		{
+		case 1:
+			x = BOARD_SIZE / textureSize.x;
+			y = BOARD_SIZE / textureSize.y;
+			break;
+		case 2:
+			x = PIECE_SIZE / textureSize.x;
+			y = PIECE_SIZE / textureSize.y;
+			break;
+		}
+		
+	}
+	else 
+	{
+		x = 1;
+		y = 1;
+	}
+	go->scale(x, y);
+}
 
 inline bool isPossible(int ID, int ID2, Type type, Couleur color)
 {

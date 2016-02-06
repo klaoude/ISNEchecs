@@ -17,7 +17,6 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 	{
 		if (i % 8 == 0 && i != 0)
 		{
-			std::cout << i << std::endl;
 			y += SCREEN_HEIGHT / 8;
 			x = 0;
 		}
@@ -28,6 +27,7 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 
 	GameObject* board = new GameObject("Sprites/Chess_Board.png");
 	_gom->add("Board", board);
+	setScale(board, 1);
 
 	for (int i = 0; i < 8; i++) //Placement des pions
 	{
@@ -57,27 +57,12 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 
 	for (size_t i = 0; i < m_board.size(); i++)
 	{
-		if (i < 16 || i > 48)
+		if (i < 16 || i > 48) 
+		{
 			_gom->add(m_board.at(i).getPiece()->getTextureID(), m_board.at(i).getPiece());
+			setScale(m_board.at(i).getPiece(), 2);
+		}			
 	}
-		
-
-	/*for (size_t i = 0; i < 8; i++)
-	{
-		_gom->add("WhitePawn"+i+1, m_board.at(i+8).getPiece());
-	}
-	_gom->add("WhiteRook1", m_board.at(0).getPiece());
-	_gom->add("WhiteRook2", m_board.at(7).getPiece());
-
-	_gom->add("WhiteBishop1", m_board.at(2).getPiece());
-	_gom->add("WhiteBishop2", m_board.at(5).getPiece());
-
-	_gom->add("WhiteKnight1", m_board.at(1).getPiece());
-	_gom->add("WhiteKnight2", m_board.at(6).getPiece());
-
-	_gom->add("WhiteKing", m_board.at(4).getPiece());
-	_gom->add("WhiteQueen", m_board.at(3).getPiece());
-	*/
 
 	//SET POSITION
 	for (int i = 0; i < 8; i++)
@@ -96,6 +81,9 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 
 	_gom->get("WhiteKing")->setPosition(SCREEN_WIDTH / 8*4, 0);
 	_gom->get("WhiteQueen")->setPosition(SCREEN_WIDTH / 8*3, 0);
+
+	//_gom->get("WhiteKing")->setPosition(200, 200);
+	//_gom->get("WhiteKing")->scale(2, 2);
 
 	movePiece(m_board.at(B1).getPiece(), m_board.at(C1));
 }
