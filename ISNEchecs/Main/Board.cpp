@@ -118,7 +118,7 @@ void Board::movePiece(Piece* piece, Case caze)
 {
 	if (caze.isEmpty())
 	{
-		if (isPossible(*piece, caze.getID()))
+		if (isPossible(this, *piece, caze))
 		{
 			m_board.at(piece->getID()).setEmpty(1);
 			m_board.at(piece->getID()).delPiece();
