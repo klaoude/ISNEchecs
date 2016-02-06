@@ -31,8 +31,8 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 
 	for (int i = 0; i < 8; i++) //Placement des pions
 	{
-		setPiece(new Piece(i + 9, Type::PION, Couleur::BLANC, "WhitePawn" + i + 1));
-		setPiece(new Piece(i + 49, Type::PION, Couleur::NOIR, "BlackPawn" + i + 1));
+		setPiece(new Piece(i + 9, Type::PION, Couleur::BLANC, "WhitePawn" + std::to_string(i + 1)));
+		setPiece(new Piece(i + 49, Type::PION, Couleur::NOIR, "BlackPawn" + std::to_string(i + 1)));
 	}
 
 	setPiece(new Piece(1, Type::TOUR, Couleur::BLANC, "WhiteRook1")); //Placement des tours
@@ -82,7 +82,7 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 	//SET POSITION
 	for (int i = 0; i < 8; i++)
 	{
-		_gom->get("WhitePawn" + i + 1)->setPosition(SCREEN_WIDTH / 8*i, SCREEN_WIDTH / 8);
+		_gom->get("WhitePawn" + std::to_string(i + 1))->setPosition(SCREEN_WIDTH / 8 * i, SCREEN_WIDTH / 8);
 	}
 
 	_gom->get("WhiteRook1")->setPosition(0, 0);
