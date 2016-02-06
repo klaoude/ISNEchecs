@@ -37,12 +37,12 @@ inline void setScale(GameObject* go, int code)
 	go->scale(x, y);
 }
 
-inline bool isPossible(int ID, int ID2, Type type, Couleur color)
+inline bool isPossible(Piece piece, int ID2)
 {
-	std::cout << ID << ID2 << type << color << std::endl;
-	if (type == CAVALIER) //CAVALIER
+	std::cout << piece.getID() << ID2 << piece.getType() << piece.getColor() << std::endl;
+	if (piece.getType() == CAVALIER) //CAVALIER
 	{
-		if ((ID + 6 == ID2) || (ID + 10 == ID2) || (ID + 15 == ID2) || (ID + 17 == ID2))
+		if ((piece.getID() + 6 == ID2) || (piece.getID() + 10 == ID2) || (piece.getID() + 15 == ID2) || (piece.getID() + 17 == ID2))
 			return 1;
 		else
 		{
@@ -51,7 +51,7 @@ inline bool isPossible(int ID, int ID2, Type type, Couleur color)
 		}
 	}
 
-	if (type == TOUR) //TOUR
+	if (piece.getType() == TOUR) //TOUR
 	{
 		int m = 0;
 		for (int i = 1; i < 9; i++)
@@ -59,9 +59,9 @@ inline bool isPossible(int ID, int ID2, Type type, Couleur color)
 
 
 
-			if ((ID + i * 8 == ID2) || (ID - i * 8 == ID2))
+			if ((piece.getID() + i * 8 == ID2) || (piece.getID() - i * 8 == ID2))
 				m++;
-			if (floor(ID / 8) * 8 <= ID2 && ID2 < ceil(ID / 8) * 8)
+			if (floor(piece.getID() / 8) * 8 <= ID2 && ID2 < ceil(piece.getID() / 8) * 8)
 				m++;
 			else
 				;
@@ -76,12 +76,12 @@ inline bool isPossible(int ID, int ID2, Type type, Couleur color)
 
 	}
 
-	if (type == FOU) //FOU
+	if (piece.getType() == FOU) //FOU
 	{
 		int m = 0;
 		for (int i = 1; i < 9; i++)
 		{
-			if ((ID + i * 9 == ID2) || (ID - i * 9 == ID2) || (ID + i * 7 == ID2) || (ID - i * 7 == ID2))
+			if ((piece.getID() + i * 9 == ID2) || (piece.getID() - i * 9 == ID2) || (piece.getID() + i * 7 == ID2) || (piece.getID() - i * 7 == ID2))
 				m++;
 			else
 				m = m;
@@ -95,19 +95,19 @@ inline bool isPossible(int ID, int ID2, Type type, Couleur color)
 		}
 	}
 
-	if (type == ROI) //ROI
+	if (piece.getType() == ROI) //ROI
 	{
-		if ((ID + 1 == ID2) || (ID - 1 == ID2) || (ID + 8 == ID2) || (ID - 8 == ID2) || (ID + 9 == ID2) || (ID - 9 == ID2) || (ID + 7 == ID2) || (ID - 7 == ID2))
+		if ((piece.getID() + 1 == ID2) || (piece.getID() - 1 == ID2) || (piece.getID() + 8 == ID2) || (piece.getID() - 8 == ID2) || (piece.getID() + 9 == ID2) || (piece.getID() - 9 == ID2) || (piece.getID() + 7 == ID2) || (piece.getID() - 7 == ID2))
 			return 1;
 		else
 			return 0;
 	}
 
-	if (type == PION) //PION
+	if (piece.getType() == PION) //PION
 	{
-		if (color == BLANC)
+		if (piece.getColor() == BLANC)
 		{
-			if (ID + 8 == ID2)
+			if (piece.getID() + 8 == ID2)
 				return 1;
 			else
 			{
@@ -116,9 +116,9 @@ inline bool isPossible(int ID, int ID2, Type type, Couleur color)
 			}
 		}
 
-		if (color == NOIR)
+		if (piece.getColor() == NOIR)
 		{
-			if (ID - 8 == ID2)
+			if (piece.getID() - 8 == ID2)
 				return 1;
 			else
 			{
@@ -128,12 +128,12 @@ inline bool isPossible(int ID, int ID2, Type type, Couleur color)
 		}
 	}
 
-	if (type == REINE) //REINE
+	if (piece.getType() == REINE) //REINE
 	{
 		int m = 0;
 		for (int i = 1; i < 9; i++)
 		{
-			if ((ID + i * 9 == ID2) || (ID - i * 9 == ID2) || (ID + i * 8 == ID2) || (ID - i * 8 == ID2) || (ID + i * 7 == ID2) || (ID - i * 7 == ID2))
+			if ((piece.getID() + i * 9 == ID2) || (piece.getID() - i * 9 == ID2) || (piece.getID() + i * 8 == ID2) || (piece.getID() - i * 8 == ID2) || (piece.getID() + i * 7 == ID2) || (piece.getID() - i * 7 == ID2))
 				m++;
 			else
 				m = m;
