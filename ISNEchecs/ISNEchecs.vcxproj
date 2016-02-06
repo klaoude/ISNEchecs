@@ -80,38 +80,50 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\deps\include\JSON\JSON.cpp" />
-    <ClCompile Include="..\deps\include\JSON\JSONValue.cpp" />
-    <ClCompile Include="Board.cpp" />
-    <ClCompile Include="Case.cpp" />
-    <ClCompile Include="Client.cpp" />
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="Graphics\GameObject.cpp" />
+    <ClCompile Include="Graphics\GameObjectManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
-    <ClCompile Include="MSClient.cpp" />
-    <ClCompile Include="Piece.cpp" />
-    <ClCompile Include="Server.cpp" />
+    <ClCompile Include="Main\Board.cpp" />
+    <ClCompile Include="Main\Case.cpp" />
+    <ClCompile Include="Main\Piece.cpp" />
+    <ClCompile Include="Server\Client.cpp" />
+    <ClCompile Include="Server\JSON.cpp" />
+    <ClCompile Include="Server\JSONValue.cpp" />
+    <ClCompile Include="Server\MSClient.cpp" />
+    <ClCompile Include="Server\Server.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\deps\include\JSON\JSON.h" />
-    <ClInclude Include="..\deps\include\JSON\JSONValue.h" />
-    <ClInclude Include="Board.h" />
-    <ClInclude Include="Case.h" />
-    <ClInclude Include="CaseID.h" />
-    <ClInclude Include="Client.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="Graphics\GameObject.h" />
+    <ClInclude Include="Graphics\GameObjectManager.h" />
     <ClInclude Include="MainGame.h" />
-    <ClInclude Include="MSClient.h" />
-    <ClInclude Include="Piece.h" />
-    <ClInclude Include="Server.h" />
-    <ClInclude Include="PieceInfo.h" />
+    <ClInclude Include="Main\Board.h" />
+    <ClInclude Include="Main\Case.h" />
+    <ClInclude Include="Main\CaseID.h" />
+    <ClInclude Include="Main\Piece.h" />
+    <ClInclude Include="Main\PieceInfo.h" />
+    <ClInclude Include="Server\Client.h" />
+    <ClInclude Include="Server\JSON.h" />
+    <ClInclude Include="Server\JSONValue.h" />
+    <ClInclude Include="Server\MSClient.h" />
+    <ClInclude Include="Server\Server.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="account.json" />
-    <None Include="MasterServer.js" />
+    <None Include="Server\account.json" />
+    <None Include="Server\MasterServer.js" />
+    <None Include="Server\StartMasterServer.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Sprites\board.jpg" />
+    <Image Include="Sprites\Chess_Board.png" />
+    <Image Include="Sprites\Chess_Pieces_Sprite.png" />
+    <Image Include="Sprites\White_Bishop.png" />
+    <Image Include="Sprites\White_King.png" />
+    <Image Include="Sprites\White_Knight.png" />
+    <Image Include="Sprites\White_Pawn.png" />
+    <Image Include="Sprites\White_Queen.png" />
+    <Image Include="Sprites\White_Rook.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

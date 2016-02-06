@@ -2,11 +2,14 @@
 #include <string>
 
 #include "MainGame.h"
-#include "CaseID.h"
-#include "Server.h"
-#include "Client.h"
-#include "MSClient.h"
 #include "Global.h"
+
+#include "Main/CaseID.h"
+
+#include "Server/Server.h"
+#include "Server/Client.h"
+#include "Server/MSClient.h"
+
 
 MainGame::MainGame()
 {

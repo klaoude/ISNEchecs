@@ -13,6 +13,30 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Graphics">
+      <UniqueIdentifier>{737d7c89-eeaf-448d-90bd-b2f555e7da68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Main">
+      <UniqueIdentifier>{93767aa3-4bce-4440-a3e9-59b2d23d6733}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Server">
+      <UniqueIdentifier>{eca68607-3f66-4726-b6cb-30a21113fd78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers de ressources\Server">
+      <UniqueIdentifier>{f47f4305-ff8c-4581-b9b8-e1adba8ae4d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers de ressources\Sprites">
+      <UniqueIdentifier>{0675b6e2-6104-47d0-856b-ef304da5e9a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Graphics">
+      <UniqueIdentifier>{84731ad2-c7f8-438a-a47a-0b0319aebf51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Main">
+      <UniqueIdentifier>{500285ca-68b0-4747-9aac-577dc7cd3712}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Server">
+      <UniqueIdentifier>{502fb1c2-6fb7-4c7e-bd7c-d4837fabd39e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -21,87 +45,119 @@
     <ClCompile Include="MainGame.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Case.cpp">
-      <Filter>Fichiers sources</Filter>
+    <ClCompile Include="Graphics\GameObject.cpp">
+      <Filter>Fichiers sources\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Board.cpp">
-      <Filter>Fichiers sources</Filter>
+    <ClCompile Include="Graphics\GameObjectManager.cpp">
+      <Filter>Fichiers sources\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Piece.cpp">
-      <Filter>Fichiers sources</Filter>
+    <ClCompile Include="Main\Board.cpp">
+      <Filter>Fichiers sources\Main</Filter>
     </ClCompile>
-    <ClCompile Include="Client.cpp">
-      <Filter>Fichiers sources</Filter>
+    <ClCompile Include="Main\Case.cpp">
+      <Filter>Fichiers sources\Main</Filter>
     </ClCompile>
-    <ClCompile Include="Server.cpp">
-      <Filter>Fichiers sources</Filter>
+    <ClCompile Include="Main\Piece.cpp">
+      <Filter>Fichiers sources\Main</Filter>
     </ClCompile>
-    <ClCompile Include="MSClient.cpp">
-      <Filter>Fichiers sources</Filter>
+    <ClCompile Include="Server\Client.cpp">
+      <Filter>Fichiers sources\Server</Filter>
     </ClCompile>
-    <ClCompile Include="..\deps\include\JSON\JSON.cpp">
-      <Filter>Fichiers sources</Filter>
+    <ClCompile Include="Server\MSClient.cpp">
+      <Filter>Fichiers sources\Server</Filter>
     </ClCompile>
-    <ClCompile Include="..\deps\include\JSON\JSONValue.cpp">
-      <Filter>Fichiers sources</Filter>
+    <ClCompile Include="Server\Server.cpp">
+      <Filter>Fichiers sources\Server</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Fichiers sources</Filter>
+    <ClCompile Include="Server\JSON.cpp">
+      <Filter>Fichiers sources\Server</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjectManager.cpp">
-      <Filter>Fichiers sources</Filter>
+    <ClCompile Include="Server\JSONValue.cpp">
+      <Filter>Fichiers sources\Server</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="Case.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Board.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Piece.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="CaseID.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Client.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="Server.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="MSClient.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="PieceInfo.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObjectManager.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="..\deps\include\JSON\JSON.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="..\deps\include\JSON\JSONValue.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="Global.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="Graphics\GameObject.h">
+      <Filter>Fichiers d%27en-tête\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\GameObjectManager.h">
+      <Filter>Fichiers d%27en-tête\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\Board.h">
+      <Filter>Fichiers d%27en-tête\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\Case.h">
+      <Filter>Fichiers d%27en-tête\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\CaseID.h">
+      <Filter>Fichiers d%27en-tête\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\Piece.h">
+      <Filter>Fichiers d%27en-tête\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Main\PieceInfo.h">
+      <Filter>Fichiers d%27en-tête\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Client.h">
+      <Filter>Fichiers d%27en-tête\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\MSClient.h">
+      <Filter>Fichiers d%27en-tête\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Server.h">
+      <Filter>Fichiers d%27en-tête\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\JSON.h">
+      <Filter>Fichiers d%27en-tête\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\JSONValue.h">
+      <Filter>Fichiers d%27en-tête\Server</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="MasterServer.js">
-      <Filter>Fichiers de ressources</Filter>
+    <None Include="Server\account.json">
+      <Filter>Fichiers de ressources\Server</Filter>
     </None>
-    <None Include="account.json">
-      <Filter>Fichiers de ressources</Filter>
+    <None Include="Server\MasterServer.js">
+      <Filter>Fichiers de ressources\Server</Filter>
     </None>
+    <None Include="Server\StartMasterServer.bat">
+      <Filter>Fichiers de ressources\Server</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Sprites\board.jpg">
+      <Filter>Fichiers de ressources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\Chess_Board.png">
+      <Filter>Fichiers de ressources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\Chess_Pieces_Sprite.png">
+      <Filter>Fichiers de ressources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\White_Bishop.png">
+      <Filter>Fichiers de ressources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\White_King.png">
+      <Filter>Fichiers de ressources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\White_Knight.png">
+      <Filter>Fichiers de ressources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\White_Pawn.png">
+      <Filter>Fichiers de ressources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\White_Queen.png">
+      <Filter>Fichiers de ressources\Sprites</Filter>
+    </Image>
+    <Image Include="Sprites\White_Rook.png">
+      <Filter>Fichiers de ressources\Sprites</Filter>
+    </Image>
   </ItemGroup>
 </Project>

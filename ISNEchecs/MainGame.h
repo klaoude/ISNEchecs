@@ -1,8 +1,10 @@
 #pragma once
 #include <SFML\Graphics.hpp>
 
-#include "Board.h"
-#include "GameObjectManager.h"
+#include "Graphics/GameObjectManager.h"
+
+#include "Main/Board.h"
+
 
 class MainGame
 {
