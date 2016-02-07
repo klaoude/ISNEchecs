@@ -82,7 +82,8 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 	//SET POSITION
 	for (int i = 0; i < 8; i++)
 	{
-		_gom->get("WhitePawn" + std::to_string(i + 1))->setPosition(SCREEN_WIDTH / 8 * i, SCREEN_WIDTH / 8);
+		_gom->get("WhitePawn" + std::to_string(i))->setPosition(SCREEN_WIDTH / 8 * i, SCREEN_WIDTH / 8);
+		_gom->get("BlackPawn" + std::to_string(i))->setPosition(SCREEN_WIDTH / 8 * i, SCREEN_WIDTH - (SCREEN_WIDTH / 8));
 	}
 
 	_gom->get("WhiteRook1")->setPosition(0, 0);
@@ -96,6 +97,8 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 
 	_gom->get("WhiteKing")->setPosition(SCREEN_WIDTH / 8*4, 0);
 	_gom->get("WhiteQueen")->setPosition(SCREEN_WIDTH / 8*3, 0);
+
+	
 
 	std::cout << "B1: " << B1 << std::endl;
 	std::cout << "ID: " << m_board.at(B1).getPiece()->getID() << std::endl;
