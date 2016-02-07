@@ -1,4 +1,6 @@
 #pragma once
+#include <unordered_map>
+
 #include "../Graphics/GameObject.h"
 
 class GameObjectManager
@@ -8,7 +10,7 @@ public:
 	~GameObjectManager();
 
 	int getObjectCount() const { return _gameObjects.size(); }
-	std::map<std::string, GameObject*> getMap() { return _gameObjects; }
+	std::unordered_map<std::string, GameObject*> getMap() { return _gameObjects; }
 
 	void add(std::string name, GameObject* gameObject);
 	void remove(std::string name);	
@@ -17,6 +19,6 @@ public:
 	void draw(sf::RenderWindow& _window);
 
 private:
-	std::map<std::string, GameObject*> _gameObjects;
+	std::unordered_map<std::string, GameObject*> _gameObjects;
 };
 

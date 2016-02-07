@@ -19,12 +19,12 @@ inline void setScale(GameObject* go, int code)
 		switch (code)
 		{
 		case 1:
-			x = BOARD_SIZE / textureSize.x;
-			y = BOARD_SIZE / textureSize.y;
+			x = BOARD_SIZE / (float)textureSize.x;
+			y = BOARD_SIZE / (float)textureSize.y;
 			break;
 		case 2:
-			x = PIECE_SIZE / textureSize.x;
-			y = PIECE_SIZE / textureSize.y;
+			x = PIECE_SIZE / (float)textureSize.x;
+			y = PIECE_SIZE / (float)textureSize.y;
 			break;
 		}		
 	}

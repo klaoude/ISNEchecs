@@ -15,7 +15,7 @@ void GameObjectManager::add(std::string name, GameObject* gameObject)
 
 void GameObjectManager::remove(std::string name)
 {
-	std::map<std::string, GameObject*>::iterator result = _gameObjects.find(name);
+	std::unordered_map<std::string, GameObject*>::iterator result = _gameObjects.find(name);
 	if (result != _gameObjects.end())
 	{
 		delete result->second;
@@ -25,7 +25,7 @@ void GameObjectManager::remove(std::string name)
 
 GameObject* GameObjectManager::get(std::string name)
 {
-	std::map<std::string, GameObject*>::const_iterator results = _gameObjects.find(name);
+	std::unordered_map<std::string, GameObject*>::const_iterator results = _gameObjects.find(name);
 	if (results == _gameObjects.end())
 		return NULL;
 	return results->second;
@@ -34,10 +34,8 @@ GameObject* GameObjectManager::get(std::string name)
 
 void GameObjectManager::draw(sf::RenderWindow& window)
 {
-	std::map<std::string, GameObject*>::const_iterator itr = _gameObjects.begin();
-	while (itr != _gameObjects.end())
+	for (std::unordered_map<std::string, GameObject*>::iterator i = _gameObjects.begin(); i != _gameObjects.end(); i++)
 	{
-		itr->second->draw(window);
-		itr++;
+		i->second->draw(window);
 	}
 }

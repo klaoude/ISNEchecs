@@ -25,9 +25,10 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 		x += SCREEN_HEIGHT / 8;
 	}
 
-	GameObject* board = new GameObject("Sprites/Chess_Board.png");
+	GameObject* board = new GameObject("Sprites/board.png");
 	_gom->add("Board", board);
-	setScale(board, 1);
+	_gom->get("Board")->scale(0.5, 0.5);
+	//setScale(board, 1);
 
 	for (int i = 0; i < 8; i++) //Placement des pions
 	{
@@ -61,7 +62,7 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 		{
 			_gom->add(m_board.at(i).getPiece()->getTextureID(), m_board.at(i).getPiece());
 			setScale(m_board.at(i).getPiece(), 2);
-	}
+		}
 	}
 
 	//SET POSITION
