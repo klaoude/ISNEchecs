@@ -21,6 +21,8 @@ public:
 	int get_px(){ return m_px; }
 	int get_py(){ return m_py; }
 
+	sf::Vector2u getPos() { return sf::Vector2u(m_px, m_py); }
+
 	void debugCase();
 
 private:
