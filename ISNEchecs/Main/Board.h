@@ -8,7 +8,6 @@
 #include "../Main/Piece.h"
 #include "../Main/PieceInfo.h"
 
-
 class Board
 {
 public:
@@ -21,6 +20,7 @@ public:
 	void movePiece(Piece* piece, Case caze);
 
 	Case getCase(int x, int y);
+
 private:
 	std::vector<Case> m_board;
 	GameObjectManager* _gom;

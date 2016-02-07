@@ -12,7 +12,7 @@ Case::Case(int px, int py, int ID)
 
 	m_empty = true;
 
-	m_piece = new Piece(NULL, NONEt, NONEc, "");
+	m_piece = new Piece(0, NONEt, NONEc, "");
 }
 
 
@@ -30,5 +30,12 @@ void Case::delPiece()
 {
 	m_piece->setColor(NONEc);
 	m_piece->setType(NONEt);
-	m_piece->setID(NULL);
+	m_piece->setID(0);
+	m_empty = true;
+}
+
+void Case::debugCase()
+{
+	std::cout << "[DEBUG CASE] : Piece = color : " << m_piece->getColor() << " ID : " << m_piece->getID() << std::endl;
+	std::cout << "[DEBUG CASE] : Case ID : " << m_ID << std::endl;
 }

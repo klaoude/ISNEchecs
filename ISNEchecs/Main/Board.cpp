@@ -79,8 +79,8 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 	_gom->get("WhiteKnight1")->setPosition(SCREEN_WIDTH / 8*2, 0);
 	_gom->get("WhiteKnight2")->setPosition(SCREEN_WIDTH / 8*5, 0);
 
-	_gom->get("WhiteKing")->setPosition(SCREEN_WIDTH / 8*4, 0);
-	_gom->get("WhiteQueen")->setPosition(SCREEN_WIDTH / 8*3, 0);
+	_gom->get("WhiteKing")->setPosition(SCREEN_WIDTH / 8*3, 0);
+	_gom->get("WhiteQueen")->setPosition(SCREEN_WIDTH / 8*4, 0);
 
 	//_gom->get("WhiteKing")->setPosition(200, 200);
 	//_gom->get("WhiteKing")->scale(2, 2);
@@ -105,7 +105,7 @@ void Board::movePiece(Piece* piece, Case caze)
 	{
 		if (isPossible(*piece, caze.getID()))
 		{
-			m_board.at(piece->getID()).setEmpty(1);
+			m_board.at(piece->getID()).setEmpty(true);
 			m_board.at(piece->getID()).delPiece();
 			piece->setID(caze.getID());
 			caze.setEmpty(0);

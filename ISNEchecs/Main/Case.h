@@ -21,6 +21,8 @@ public:
 	int get_px(){ return m_px; }
 	int get_py(){ return m_py; }
 
+	void debugCase();
+
 private:
 	int m_sx;
 	int m_sy;

@@ -98,6 +98,7 @@ void MainGame::init()
 {
 	_window.create(sf::VideoMode(SCREEN_HEIGHT, SCREEN_WIDTH), "Chess");
 	m_board = Board(&_gameObjectManager);
+	_isAPieceSelected = false;
 }
 
 void MainGame::gameLoop()
@@ -127,9 +128,19 @@ void MainGame::handleInput()
 		}
 		if (event.type == sf::Event::MouseButtonPressed)
 		{
-			std::cout << "Click : x = " << event.mouseButton.x << " y = " << event.mouseButton.y << std::endl;
-			std::cout << m_board.getCase(event.mouseButton.x, event.mouseButton.y).get_px() << std::endl;
-			std::cout << m_board.getCase(event.mouseButton.x, event.mouseButton.y).get_py() << std::endl;
+			m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
+			/*if (!_isAPieceSelected && !m_board.getCase(event.mouseButton.x, event.mouseButton.y).isEmpty())
+			{
+				_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
+				m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
+				_isAPieceSelected = true;
+			}				
+			else
+			{
+				m_board.movePiece(_selectedPiece, &m_board.getCase(event.mouseButton.x, event.mouseButton.y));
+				m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
+				_isAPieceSelected = false;
+			}*/
 		}
 	}
 }
