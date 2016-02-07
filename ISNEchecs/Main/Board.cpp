@@ -27,8 +27,8 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 
 	GameObject* board = new GameObject("Sprites/board.png");
 	_gom->add("Board", board);
-	_gom->get("Board")->scale(0.5, 0.5);
-	//setScale(board, 1);
+	//_gom->get("Board")->scale(0.5, 0.5);
+	setScale(board, 1);
 
 	for (int i = 0; i < 8; i++) //Placement des pions
 	{
@@ -87,11 +87,11 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 	_gom->get("BlackRook1")->setPosition(getCase(H1).getPos());
 	_gom->get("BlackRook2")->setPosition(getCase(H8).getPos());
 
-	_gom->get("BlackBishop1")->setPosition(getCase(H2).getPos());
-	_gom->get("BlackBishop2")->setPosition(getCase(H7).getPos());
+	_gom->get("BlackBishop1")->setPosition(getCase(H3).getPos());
+	_gom->get("BlackBishop2")->setPosition(getCase(H6).getPos());
 
-	_gom->get("BlackKnight1")->setPosition(getCase(H3).getPos());
-	_gom->get("BlackKnight2")->setPosition(getCase(H6).getPos());
+	_gom->get("BlackKnight1")->setPosition(getCase(H2).getPos());
+	_gom->get("BlackKnight2")->setPosition(getCase(H7).getPos());
 
 	_gom->get("BlackKing")->setPosition(getCase(H4).getPos());
 	_gom->get("BlackQueen")->setPosition(getCase(H5).getPos());
