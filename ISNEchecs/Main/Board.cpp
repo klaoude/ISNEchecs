@@ -67,7 +67,8 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 	//SET POSITION
 	for (int i = 0; i < 8; i++)
 	{
-		_gom->get("WhitePawn" + std::to_string(i + 1))->setPosition(SCREEN_WIDTH / 8 * i, SCREEN_WIDTH / 8);
+		_gom->get("WhitePawn" + std::to_string(i))->setPosition(SCREEN_WIDTH / 8 * i, SCREEN_WIDTH / 8);
+		_gom->get("BlackPawn" + std::to_string(i))->setPosition(SCREEN_WIDTH / 8 * i, SCREEN_WIDTH - (SCREEN_WIDTH / 8));
 	}
 
 	_gom->get("WhiteRook1")->setPosition(0, 0);
@@ -103,7 +104,7 @@ void Board::movePiece(Piece* piece, Case caze)
 {
 	if (caze.isEmpty()) //Si la case est libre
 	{
-		if (isPossible(*piece, caze.getID())) //Si le déplacement est possible
+		if (isPossible(this, *piece, caze))
 		{
 			m_board.at(piece->getID()).setEmpty(true); //setempty old case
 			m_board.at(piece->getID()).delPiece(); //del piece old case
