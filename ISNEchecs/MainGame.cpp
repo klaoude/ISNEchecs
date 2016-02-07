@@ -122,11 +122,14 @@ void MainGame::handleInput()
 		if (event.type == sf::Event::MouseButtonPressed)
 		{
 			//m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
-			if (!_isAPieceSelected && !m_board.getCase(event.mouseButton.x, event.mouseButton.y).isEmpty())
+			if (!_isAPieceSelected)
 			{
-				_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
-				m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
-				_isAPieceSelected = true;
+				if (!m_board.getCase(event.mouseButton.x, event.mouseButton.y).isEmpty())
+				{
+					_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
+					m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
+					_isAPieceSelected = true;
+				}				
 			}				
 			else
 			{

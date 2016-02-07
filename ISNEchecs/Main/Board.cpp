@@ -94,8 +94,6 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 
 	_gom->get("BlackKing")->setPosition(getCase(H4).getPos());
 	_gom->get("BlackQueen")->setPosition(getCase(H5).getPos());
-
-	movePiece(getCase(B1).getPiece(), getCase(C1));
 }
 
 Board::~Board()
