@@ -119,13 +119,6 @@ void MainGame::handleInput()
 	{
 		if (event.type == sf::Event::EventType::Closed)
 			_window.close();
-		if (event.type == sf::Event::EventType::KeyPressed)
-		{
-			if (event.key.code == sf::Keyboard::Space)
-			{
-				std::cout << "space bar press" << std::endl;
-			}
-		}
 		if (event.type == sf::Event::MouseButtonPressed)
 		{
 			//m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
@@ -149,7 +142,6 @@ void MainGame::draw()
 {
 	_window.clear();
 
-	//_window.draw(_sprite);
 	_gameObjectManager.draw(_window);
 
 	_window.display();

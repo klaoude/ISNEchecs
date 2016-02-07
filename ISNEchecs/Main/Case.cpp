@@ -38,5 +38,5 @@ void Case::delPiece()
 void Case::debugCase()
 {
 	std::cout << "[DEBUG CASE] : Piece = color : " << m_piece->getColor() << " ID : " << m_piece->getID() << std::endl;
-	std::cout << "[DEBUG CASE] : Case ID : " << m_ID << std::endl;
+	std::cout << "[DEBUG CASE] : Case ID : " << m_ID << " isEmpty : " << m_empty << std::endl;
 }

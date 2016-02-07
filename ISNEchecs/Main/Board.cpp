@@ -96,7 +96,6 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 	_gom->get("BlackQueen")->setPosition(getCase(H5).getPos());
 
 	movePiece(getCase(B1).getPiece(), getCase(C1));
-	movePiece(getCase(B1).getPiece(), getCase(C1));
 }
 
 Board::~Board()
@@ -125,11 +124,14 @@ void Board::movePiece(Piece* piece, Case caze)
 			std::cout << "deplacement effectuer" << std::endl;
 			return;
 		}
-		else
+		else {
 			std::cout << "deplacement impossible" << std::endl;
+			return;
+		}
+			
 	}
 
-	if (caze.getPiece()->getColor() == piece->getColor())
+	if (m_board.at(caze.getID()).getPiece()->getColor() == piece->getColor())
 	{
 		std::cout << "meme color" << std::endl;
 	}
