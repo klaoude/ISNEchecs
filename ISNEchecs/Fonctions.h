@@ -110,9 +110,9 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 
 	if (piece.getType() == TOUR) //TOUR
 	{
-		int s;
-		int v;
-		int h;
+		int s=0;
+		int v=0;
+		int h=0;
 		for (size_t i = 0; i < 8; i++) 	//GET AXE DEPLACEMENT (S=1 -> vertical | S=0 -> Pas vertical, mais peut-etre diagonal)
 		{
 			if (caze.getID() == piece.getID() + i * 8 || caze.getID() == piece.getID() - i * 8)
@@ -193,9 +193,9 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 
 			if (h > 0)
 				return 1;
-			else if (v > 0)
+			if (v > 0)
 				return 1;
-			else
+			if (h < 0 && v < 0)
 				return 0;
 		}
 	}
@@ -424,9 +424,9 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 	if (piece.getType() == REINE) //REINE
 	{
 		
-		int s;
-		int v;
-		int h;
+		int s=0;
+		int v=0;
+		int h=0;
 		for (size_t i = 0; i < 8; i++) 	//GET AXE DEPLACEMENT (S=1 -> vertical | S=0 -> Pas vertical, mais peut-etre diagonal)
 		{
 			if (caze.getID() == piece.getID() + i * 8 || caze.getID() == piece.getID() - i * 8)
