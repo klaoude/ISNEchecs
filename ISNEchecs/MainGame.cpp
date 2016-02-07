@@ -128,8 +128,8 @@ void MainGame::handleInput()
 		}
 		if (event.type == sf::Event::MouseButtonPressed)
 		{
-			m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
-			/*if (!_isAPieceSelected && !m_board.getCase(event.mouseButton.x, event.mouseButton.y).isEmpty())
+			//m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
+			if (!_isAPieceSelected && !m_board.getCase(event.mouseButton.x, event.mouseButton.y).isEmpty())
 			{
 				_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
 				m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
@@ -137,10 +137,10 @@ void MainGame::handleInput()
 			}				
 			else
 			{
-				m_board.movePiece(_selectedPiece, &m_board.getCase(event.mouseButton.x, event.mouseButton.y));
+				m_board.movePiece(_selectedPiece, m_board.getCase(event.mouseButton.x, event.mouseButton.y));
 				m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
 				_isAPieceSelected = false;
-			}*/
+			}
 		}
 	}
 }
