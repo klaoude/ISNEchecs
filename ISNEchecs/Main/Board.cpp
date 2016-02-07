@@ -61,7 +61,7 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 		{
 			_gom->add(m_board.at(i).getPiece()->getTextureID(), m_board.at(i).getPiece());
 			setScale(m_board.at(i).getPiece(), 2);
-		}
+	}
 	}
 
 	//SET POSITION
@@ -112,9 +112,9 @@ void Board::setPiece(Piece* piece)
 
 void Board::movePiece(Piece* piece, Case caze)
 {
-	if (caze.isEmpty())
+	if (caze.isEmpty()) //Si la case est libre
 	{
-		if (isPossible(*piece, caze.getID()))
+		if (isPossible(*piece, caze.getID())) //Si le déplacement est possible
 		{
 			m_board.at(piece->getID()).setEmpty(true);
 			m_board.at(piece->getID()).delPiece();
@@ -129,8 +129,6 @@ void Board::movePiece(Piece* piece, Case caze)
 			std::cout << "deplacement impossible" << std::endl;
 	}
 
-	std::cout << caze.getPiece()->getColor() << std::endl;
-	std::cout << piece->getColor() << std::endl;
 	if (caze.getPiece()->getColor() == piece->getColor())
 	{
 		std::cout << "meme color" << std::endl;
