@@ -25,9 +25,10 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 		x += SCREEN_HEIGHT / 8;
 	}
 
-	GameObject* board = new GameObject("Sprites/Chess_Board.png");
+	GameObject* board = new GameObject("Sprites/board.png");
 	_gom->add("Board", board);
-	setScale(board, 1);
+	_gom->get("Board")->scale(0.5, 0.5);
+	//setScale(board, 1);
 
 	for (int i = 0; i < 8; i++) //Placement des pions
 	{
@@ -94,11 +95,6 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 
 	_gom->get("BlackKing")->setPosition(getCase(H4).getPos());
 	_gom->get("BlackQueen")->setPosition(getCase(H5).getPos());
-
-	std::cout << "test" << std::endl;
-	//8000
-	movePiece(getCase(B1).getPiece(), getCase(C1));
-	std::cout << "test" << std::endl;
 }
 
 Board::~Board()
@@ -127,11 +123,14 @@ void Board::movePiece(Piece* piece, Case caze)
 			std::cout << "deplacement effectuer" << std::endl;
 			return;
 		}
-		else
+		else {
 			std::cout << "deplacement impossible" << std::endl;
+			return;
+		}
+			
 	}
 
-	if (caze.getPiece()->getColor() == piece->getColor())
+	if (m_board.at(caze.getID()).getPiece()->getColor() == piece->getColor())
 	{
 		std::cout << "meme color" << std::endl;
 	}
