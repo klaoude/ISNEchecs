@@ -101,16 +101,16 @@ void Board::setPiece(Piece* piece)
 
 void Board::movePiece(Piece* piece, Case caze)
 {
-	if (caze.isEmpty())
+	if (caze.isEmpty()) //Si la case est libre
 	{
-		if (isPossible(*piece, caze.getID()))
+		if (isPossible(*piece, caze.getID())) //Si le déplacement est possible
 		{
-			m_board.at(piece->getID()).setEmpty(true);
-			m_board.at(piece->getID()).delPiece();
-			piece->setID(caze.getID());
-			caze.setEmpty(0);
-			caze.setPieceCase(piece);
-			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py());
+			m_board.at(piece->getID()).setEmpty(true); //setempty old case
+			m_board.at(piece->getID()).delPiece(); //del piece old case
+			piece->setID(caze.getID()); //new id pour la piece
+			caze.setEmpty(0); //new case -> prise
+			caze.setPieceCase(piece); //set piece sur new case
+			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //set texture
 			std::cout << "deplacement effectuer" << std::endl;
 			return;
 		}
@@ -118,8 +118,6 @@ void Board::movePiece(Piece* piece, Case caze)
 			std::cout << "deplacement impossible" << std::endl;
 	}
 
-	std::cout << caze.getPiece()->getColor() << std::endl;
-	std::cout << piece->getColor() << std::endl;
 	if (caze.getPiece()->getColor() == piece->getColor())
 	{
 		std::cout << "meme color" << std::endl;

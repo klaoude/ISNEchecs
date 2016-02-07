@@ -24,6 +24,9 @@ Case::~Case()
 void Case::setPieceCase(Piece* piece)
 {
 	m_piece = piece;
+	m_piece->setID(piece->getID());
+
+
 }
 
 void Case::delPiece()
