@@ -20,6 +20,7 @@ public:
 	void movePiece(Piece* piece, Case caze);
 
 	Case getCase(int x, int y);
+	Case getCase(int caseID);
 
 private:
 	std::vector<Case> m_board;

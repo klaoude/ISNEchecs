@@ -13,7 +13,7 @@ inline void setScale(GameObject* go, int code)
 		   2 = Piece
 	*/
 	sf::Vector2u textureSize = go->getTextureSize();
-	int x, y;
+	float x, y;
 	if (textureSize.x != 0 && textureSize.y != 0)
 	{
 		switch (code)
@@ -26,8 +26,7 @@ inline void setScale(GameObject* go, int code)
 			x = PIECE_SIZE / textureSize.x;
 			y = PIECE_SIZE / textureSize.y;
 			break;
-		}
-		
+		}		
 	}
 	else 
 	{

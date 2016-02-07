@@ -57,35 +57,46 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 
 	for (size_t i = 0; i < m_board.size(); i++)
 	{
-		if (i < 16 || i > 48)
+		if (i < 16 || i > 47)
 		{
 			_gom->add(m_board.at(i).getPiece()->getTextureID(), m_board.at(i).getPiece());
 			setScale(m_board.at(i).getPiece(), 2);
-	}
+		}
 	}
 
 	//SET POSITION
 	for (int i = 0; i < 8; i++)
 	{
-		_gom->get("WhitePawn" + std::to_string(i + 1))->setPosition(SCREEN_WIDTH / 8 * i, SCREEN_WIDTH / 8);
+		_gom->get("WhitePawn" + std::to_string(i + 1))->setPosition(getCase(8 + i).getPos());
+		_gom->get("BlackPawn" + std::to_string(i + 1))->setPosition(getCase(48 + i).getPos());
 	}
 
-	_gom->get("WhiteRook1")->setPosition(0, 0);
-	_gom->get("WhiteRook2")->setPosition(SCREEN_WIDTH / 8*7, 0);
+	_gom->get("WhiteRook1")->setPosition(getCase(A1).getPos());
+	_gom->get("WhiteRook2")->setPosition(getCase(A8).getPos());
 
-	_gom->get("WhiteBishop1")->setPosition(SCREEN_WIDTH / 8, 0);
-	_gom->get("WhiteBishop2")->setPosition(SCREEN_WIDTH / 8*6, 0);
+	_gom->get("WhiteBishop1")->setPosition(getCase(A2).getPos());
+	_gom->get("WhiteBishop2")->setPosition(getCase(A7).getPos());
 
-	_gom->get("WhiteKnight1")->setPosition(SCREEN_WIDTH / 8*2, 0);
-	_gom->get("WhiteKnight2")->setPosition(SCREEN_WIDTH / 8*5, 0);
+	_gom->get("WhiteKnight1")->setPosition(getCase(A3).getPos());
+	_gom->get("WhiteKnight2")->setPosition(getCase(A6).getPos());
 
-	_gom->get("WhiteKing")->setPosition(SCREEN_WIDTH / 8*3, 0);
-	_gom->get("WhiteQueen")->setPosition(SCREEN_WIDTH / 8*4, 0);
+	_gom->get("WhiteKing")->setPosition(getCase(A4).getPos());
+	_gom->get("WhiteQueen")->setPosition(getCase(A5).getPos());
 
-	//_gom->get("WhiteKing")->setPosition(200, 200);
-	//_gom->get("WhiteKing")->scale(2, 2);
+	_gom->get("BlackRook1")->setPosition(getCase(H1).getPos());
+	_gom->get("BlackRook2")->setPosition(getCase(H8).getPos());
 
-	movePiece(m_board.at(B1).getPiece(), m_board.at(C1));
+	_gom->get("BlackBishop1")->setPosition(getCase(H2).getPos());
+	_gom->get("BlackBishop2")->setPosition(getCase(H7).getPos());
+
+	_gom->get("BlackKnight1")->setPosition(getCase(H3).getPos());
+	_gom->get("BlackKnight2")->setPosition(getCase(H6).getPos());
+
+	_gom->get("BlackKing")->setPosition(getCase(H4).getPos());
+	_gom->get("BlackQueen")->setPosition(getCase(H5).getPos());
+
+	movePiece(getCase(B1).getPiece(), getCase(C1));
+	movePiece(getCase(B1).getPiece(), getCase(C1));
 }
 
 Board::~Board()
@@ -108,8 +119,8 @@ void Board::movePiece(Piece* piece, Case caze)
 			m_board.at(piece->getID()).setEmpty(true);
 			m_board.at(piece->getID()).delPiece();
 			piece->setID(caze.getID());
-			caze.setEmpty(0);
-			caze.setPieceCase(piece);
+			m_board.at(caze.getID()).setEmpty(0);
+			m_board.at(caze.getID()).setPieceCase(piece);
 			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py());
 			std::cout << "deplacement effectuer" << std::endl;
 			return;
@@ -146,5 +157,15 @@ Case Board::getCase(int x, int y)
 			b = i;
 	}
 	return m_board.at(a + (b*8));
+}
 
+Case Board::getCase(int caseID)
+{
+	for (size_t i = 0; i < m_board.size(); i++)
+	{
+		if (m_board.at(i).getID() == caseID)
+			return m_board.at(i);
+	}
+
+	return m_board.at(0);
 }

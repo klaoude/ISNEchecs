@@ -34,7 +34,7 @@ void GameObject::setTexture(std::string texturePath)
 	_isLoaded = true;
 }
 
-void GameObject::scale(int scalex, int scaley)
+void GameObject::scale(float scalex, float scaley)
 {
 	_sprite.scale(scalex, scaley);
 }
