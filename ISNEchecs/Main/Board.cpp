@@ -62,7 +62,7 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 		{
 			_gom->add(m_board.at(i).getPiece()->getTextureID(), m_board.at(i).getPiece());
 			setScale(m_board.at(i).getPiece(), 2);
-		}
+	}
 	}
 
 	//SET POSITION
@@ -75,11 +75,11 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 	_gom->get("WhiteRook1")->setPosition(getCase(A1).getPos());
 	_gom->get("WhiteRook2")->setPosition(getCase(A8).getPos());
 
-	_gom->get("WhiteBishop1")->setPosition(getCase(A2).getPos());
-	_gom->get("WhiteBishop2")->setPosition(getCase(A7).getPos());
+	_gom->get("WhiteBishop1")->setPosition(getCase(A3).getPos());
+	_gom->get("WhiteBishop2")->setPosition(getCase(A6).getPos());
 
-	_gom->get("WhiteKnight1")->setPosition(getCase(A3).getPos());
-	_gom->get("WhiteKnight2")->setPosition(getCase(A6).getPos());
+	_gom->get("WhiteKnight1")->setPosition(getCase(A2).getPos());
+	_gom->get("WhiteKnight2")->setPosition(getCase(A7).getPos());
 
 	_gom->get("WhiteKing")->setPosition(getCase(A4).getPos());
 	_gom->get("WhiteQueen")->setPosition(getCase(A5).getPos());
