@@ -390,6 +390,8 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 						return 0;
 				}
 			}
+			else
+				return 0;
 			if (piece.getID() + 7 == caze.getID())
 			{
 				if (caze.isEmpty())
@@ -403,6 +405,8 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 						return 0;
 				}
 			}
+			else
+				return 0;
 			if (piece.getID() + 9 == caze.getID())
 			{
 				if (caze.isEmpty())
@@ -416,6 +420,8 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 						return 0;
 				}
 			}
+			else
+				return 0;
 		}
 
 		if (piece.getColor() == NOIR)
@@ -433,6 +439,8 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 						return 0;
 				}
 			}
+			else
+				return 0;
 			if (piece.getID() - 7 == caze.getID())
 			{
 				if (caze.isEmpty())
@@ -446,6 +454,8 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 						return 0;
 				}
 			}
+			else
+				return 0;
 			if (piece.getID() - 9 == caze.getID())
 			{
 				if (caze.isEmpty())
@@ -459,6 +469,8 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 						return 0;
 				}
 			}
+			else
+				return 0;
 		}
 	}
 
