@@ -75,6 +75,9 @@
     <ClCompile Include="Server\JSONValue.cpp">
       <Filter>Fichiers sources\Server</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\MainMenu.cpp">
+      <Filter>Fichiers sources\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -121,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="Fonctions.h">
       <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\MainMenu.h">
+      <Filter>Fichiers d%27en-tête\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

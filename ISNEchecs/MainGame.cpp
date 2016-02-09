@@ -22,6 +22,9 @@ MainGame::~MainGame()
 
 void MainGame::start()
 {
+	if (_gameState != Uninitialized)
+		return;
+
 	int choice;
 	std::cout << "You are in debug mode" << std::endl;
 	std::cout << "enter (1) if you want to debug server, (2) for debug board and (3) for debug graphics" << std::endl;
@@ -96,6 +99,7 @@ void MainGame::start()
 
 void MainGame::init()
 {
+	_gameState = GameState::ShowingMenu;
 	_window.create(sf::VideoMode(SCREEN_HEIGHT, SCREEN_WIDTH), "Chess");
 	m_board = Board(&_gameObjectManager);
 	_isAPieceSelected = false;
@@ -105,10 +109,43 @@ void MainGame::gameLoop()
 {
 	while (_window.isOpen())
 	{
-		handleInput();		
-
-		draw();
+		switch (_gameState)
+		{
+		case GameState::ShowingMenu:
+			showMenu();
+			break;
+		case GameState::Debugging:
+			handleInput();
+			draw();
+			break;
+		case GameState::Playing:
+		case GameState::Joining:
+			serverManager();
+			handleInput();
+			draw();
+			break;
+		case GameState::Exiting:
+			_window.close();
+			break;
+		}		
 	}
+}
+
+void MainGame::serverManager()
+{
+	if (!_client.isConnected())
+	{
+		switch (_gameState)
+		{
+		case GameState::Playing:
+			_client.createServer();
+		case GameState::Joining:
+			_client.connect("127.0.0.1", 1337);
+		default:
+			return;
+			break;
+		}
+	}	
 }
 
 void MainGame::handleInput()
@@ -121,7 +158,6 @@ void MainGame::handleInput()
 			_window.close();
 		if (event.type == sf::Event::MouseButtonPressed)
 		{
-			//m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
 			if (!_isAPieceSelected)
 			{
 				if (!m_board.getCase(event.mouseButton.x, event.mouseButton.y).isEmpty())
@@ -134,6 +170,7 @@ void MainGame::handleInput()
 			else
 			{
 				m_board.movePiece(_selectedPiece, m_board.getCase(event.mouseButton.x, event.mouseButton.y));
+				_client.send("i move a piece");
 				m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
 				_isAPieceSelected = false;
 			}
@@ -150,5 +187,27 @@ void MainGame::draw()
 	_window.display();
 }
 
+void MainGame::showMenu()
+{
+	MainMenu mainMenu;
+	MainMenu::MenuResult result = mainMenu.Show(_window);
+	switch (result)
+	{
+	case MainMenu::Exit:
+		_gameState = Exiting;
+		break;
+	case MainMenu::Play:
+		_gameState = Playing;
+		break;
+	case MainMenu::Join:
+		_gameState = Joining;
+		break;
+	case MainMenu::Debug:
+		_gameState = Debugging;
+		break;
+	}
+}
+
 sf::RenderWindow MainGame::_window;
 GameObjectManager MainGame::_gameObjectManager;
+MainGame::GameState MainGame::_gameState = Uninitialized;

@@ -2,8 +2,11 @@
 #include <SFML\Graphics.hpp>
 
 #include "Graphics/GameObjectManager.h"
+#include "Graphics/MainMenu.h"
 
 #include "Main/Board.h"
+
+#include "Server\Client.h"
 
 
 class MainGame
@@ -18,12 +21,17 @@ private:
 	void init();
 	void gameLoop();
 
+	void serverManager();
 	void handleInput();
 	void draw();
+	void showMenu();
 
-	Board board;
+	enum GameState { Uninitialized, ShowingMenu, Playing, Exiting, Joining, Debugging };
+	static GameState _gameState;
 
 	static sf::RenderWindow _window;
+
+	Client _client;
 
 	std::string _windowTitle = "Chess";
 
