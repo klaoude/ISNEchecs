@@ -134,10 +134,12 @@ void Board::movePiece(Piece* piece, Case caze)
 	{
 		std::cout << "meme color" << std::endl;
 	}
-	else
+	else if (isPossible(this, *piece, caze))
 	{
-		std::cout << "piece manger" << std::endl; //PUT OLD PIECE IN TRASH (TODO)
+		std::cout << "piece mangée" << std::endl; //PUT OLD PIECE IN TRASH (TODO)
 	} 
+	else 
+		std::cout << "déplament impossible" << std::endl;
 }
 
 Case Board::getCase(int x, int y)
