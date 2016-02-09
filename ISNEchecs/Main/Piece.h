@@ -26,7 +26,7 @@ public:
 private:
 	Type m_type;
 	Couleur m_color;
-
+	bool m_hasMoved;
 	int m_ID;
 
 	std::string _textureID;

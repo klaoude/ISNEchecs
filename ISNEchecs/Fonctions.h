@@ -454,186 +454,224 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 
 	if (piece.getType() == REINE) //REINE
 	{
-		int p = 0;
-		int n = 0;
-		for (int i = 1; i < 9; i++)
+		int vh = 0;
+		int vb = 0;
+		int hd = 0;
+		int hg = 0;
+		int dhd = 0;
+		int dhg = 0;
+		int dbd = 0;
+		int dbg = 0;
+		if (caze.getID() > piece.getID())
 		{
-			if (caze.getID() > piece.getID())
+			for (int j = 1; j < 9; j++)
 			{
-
-				for (size_t j = 1; j < 9; j++)
+				if (piece.getID() + j * 8 == caze.getID())
 				{
-					if (piece.getID() + j * 9 == caze.getID())
-						p++;
+					vb = j;
+					break;
 				}
-
-				if (p > 0 && piece.getID() + i * 9 == caze.getID())
+				if (piece.getID() + j * 9 == caze.getID())
 				{
-					if (caze.isEmpty())
-					{
-						return 1;
-					}
-					else
-					{
-						if ((caze.getPiece()->getColor() != piece.getColor()) &&
-							(caze.getPiece()->getColor() != NONEc))
-							return 1;
-					}
+					dbd = j;
+					break;
 				}
-				else if (p>0 && !board->getBoard().at(piece.getID() + i * 9).isEmpty())
-					return 0;
-
-				if (p == 0 && piece.getID() + i * 7 == caze.getID())
+				if (piece.getID() + j * 7 == caze.getID())
 				{
-					if (caze.isEmpty())
-					{
-						return 1;
-					}
-					else
-					{
-						if ((caze.getPiece()->getColor() != piece.getColor()) &&
-							(caze.getPiece()->getColor() != NONEc))
-							return 1;
-					}
+					dbg = j;
+					break;
 				}
-				else if (p == 0 && !board->getBoard().at(piece.getID() + i * 7).isEmpty())//i,ophumilbm
-					return 0;
-
-			}
-
-			if (caze.getID() < piece.getID())
-			{
-				for (size_t j = 1; j < 9; j++)
-				{
-					if (piece.getID() - j * 9 == caze.getID())
-						n++;
-				}
-
-				if (n > 0 && piece.getID() - i * 9 == caze.getID())
-				{
-					if (caze.isEmpty())
-					{
-						return 1;
-					}
-					else
-					{
-						if ((caze.getPiece()->getColor() != piece.getColor()) &&
-							(caze.getPiece()->getColor() != NONEc))
-							return 1;
-					}
-				}
-				else if (n>0 && !board->getBoard().at(piece.getID() - i * 9).isEmpty())
-					return 0;
-
-				if (n == 0 && piece.getID() - i * 7 == caze.getID())
-				{
-					if (caze.isEmpty())
-					{
-						return 1;
-					}
-					else if ((caze.getPiece()->getColor() != piece.getColor()) &&
-						(caze.getPiece()->getColor() != NONEc))
-						return 1;
-				}
-				else if (n == 0 && !board->getBoard().at(piece.getID() - i * 7).isEmpty())
-					return 0;
-			}
-
-		}
-		for (int i = 1; i < 9; i++)
-		{
-			if (piece.getID() + 7 < caze.getID())
-			{
-				if (piece.getID() + i * 8 == caze.getID())
-				{
-					if (caze.isEmpty())
-					{
-						return 1;
-					}
-					else
-					{
-						if ((caze.getPiece()->getColor() != piece.getColor()) &&
-							(caze.getPiece()->getColor() != NONEc))
-							return 1;
-						else
-							return 0;
-					}
-				}
-				else if (!board->getBoard().at(piece.getID() + i * 8).isEmpty())
-					return 0;
-			}
-
-
-
-			if (piece.getID() > caze.getID() + 7)
-			{
-				if (piece.getID() - i * 8 == caze.getID())
-				{
-					if (caze.isEmpty())
-					{
-						return 1;
-					}
-					else
-					{
-						if ((caze.getPiece()->getColor() != piece.getColor()) &&
-							(caze.getPiece()->getColor() != NONEc))
-							return 1;
-						else
-							return 0;
-					}
-				}
-				else if (!board->getBoard().at(piece.getID() - i * 8).isEmpty())
-					return 0;
-			}
-
-			if (caze.getID() < piece.getID())
-			{
-
 				if (floor(caze.getID() / 8) * 8 + 8 == ceil(piece.getID() / 8.0f) * 8)
 				{
-					if (piece.getID() - i == caze.getID())
+					if (piece.getID() + j == caze.getID())
 					{
-						if (caze.isEmpty())
-						{
-							return 1;
-						}
-						else
-						{
-							if ((caze.getPiece()->getColor() != piece.getColor()) &&
-								(caze.getPiece()->getColor() != NONEc))
-								return 1;
-							else
-								return 0;
-						}
+						hd = j;
+						break;
 					}
-					else if (!board->getBoard().at(piece.getID() - i).isEmpty())
-						return 0;
 				}
 			}
-			if (caze.getID() > piece.getID())
-			{
 
-				if (ceil(caze.getID() / 8.0f) * 8 == floor(piece.getID() / 8.0f) * 8 + 8)
+
+			if (vb > 0)
+			{
+				if (vb > 1)
 				{
-					if (piece.getID() + i == caze.getID())
+					for (size_t i = 1; i < vb; i++)
 					{
-						if (caze.isEmpty())
-						{
-							return 1;
-						}
-						else
-						{
-							if ((caze.getPiece()->getColor() != piece.getColor()) &&
-								(caze.getPiece()->getColor() != NONEc))
-								return 1;
-							else
-								return 0;
-						}
+						if (!board->getBoard().at(piece.getID() + i * 8).isEmpty())
+							return 0;
 					}
-					else if (!board->getBoard().at(piece.getID() + i).isEmpty())
-						return 0;
 				}
+				if (board->getBoard().at(piece.getID() + vb * 8).isEmpty())
+					return 1;
+				else if ((caze.getPiece()->getColor() != piece.getColor()) &&
+					(caze.getPiece()->getColor() != NONEc))
+					return 1;
+				else
+					return 0;
 			}
+
+			if (dbd > 0)
+			{
+				if (dbd > 1)
+				{
+					for (size_t i = 1; i < dbd; i++)
+					{
+						if (!board->getBoard().at(piece.getID() + i * 9).isEmpty())
+							return 0;
+					}
+				}
+				if (board->getBoard().at(piece.getID() + dbd * 9).isEmpty())
+					return 1;
+				else if ((caze.getPiece()->getColor() != piece.getColor()) &&
+					(caze.getPiece()->getColor() != NONEc))
+					return 1;
+				else
+					return 0;
+			}
+
+			if (dbg > 0)
+			{
+				if (dbg > 1)
+				{
+					for (size_t i = 1; i < dbg; i++)
+					{
+						if (!board->getBoard().at(piece.getID() + i * 7).isEmpty())
+							return 0;
+					}
+				}
+				if (board->getBoard().at(piece.getID() + dbg * 7).isEmpty())
+					return 1;
+				else if ((caze.getPiece()->getColor() != piece.getColor()) &&
+					(caze.getPiece()->getColor() != NONEc))
+					return 1;
+				else
+					return 0;
+			}
+
+			if (hd > 0)
+			{
+				if (hd > 1)
+				{
+					for (size_t i = 1; i < hd; i++)
+					{
+						if (!board->getBoard().at(piece.getID() + i).isEmpty())
+							return 0;
+					}
+				}
+				if (board->getBoard().at(piece.getID() + hd).isEmpty())
+					return 1;
+				else if ((caze.getPiece()->getColor() != piece.getColor()) &&
+					(caze.getPiece()->getColor() != NONEc))
+					return 1;
+				else
+					return 0;
+			}
+			return 0;
+		}
+		if (caze.getID() < piece.getID())
+		{
+			for (int j = 1; j < 9; j++)
+			{
+				if (piece.getID() - j * 8 == caze.getID())
+				{
+					vh = j;
+					break;
+				}
+				if (piece.getID() - j * 9 == caze.getID())
+				{
+					dhg = j;
+					break;
+				}
+				if (piece.getID() - j * 7 == caze.getID())
+				{
+					dhd = j;
+					break;
+				}
+				if (floor(caze.getID() / 8) * 8 + 8 == ceil(piece.getID() / 8.0f) * 8)
+				{
+					if (piece.getID() - j == caze.getID())
+					{
+						hg = j;
+						break;
+					}
+				}
+
+			}
+
+			if (vh > 0)
+			{
+				if (vh > 1)
+				{
+					for (size_t i = 1; i < vh; i++)
+					{
+						if (!board->getBoard().at(piece.getID() - i * 8).isEmpty())
+							return 0;
+					}
+				}
+				if (board->getBoard().at(piece.getID() - vh * 8).isEmpty())
+					return 1;
+				else if ((caze.getPiece()->getColor() != piece.getColor()) &&
+					(caze.getPiece()->getColor() != NONEc))
+					return 1;
+				else
+					return 0;
+			}
+			if (dhg > 0)
+			{
+				if (dhg > 1)
+				{
+					for (size_t i = 1; i < dhg; i++)
+					{
+						if (!board->getBoard().at(piece.getID() + i * 9).isEmpty())
+							return 0;
+					}
+				}
+				if (board->getBoard().at(piece.getID() - dhg * 9).isEmpty())
+					return 1;
+				else if ((caze.getPiece()->getColor() != piece.getColor()) &&
+					(caze.getPiece()->getColor() != NONEc))
+					return 1;
+				else
+					return 0;
+			}
+			if (dhd > 0)
+			{
+				if (dhd > 1)
+				{
+					for (size_t i = 1; i < dhd; i++)
+					{
+						if (!board->getBoard().at(piece.getID() - i * 7).isEmpty())
+							return 0;
+					}
+				}
+				if (board->getBoard().at(piece.getID() - dhd * 7).isEmpty())
+					return 1;
+				else if ((caze.getPiece()->getColor() != piece.getColor()) &&
+					(caze.getPiece()->getColor() != NONEc))
+					return 1;
+				else
+					return 0;
+			}
+			if (hg > 0)
+			{
+				if (hg > 1)
+				{
+					for (size_t i = 1; i < vb; i++)
+					{
+						if (!board->getBoard().at(piece.getID() - i).isEmpty())
+							return 0;
+					}
+				}
+				if (board->getBoard().at(piece.getID() - hg).isEmpty())
+					return 1;
+				else if ((caze.getPiece()->getColor() != piece.getColor()) &&
+					(caze.getPiece()->getColor() != NONEc))
+					return 1;
+				else
+					return 0;
+			}
+			return 0;
 
 		}
 	}
