@@ -11,7 +11,7 @@ Piece::Piece(int ID, Type type, Couleur color, std::string textureID)
 	m_color = color;
 	m_ID = ID;
 	_textureID = textureID;
-	
+	m_hasMoved = 0;
 	switch (type)
 	{
 	case Type::REINE:
