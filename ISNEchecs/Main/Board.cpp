@@ -141,7 +141,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 		std::cout << "piece mangée" << std::endl; //PUT OLD PIECE IN TRASH (TODO)
 		return true;
 	} 
-	else
+	else 
 	{
 		std::cout << "déplament impossible" << std::endl;
 		return false;
