@@ -108,7 +108,7 @@ void Board::setPiece(Piece* piece)
 	m_board.at(piece->getID()).setPieceCase(piece);
 }
 
-void Board::movePiece(Piece* piece, Case caze)
+bool Board::movePiece(Piece* piece, Case caze)
 {
 	if (caze.isEmpty()) //Si la case est libre
 	{
@@ -122,11 +122,11 @@ void Board::movePiece(Piece* piece, Case caze)
 			m_board.at(caze.getID()).setPieceCase(piece);
 			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py());
 			std::cout << "deplacement effectuer" << std::endl;
-			return;
+			return true;
 		}
 		else {
 			std::cout << "deplacement impossible" << std::endl;
-			return;
+			return false;
 		}
 			
 	}
@@ -134,13 +134,19 @@ void Board::movePiece(Piece* piece, Case caze)
 	if (m_board.at(caze.getID()).getPiece()->getColor() == piece->getColor())
 	{
 		std::cout << "meme color" << std::endl;
+		return false;
 	}
 	else if (isPossible(this, *piece, caze))
 	{
 		std::cout << "piece mangée" << std::endl; //PUT OLD PIECE IN TRASH (TODO)
+		return true;
 	} 
-	else 
+	else
+	{
 		std::cout << "déplament impossible" << std::endl;
+		return false;
+	}
+		
 }
 
 Case Board::getCase(int x, int y)

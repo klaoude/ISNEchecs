@@ -17,7 +17,7 @@ public:
 
 	void setPiece(Piece* piece); 
 
-	void movePiece(Piece* piece, Case caze);
+	bool movePiece(Piece* piece, Case caze);
 	std::vector<Case> getBoard(){ return m_board; }
 	Case getCase(int x, int y);
 	Case getCase(int caseID);

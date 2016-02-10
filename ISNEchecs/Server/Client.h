@@ -9,21 +9,19 @@ public:
 	Client();
 	~Client();
 
-	void recv();
+	sf::Packet recv();
 
 	bool isConnected() { return _connected; }
 
 	void connect(sf::IpAddress ip, unsigned short port);
-	void send(char* msg);
+	void send(sf::Packet packet);
+	void send(std::string);
 
 	void createServer();
 private:
 	sf::TcpSocket _socket;
 
 	sf::TcpListener _listener;
-
-	char _buffer[2000];
-	std::size_t _received;
 
 	bool _connected;
 };

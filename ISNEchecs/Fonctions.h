@@ -6,6 +6,8 @@
 #include "Main/PieceInfo.h"
 #include "Global.h"
 
+
+
 inline void setScale(GameObject* go, int code)
 {
 	/*
@@ -732,26 +734,27 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 	}
 }
 
+
 int echec(Board* board)
 {
-//1 -> blanc  | 2 -> noir | 0 -> rien | 3 -> deux
+	//1 -> blanc  | 2 -> noir | 0 -> rien | 3 -> deux
 
-int b = 0;
-int n = 0;
-for (size_t i = 0; i < 64; i++)
-{
-	if (board->getBoard().at(i).getPiece()->getType()==ROI && board->getBoard().at(i).getPiece()->getColor() == BLANC)
-		b = i;
-	if (board->getBoard().at(i).getPiece()->getType()==ROI && board->getBoard().at(i).getPiece()->getColor() == NOIR)
-		n = i;
-}
+	int b = 0;
+	int n = 0;
+	for (size_t i = 0; i < 64; i++)
+	{
+		if (board->getBoard().at(i).getPiece()->getType()==ROI && board->getBoard().at(i).getPiece()->getColor() == BLANC)
+			b = i;
+		if (board->getBoard().at(i).getPiece()->getType()==ROI && board->getBoard().at(i).getPiece()->getColor() == NOIR)
+			n = i;
+	}
 
-for (size_t i = 0; i < 64; i++)
-{
-	if(isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(b)))
-		return 1;
-	else if(isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(n)))
-		return 2;
-	else return 0;
-	
+	for (size_t i = 0; i < 64; i++)
+	{
+		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(b)))
+			return 1;
+		else if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(n)))
+			return 2;
+		else return 0;
+	}
 }
