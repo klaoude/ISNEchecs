@@ -157,10 +157,12 @@ void MainGame::serverManager()
 		case GameState::Playing:
 			_client.createServer();
 			_isMyTurn = true;
+			_clientColor = BLANC;
 			break;
 		case GameState::Joining:
 			_client.connect("127.0.0.1", 1337);
 			_isMyTurn = false;
+			_clientColor = NOIR;
 			break;
 		default:
 			return;
@@ -187,9 +189,12 @@ void MainGame::handleInput()
 				{
 					if (!m_board.getCase(event.mouseButton.x, event.mouseButton.y).isEmpty())
 					{
-						_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
-						m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
-						_isAPieceSelected = true;
+						if (m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece()->getColor() != _clientColor)
+						{
+							_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
+							m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
+							_isAPieceSelected = true;
+						}
 					}
 				}
 				else
