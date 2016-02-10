@@ -129,6 +129,8 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 							return 0;
 					}
 				}
+				else if (piece.getID() + i * 8 > 63)
+					return 0;
 				else if (!board->getBoard().at(piece.getID() + i * 8).isEmpty())
 					return 0;
 			}
@@ -152,6 +154,8 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 							return 0;
 					}
 				}
+				else if (piece.getID() - i * 8 < 0)
+					return 0;
 				else if (!board->getBoard().at(piece.getID() - i * 8).isEmpty())
 					return 0;
 			}
@@ -176,6 +180,8 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 								return 0;
 						}
 					}
+					else if (piece.getID() - i < 0)
+						return 0;
 					else if (!board->getBoard().at(piece.getID() - i).isEmpty())
 						return 0;
 				}
@@ -200,6 +206,8 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 								return 0;
 						}
 					}
+					if (piece.getID() + i > 63)
+						return 0;
 					else if (!board->getBoard().at(piece.getID() + i).isEmpty())
 						return 0;
 				}
@@ -222,10 +230,19 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 			if (caze.getID() > piece.getID())
 			{
 
-				for (size_t j = 1; j < 9; j++)
+				for (int j = 1; j < 9; j++)
 				{
 					if (piece.getID() + j * 9 == caze.getID())
-						p++ ;
+					{
+						p++;
+						break;
+					}
+					if (piece.getID() + j * 7 == caze.getID())
+					{
+						break;
+					}
+					if (piece.getID() + j * 9 > 63)
+						return 0;
 				}
 
 				if (p > 0 && piece.getID() + i * 9 == caze.getID())
@@ -257,17 +274,28 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 							return 1;
 					}
 				}
-				else if (p==0 && !board->getBoard().at(piece.getID() + i * 7).isEmpty())
+				else if (p == 0 && !board->getBoard().at(piece.getID() + i * 7).isEmpty())
 					return 0;
 
 			}
 			
 			if (caze.getID() < piece.getID())
 			{
-				for (size_t j = 1; j < 9; j++)
-				{
+				for (int j = 1; j < 9; j++)
+				{ 
 					if (piece.getID() - j * 9 == caze.getID())
+					{
 						n++;
+						break;
+					}
+					if (piece.getID() - j * 7 == caze.getID())
+					{
+						break;
+					}
+					if (piece.getID() - (j * 7) < 0)
+						return 0;
+					if (piece.getID() - (j * 7) < 0)
+						return 0;
 				}
 
 				if (n > 0 && piece.getID() - i * 9 == caze.getID())
@@ -296,8 +324,9 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 						(caze.getPiece()->getColor() != NONEc))
 						return 1;
 				}
-				else if (n==0 && !board->getBoard().at(piece.getID() - i * 7).isEmpty())
-					return 0;
+				if (!(-i*7 < 0))
+					if (n==0 && !board->getBoard().at(piece.getID() - i * 7).isEmpty()) //
+						return 0;
 			}
 			
 		}
@@ -311,6 +340,8 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 		{
 			if (piece.getID() - 2 == caze.getID()) 
 			{
+				if (piece.getID() - 2 < 0)
+					return 0;
 				if (board->getBoard().at(piece.getID()-1).isEmpty() && board->getBoard().at(piece.getID()-2).isEmpty() && !board->getBoard().at(piece.getID()-3).getPiece()->getHasMoved()) //si cases sont libres et les tour/roi hasn't moved
 					return 1;
 				else
@@ -319,6 +350,8 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 			
 			if (piece.getID() + 2 == caze.getID())
 			{
+				if (piece.getID() + 2 > 63)
+					return 0;
 				if (board->getBoard().at(piece.getID()+1).isEmpty() && board->getBoard().at(piece.getID()+2).isEmpty() && board->getBoard().at(piece.getID()+3).isEmpty() && !board->getBoard().at(piece.getID()+7).getPiece()->getHasMoved()) //si cases sont libres et les tour/roi hasn't moved
 					return 1;
 				else
@@ -330,6 +363,8 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 		{
 			if (piece.getID() - 2 == caze.getID()) 
 			{
+				if (piece.getID() - 2 < 0)
+					return 0;
 				if (board->getBoard().at(piece.getID()-1).isEmpty() && board->getBoard().at(piece.getID()-2).isEmpty() && !board->getBoard().at(piece.getID()-3).getPiece()->getHasMoved()) //si cases sont libres et les tour/roi hasn't moved
 					return 1;
 				else
@@ -338,6 +373,8 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 			
 			if (piece.getID() + 2 == caze.getID())
 			{
+				if (piece.getID() + 2 > 63)
+					return 0;
 				if (board->getBoard().at(piece.getID()+1).isEmpty() && board->getBoard().at(piece.getID()+2).isEmpty() && board->getBoard().at(piece.getID()+3).isEmpty() && !board->getBoard().at(piece.getID()+7).getPiece()->getHasMoved()) //si cases sont libres et les tour/roi hasn't moved
 					return 1;
 				else
@@ -463,15 +500,15 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 
 		if (piece.getColor() == NOIR)
 		{
-			if (piece.getID() - 8 == caze.getID())
-			{
-				if (piece.getID() - 16 == caze.getID() && !piece.getHasMoved())
+			if (piece.getID() - 16 == caze.getID() && !piece.getHasMoved())
 			{
 				if (caze.isEmpty())
 					return 1;
 				else
 					return 0;
 			}
+			if (piece.getID() - 8 == caze.getID())
+			{
 				if (caze.isEmpty())
 					return 1;
 				else
@@ -536,7 +573,7 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 					dbg = j;
 					break;
 				}
-				if (floor(caze.getID() / 8) * 8 + 8 == ceil(piece.getID() / 8.0f) * 8)
+				if (ceil(caze.getID() / 8.0f) * 8  == floor(piece.getID() / 8.0f) * 8 + 8)
 				{
 					if (piece.getID() + j == caze.getID())
 					{
@@ -551,7 +588,7 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 			{
 				if (vb > 1)
 				{
-					for (size_t i = 1; i < vb; i++)
+					for (int i = 1; i < vb; i++)
 					{
 						if (!board->getBoard().at(piece.getID() + i * 8).isEmpty())
 							return 0;
@@ -570,7 +607,7 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 			{
 				if (dbd > 1)
 				{
-					for (size_t i = 1; i < dbd; i++)
+					for (int i = 1; i < dbd; i++)
 					{
 						if (!board->getBoard().at(piece.getID() + i * 9).isEmpty())
 							return 0;
@@ -589,7 +626,7 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 			{
 				if (dbg > 1)
 				{
-					for (size_t i = 1; i < dbg; i++)
+					for (int i = 1; i < dbg; i++)
 					{
 						if (!board->getBoard().at(piece.getID() + i * 7).isEmpty())
 							return 0;
@@ -608,7 +645,7 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 			{
 				if (hd > 1)
 				{
-					for (size_t i = 1; i < hd; i++)
+					for (int i = 1; i < hd; i++)
 					{
 						if (!board->getBoard().at(piece.getID() + i).isEmpty())
 							return 0;
@@ -658,7 +695,7 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 			{
 				if (vh > 1)
 				{
-					for (size_t i = 1; i < vh; i++)
+					for (int i = 1; i < vh; i++)
 					{
 						if (!board->getBoard().at(piece.getID() - i * 8).isEmpty())
 							return 0;
@@ -676,9 +713,9 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 			{
 				if (dhg > 1)
 				{
-					for (size_t i = 1; i < dhg; i++)
+					for (int i = 1; i < dhg; i++)
 					{
-						if (!board->getBoard().at(piece.getID() + i * 9).isEmpty())
+						if (!board->getBoard().at(piece.getID() - i * 9).isEmpty())
 							return 0;
 					}
 				}
@@ -694,7 +731,7 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 			{
 				if (dhd > 1)
 				{
-					for (size_t i = 1; i < dhd; i++)
+					for (int i = 1; i < dhd; i++)
 					{
 						if (!board->getBoard().at(piece.getID() - i * 7).isEmpty())
 							return 0;
@@ -712,7 +749,7 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 			{
 				if (hg > 1)
 				{
-					for (size_t i = 1; i < vb; i++)
+					for (int i = 1; i < vb; i++)
 					{
 						if (!board->getBoard().at(piece.getID() - i).isEmpty())
 							return 0;
@@ -730,28 +767,41 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 
 		}
 	}
+	return 0;
 }
 
 int echec(Board* board)
 {
-//1 -> blanc  | 2 -> noir | 0 -> rien | 3 -> deux
+	//1 -> blanc  | 2 -> noir | 0 -> rien | 3 -> deux
 
-int b = 0;
-int n = 0;
-for (size_t i = 0; i < 64; i++)
-{
-	if (board->getBoard().at(i).getPiece()->getType()==ROI && board->getBoard().at(i).getPiece()->getColor() == BLANC)
-		b = i;
-	if (board->getBoard().at(i).getPiece()->getType()==ROI && board->getBoard().at(i).getPiece()->getColor() == NOIR)
-		n = i;
-}
+	int b = 0;
+	int n = 0;
+	int be = 0;
+	int ne = 0;
+	for (int i = 0; i < 64; i++)
+	{
+		if (board->getBoard().at(i).getPiece()->getType() == ROI && board->getBoard().at(i).getPiece()->getColor() == BLANC)
+			b = i;
+		if (board->getBoard().at(i).getPiece()->getType() == ROI && board->getBoard().at(i).getPiece()->getColor() == NOIR)
+			n = i;
+	}
 
-for (size_t i = 0; i < 64; i++)
-{
-	if(isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(b)))
-		return 1;
-	else if(isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(n)))
-		return 2;
-	else return 0;
+	for (int i = 0; i < 64; i++)
+	{
+		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(b)))
+			be++;
+		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(n)))
+			ne++;
+	}
 	
+	
+	if (be > 0 && ne > 0)
+		return 3;
+	else if (be > 0)
+		return 1;
+	else if (ne > 0)
+		return 2;
+	else
+		return 0;
+	return 0;
 }
