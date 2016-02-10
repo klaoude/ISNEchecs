@@ -772,12 +772,33 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 
 int echec(Board* board)
 {
-	//1 -> blanc  | 2 -> noir | 0 -> rien | 3 -> deux
+	//0 -> rien | 1 -> blanc  | 2 -> noir | 3 -> les deux
+	// 4 -> blanc mat | 5 -> noir mat
 
 	int b = 0;
 	int n = 0;
 	int be = 0;
 	int ne = 0;
+	std::vector<int> deplroi;
+
+	if (isPossible(board, *board->getBoard().at(b).getPiece(), board->getBoard().at(b + 1)))
+		deplroi.push_back(1);
+	if (isPossible(board, *board->getBoard().at(b).getPiece(), board->getBoard().at(b + 9)))
+		deplroi.push_back(9);
+	if (isPossible(board, *board->getBoard().at(b).getPiece(), board->getBoard().at(b + 8)))
+		deplroi.push_back(8);
+	if (isPossible(board, *board->getBoard().at(b).getPiece(), board->getBoard().at(b + 7)))
+		deplroi.push_back(7);
+	if (isPossible(board, *board->getBoard().at(b).getPiece(), board->getBoard().at(b - 1)))
+		deplroi.push_back(-1);
+	if (isPossible(board, *board->getBoard().at(b).getPiece(), board->getBoard().at(b - 9)))
+		deplroi.push_back(-9);
+	if (isPossible(board, *board->getBoard().at(b).getPiece(), board->getBoard().at(b - 8)))
+		deplroi.push_back(-8);
+	if (isPossible(board, *board->getBoard().at(b).getPiece(), board->getBoard().at(b - 7)))
+		deplroi.push_back(-7);
+
+
 	for (int i = 0; i < 64; i++)
 	{
 		if (board->getBoard().at(i).getPiece()->getType() == ROI && board->getBoard().at(i).getPiece()->getColor() == BLANC)
@@ -804,4 +825,5 @@ int echec(Board* board)
 	else
 		return 0;
 	return 0;
+
 }
