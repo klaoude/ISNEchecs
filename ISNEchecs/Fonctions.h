@@ -6,6 +6,8 @@
 #include "Main/PieceInfo.h"
 #include "Global.h"
 
+
+
 inline void setScale(GameObject* go, int code)
 {
 	/*
@@ -769,6 +771,7 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 	}
 	return 0;
 }
+
 
 int echec(Board* board)
 {

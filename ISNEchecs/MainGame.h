@@ -45,5 +45,7 @@ private:
 	Piece* _selectedPiece;
 	bool _isAPieceSelected;
 	bool _isMyTurn;
+
+	Couleur _clientColor;
 };
 

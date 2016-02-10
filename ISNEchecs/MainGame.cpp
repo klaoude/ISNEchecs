@@ -10,6 +10,11 @@
 #include "Server/Client.h"
 #include "Server/MSClient.h"
 
+void debug(std::string debugstring)
+{
+	std::cout << "[DEBUG] " << debugstring << std::endl;
+}
+
 MainGame::MainGame()
 {
 
@@ -132,6 +137,19 @@ void MainGame::gameLoop()
 
 void MainGame::serverManager()
 {
+	if (!_isMyTurn)
+	{
+		sf::Packet packet = _client.recv();
+		int pieceID, caseID;
+		packet >> pieceID >> caseID;
+		if (pieceID != -1)
+		{
+			m_board.movePiece(m_board.getCase(pieceID).getPiece(), m_board.getCase(caseID));
+			_isMyTurn = true;
+			debug("is my turn");
+		}
+		
+	}
 	if (!_client.isConnected())
 	{
 		switch (_gameState)
@@ -139,19 +157,17 @@ void MainGame::serverManager()
 		case GameState::Playing:
 			_client.createServer();
 			_isMyTurn = true;
+			_clientColor = BLANC;
+			break;
 		case GameState::Joining:
 			_client.connect("127.0.0.1", 1337);
 			_isMyTurn = false;
+			_clientColor = NOIR;
+			break;
 		default:
 			return;
 			break;
 		}
-	}
-	if (!_isMyTurn)
-	{
-		_client.recv();
-		_isMyTurn = true;
-		std::cout << "whala" << std::endl;
 	}
 }
 
@@ -173,18 +189,34 @@ void MainGame::handleInput()
 				{
 					if (!m_board.getCase(event.mouseButton.x, event.mouseButton.y).isEmpty())
 					{
-						_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
-						m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
-						_isAPieceSelected = true;
+						if (m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece()->getColor() != _clientColor)
+						{
+							_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
+							m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
+							_isAPieceSelected = true;
+						}
 					}
 				}
 				else
 				{
-					m_board.movePiece(_selectedPiece, m_board.getCase(event.mouseButton.x, event.mouseButton.y));
-					_client.send("i move a piece");
-					m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
-					_isAPieceSelected = false;
-					_isMyTurn = false;
+					int oldPieceID = _selectedPiece->getID();
+					if (m_board.movePiece(_selectedPiece, m_board.getCase(event.mouseButton.x, event.mouseButton.y)))
+					{
+						sf::Packet packet;
+						packet << oldPieceID;
+						packet << m_board.getCase(event.mouseButton.x, event.mouseButton.y).getID();
+						_client.send(packet);
+						m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
+						_isAPieceSelected = false;
+						_isMyTurn = false;
+						debug("is not my turn");
+						_selectedPiece = new Piece();
+					}
+					else 
+					{
+						_selectedPiece = new Piece();
+						_isAPieceSelected = false;
+					}
 				}
 #if _debugMode
 			}

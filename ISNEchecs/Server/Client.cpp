@@ -10,15 +10,25 @@ Client::~Client()
 
 }
 
-void Client::recv()
+sf::Packet Client::recv()
 {
-	_socket.receive(_buffer, sizeof(_buffer), _received);
-	std::cout << "recv : " << _received << std::endl;
+	sf::Packet packet;
+	if (_socket.receive(packet) == sf::Socket::NotReady)
+		packet << -1;
+	return packet;
 }
 
-void Client::send(char* msg)
+void Client::send(sf::Packet packet)
 {
-	_socket.send(msg, strlen(msg));
+	_socket.send(packet);
+	std::cout << "i send : " << packet << std::endl;
+}
+
+void Client::send(std::string msg)
+{
+	sf::Packet packet;
+	packet << msg;
+	_socket.send(packet);
 	std::cout << "i send : " << msg << std::endl;
 }
 
@@ -27,6 +37,7 @@ void Client::connect(sf::IpAddress ip, unsigned short port)
 	_socket.connect(ip, port);
 	std::cout << "connected to " << ip << std::endl;
 	_connected = true;
+	_socket.setBlocking(false);
 }
 
 void Client::createServer()
