@@ -10,7 +10,6 @@
 #include "Server/Client.h"
 #include "Server/MSClient.h"
 
-
 MainGame::MainGame()
 {
 
@@ -139,13 +138,21 @@ void MainGame::serverManager()
 		{
 		case GameState::Playing:
 			_client.createServer();
+			_isMyTurn = true;
 		case GameState::Joining:
 			_client.connect("127.0.0.1", 1337);
+			_isMyTurn = false;
 		default:
 			return;
 			break;
 		}
-	}	
+	}
+	if (!_isMyTurn)
+	{
+		_client.recv();
+		_isMyTurn = true;
+		std::cout << "whala" << std::endl;
+	}
 }
 
 void MainGame::handleInput()
@@ -158,22 +165,30 @@ void MainGame::handleInput()
 			_window.close();
 		if (event.type == sf::Event::MouseButtonPressed)
 		{
-			if (!_isAPieceSelected)
+#if _debugMode
+			if (_isMyTurn)
 			{
-				if (!m_board.getCase(event.mouseButton.x, event.mouseButton.y).isEmpty())
+#endif			
+				if (!_isAPieceSelected)
 				{
-					_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
+					if (!m_board.getCase(event.mouseButton.x, event.mouseButton.y).isEmpty())
+					{
+						_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
+						m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
+						_isAPieceSelected = true;
+					}
+				}
+				else
+				{
+					m_board.movePiece(_selectedPiece, m_board.getCase(event.mouseButton.x, event.mouseButton.y));
+					_client.send("i move a piece");
 					m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
-					_isAPieceSelected = true;
-				}				
-			}				
-			else
-			{
-				m_board.movePiece(_selectedPiece, m_board.getCase(event.mouseButton.x, event.mouseButton.y));
-				_client.send("i move a piece");
-				m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
-				_isAPieceSelected = false;
+					_isAPieceSelected = false;
+					_isMyTurn = false;
+				}
+#if _debugMode
 			}
+#endif
 		}
 	}
 }
@@ -203,6 +218,7 @@ void MainGame::showMenu()
 		_gameState = Joining;
 		break;
 	case MainMenu::Debug:
+		_debugMode = true;
 		_gameState = Debugging;
 		break;
 	}

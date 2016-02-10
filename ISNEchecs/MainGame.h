@@ -40,8 +40,10 @@ private:
 	sf::Sprite _sprite;
 
 	Board m_board;
+	bool _debugMode;
 
 	Piece* _selectedPiece;
 	bool _isAPieceSelected;
+	bool _isMyTurn;
 };
 

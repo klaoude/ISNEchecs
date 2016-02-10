@@ -117,6 +117,7 @@ void Board::movePiece(Piece* piece, Case caze)
 			m_board.at(piece->getID()).setEmpty(true);
 			m_board.at(piece->getID()).delPiece();
 			piece->setID(caze.getID());
+			piece->setHasMoved(1);
 			m_board.at(caze.getID()).setEmpty(0);
 			m_board.at(caze.getID()).setPieceCase(piece);
 			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py());

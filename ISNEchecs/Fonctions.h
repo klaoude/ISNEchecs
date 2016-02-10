@@ -306,6 +306,46 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 
 	if (piece.getType() == ROI) //ROI
 	{
+		
+		if (piece.getColor() ==  BLANC && !piece.getHasMoved()) //to do si !echec
+		{
+			if (piece.getID() - 2 == caze.getID()) 
+			{
+				if (board->getBoard().at(piece.getID()-1).isEmpty() && board->getBoard().at(piece.getID()-2).isEmpty() && !board->getBoard().at(piece.getID()-3).getPiece()->getHasMoved()) //si cases sont libres et les tour/roi hasn't moved
+					return 1;
+				else
+					return 0;
+			}
+			
+			if (piece.getID() + 2 == caze.getID())
+			{
+				if (board->getBoard().at(piece.getID()+1).isEmpty() && board->getBoard().at(piece.getID()+2).isEmpty() && board->getBoard().at(piece.getID()+3).isEmpty() && !board->getBoard().at(piece.getID()+7).getPiece()->getHasMoved()) //si cases sont libres et les tour/roi hasn't moved
+					return 1;
+				else
+					return 0;
+			}
+			
+		}
+		if (piece.getColor() ==  NOIR && !piece.getHasMoved()) //to do si !echec
+		{
+			if (piece.getID() - 2 == caze.getID()) 
+			{
+				if (board->getBoard().at(piece.getID()-1).isEmpty() && board->getBoard().at(piece.getID()-2).isEmpty() && !board->getBoard().at(piece.getID()-3).getPiece()->getHasMoved()) //si cases sont libres et les tour/roi hasn't moved
+					return 1;
+				else
+					return 0;
+			}
+			
+			if (piece.getID() + 2 == caze.getID())
+			{
+				if (board->getBoard().at(piece.getID()+1).isEmpty() && board->getBoard().at(piece.getID()+2).isEmpty() && board->getBoard().at(piece.getID()+3).isEmpty() && !board->getBoard().at(piece.getID()+7).getPiece()->getHasMoved()) //si cases sont libres et les tour/roi hasn't moved
+					return 1;
+				else
+					return 0;
+			}
+			
+		}
+		
 		if (piece.getID() + 1 == caze.getID())
 		{
 			if (caze.isEmpty())
@@ -377,6 +417,14 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 	{
 		if (piece.getColor() == BLANC)
 		{
+			if (piece.getID() + 16 == caze.getID() && !piece.getHasMoved())
+			{
+				if (caze.isEmpty())
+					return 1;
+				else
+					return 0;
+			}
+			
 			if (piece.getID() + 8 == caze.getID())
 			{
 				if (caze.isEmpty())
@@ -417,6 +465,13 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 		{
 			if (piece.getID() - 8 == caze.getID())
 			{
+				if (piece.getID() - 16 == caze.getID() && !piece.getHasMoved())
+			{
+				if (caze.isEmpty())
+					return 1;
+				else
+					return 0;
+			}
 				if (caze.isEmpty())
 					return 1;
 				else
@@ -675,4 +730,28 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 
 		}
 	}
+}
+
+int echec(Board* board)
+{
+//1 -> blanc  | 2 -> noir | 0 -> rien | 3 -> deux
+
+int b = 0;
+int n = 0;
+for (size_t i = 0; i < 64; i++)
+{
+	if (board->getBoard().at(i).getPiece()->getType()==ROI && board->getBoard().at(i).getPiece()->getColor() == BLANC)
+		b = i;
+	if (board->getBoard().at(i).getPiece()->getType()==ROI && board->getBoard().at(i).getPiece()->getColor() == NOIR)
+		n = i;
+}
+
+for (size_t i = 0; i < 64; i++)
+{
+	if(isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(b)))
+		return 1;
+	else if(isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(n)))
+		return 2;
+	else return 0;
+	
 }

@@ -16,10 +16,12 @@ public:
 	Couleur getColor() { return m_color; }
 	int getID() { return m_ID; }
 	std::string getTextureID() { return _textureID; }
+	bool getHasMoved() { return m_hasMoved; }
 
 	void setType(Type type) { m_type = type; }
 	void setColor(Couleur couleur) { m_color = couleur; }	
 	void setID(int ID) { m_ID = ID; }
+	void setHasMoved(bool hasMoved) { m_hasMoved = hasMoved; }
 
 	void draw(sf::RenderWindow& window);
 

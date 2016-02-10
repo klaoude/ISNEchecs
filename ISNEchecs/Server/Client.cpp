@@ -31,6 +31,7 @@ void Client::connect(sf::IpAddress ip, unsigned short port)
 
 void Client::createServer()
 {
+	std::cout << "i'm waiting for someone to connect" << std::endl;
 	_listener.listen(1337);
 	_listener.accept(_socket);
 
