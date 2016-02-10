@@ -45,6 +45,7 @@ void Client::createServer()
 	std::cout << "i'm waiting for someone to connect" << std::endl;
 	_listener.listen(1337);
 	_listener.accept(_socket);
+	_socket.setBlocking(false);
 
 	std::cout << "client connected" << std::endl;
 	_connected = true;	

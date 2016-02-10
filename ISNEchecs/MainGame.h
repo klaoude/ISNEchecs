@@ -8,7 +8,6 @@
 
 #include "Server\Client.h"
 
-
 class MainGame
 {
 public:
