@@ -160,7 +160,7 @@ void MainGame::serverManager()
 			_clientColor = BLANC;
 			break;
 		case GameState::Joining:
-			_client.connect("127.0.0.1", 1337);
+			_client.connect("90.9.27.208", 1337);
 			_isMyTurn = false;
 			_clientColor = NOIR;
 			break;
