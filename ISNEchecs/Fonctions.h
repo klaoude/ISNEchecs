@@ -38,7 +38,7 @@ inline void setScale(GameObject* go, int code)
 	go->scale(x, y);
 }
 
-inline bool isPossible(Board *board, Piece piece, Case caze)
+inline bool isPossible(Board *board, Piece piece, Case caze, Couleur color)
 {
 	std::cout << piece.getID() << caze.getID() << piece.getType() << piece.getColor() << std::endl;
 	if (piece.getType() == CAVALIER) //CAVALIER
@@ -456,45 +456,91 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 	{
 		if (piece.getColor() == BLANC)
 		{
-			if (piece.getID() + 16 == caze.getID() && !piece.getHasMoved())
+			if (color == NOIR)
 			{
-				if (caze.isEmpty())
-					return 1;
-				else
-					return 0;
-			}
-			
-			if (piece.getID() + 8 == caze.getID())
-			{
-				if (caze.isEmpty())
-					return 1;
-				else
-					return 0;
-			}
-			if (piece.getID() + 7 == caze.getID())
-			{
-				if (caze.isEmpty())
-					return 0;
-				else
+				if (piece.getID() + 16 == caze.getID() && !piece.getHasMoved())
 				{
-					if ((caze.getPiece()->getColor() != piece.getColor()) &&
-						(caze.getPiece()->getColor() != NONEc))
+					if (caze.isEmpty())
 						return 1;
 					else
 						return 0;
 				}
-			}
-			if (piece.getID() + 9 == caze.getID())
-			{
-				if (caze.isEmpty())
-					return 0;
-				else
+
+				if (piece.getID() + 8 == caze.getID())
 				{
-					if ((caze.getPiece()->getColor() != piece.getColor()) &&
-						(caze.getPiece()->getColor() != NONEc))
+					if (caze.isEmpty())
 						return 1;
 					else
 						return 0;
+				}
+				if (piece.getID() + 7 == caze.getID())
+				{
+					if (caze.isEmpty())
+						return 0;
+					else
+					{
+						if ((caze.getPiece()->getColor() != piece.getColor()) &&
+							(caze.getPiece()->getColor() != NONEc))
+							return 1;
+						else
+							return 0;
+					}
+				}
+				if (piece.getID() + 9 == caze.getID())
+				{
+					if (caze.isEmpty())
+						return 0;
+					else
+					{
+						if ((caze.getPiece()->getColor() != piece.getColor()) &&
+							(caze.getPiece()->getColor() != NONEc))
+							return 1;
+						else
+							return 0;
+					}
+				}
+			}
+			else if (color == BLANC)
+			{
+				if (piece.getID() - 16 == caze.getID() && !piece.getHasMoved())
+				{
+					if (caze.isEmpty())
+						return 1;
+					else
+						return 0;
+				}
+				if (piece.getID() - 8 == caze.getID())
+				{
+					if (caze.isEmpty())
+						return 1;
+					else
+						return 0;
+				}
+				if (piece.getID() - 7 == caze.getID())
+				{
+					if (caze.isEmpty())
+						return 0;
+					else
+					{
+						if ((caze.getPiece()->getColor() != piece.getColor()) &&
+							(caze.getPiece()->getColor() != NONEc))
+							return 1;
+						else
+							return 0;
+					}
+				}
+				if (piece.getID() - 9 == caze.getID())
+				{
+					if (caze.isEmpty())
+						return 0;
+					else
+					{
+						if ((caze.getPiece()->getColor() != piece.getColor()) &&
+							(caze.getPiece()->getColor() != NONEc))
+							return 1;
+						else
+							return 0;
+					}
 				}
 			}
 				return 0;
@@ -502,44 +548,91 @@ inline bool isPossible(Board *board, Piece piece, Case caze)
 
 		if (piece.getColor() == NOIR)
 		{
-			if (piece.getID() - 16 == caze.getID() && !piece.getHasMoved())
+			if (color == NOIR)
 			{
-				if (caze.isEmpty())
-					return 1;
-				else
-					return 0;
-			}
-			if (piece.getID() - 8 == caze.getID())
-			{
-				if (caze.isEmpty())
-					return 1;
-				else
-					return 0;
-			}
-			if (piece.getID() - 7 == caze.getID())
-			{
-				if (caze.isEmpty())
-					return 0;
-				else
+				if (piece.getID() - 16 == caze.getID() && !piece.getHasMoved())
 				{
-					if ((caze.getPiece()->getColor() != piece.getColor()) &&
-						(caze.getPiece()->getColor() != NONEc))
+					if (caze.isEmpty())
 						return 1;
 					else
 						return 0;
 				}
-			}
-			if (piece.getID() - 9 == caze.getID())
-			{
-				if (caze.isEmpty())
-					return 0;
-				else
+				if (piece.getID() - 8 == caze.getID())
 				{
-					if ((caze.getPiece()->getColor() != piece.getColor()) &&
-						(caze.getPiece()->getColor() != NONEc))
+					if (caze.isEmpty())
 						return 1;
 					else
 						return 0;
+				}
+				if (piece.getID() - 7 == caze.getID())
+				{
+					if (caze.isEmpty())
+						return 0;
+					else
+					{
+						if ((caze.getPiece()->getColor() != piece.getColor()) &&
+							(caze.getPiece()->getColor() != NONEc))
+							return 1;
+						else
+							return 0;
+					}
+				}
+				if (piece.getID() - 9 == caze.getID())
+				{
+					if (caze.isEmpty())
+						return 0;
+					else
+					{
+						if ((caze.getPiece()->getColor() != piece.getColor()) &&
+							(caze.getPiece()->getColor() != NONEc))
+							return 1;
+						else
+							return 0;
+					}
+				}
+			}
+			else if (color == BLANC)
+			{
+				if (piece.getID() + 16 == caze.getID() && !piece.getHasMoved())
+				{
+					if (caze.isEmpty())
+						return 1;
+					else
+						return 0;
+				}
+
+				if (piece.getID() + 8 == caze.getID())
+				{
+					if (caze.isEmpty())
+						return 1;
+					else
+						return 0;
+				}
+				if (piece.getID() + 7 == caze.getID())
+				{
+					if (caze.isEmpty())
+						return 0;
+					else
+					{
+						if ((caze.getPiece()->getColor() != piece.getColor()) &&
+							(caze.getPiece()->getColor() != NONEc))
+							return 1;
+						else
+							return 0;
+					}
+				}
+				if (piece.getID() + 9 == caze.getID())
+				{
+					if (caze.isEmpty())
+						return 0;
+					else
+					{
+						if ((caze.getPiece()->getColor() != piece.getColor()) &&
+							(caze.getPiece()->getColor() != NONEc))
+							return 1;
+						else
+							return 0;
+					}
 				}
 			}
 				return 0;
@@ -789,96 +882,3 @@ int findroiblanc(Board* board)
 			return i;
 	}
 }
-
-bool echec(Board* board, int ID)
-{
-	for (int i = 0; i < 64; i++)
-	{
-		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(ID)))
-			return 1;
-	}
-	return 0;
-}
-
-int echec(Board* board)
-{
-	//0 -> rien | 1 -> blanc  | 2 -> noir | 3 -> les deux
-	// 4 -> blanc mat | 5 -> noir mat
-	int be = 0;
-	int ne = 0;
-	int bem = 0;
-	int nem = 0;
-	std::vector<int> blanc;
-	std::vector<int> noir;
-
-	if (findroiblanc(board)+ 1 < 64 && isPossible(board, *board->getBoard().at(findroiblanc(board)).getPiece(), board->getBoard().at(findroiblanc(board)+ 1)))
-		blanc.push_back(1);
-	if (findroiblanc(board)+ 9 < 64 && isPossible(board, *board->getBoard().at(findroiblanc(board)).getPiece(), board->getBoard().at(findroiblanc(board)+ 9)))
-		blanc.push_back(9);
-	if (findroiblanc(board)+ 8 < 64 && isPossible(board, *board->getBoard().at(findroiblanc(board)).getPiece(), board->getBoard().at(findroiblanc(board)+ 8)))
-		blanc.push_back(8);
-	if (findroiblanc(board)+ 7 < 64 && isPossible(board, *board->getBoard().at(findroiblanc(board)).getPiece(), board->getBoard().at(findroiblanc(board)+ 7)))
-		blanc.push_back(7);
-	if (findroiblanc(board)- 1 > -1 && isPossible(board, *board->getBoard().at(findroiblanc(board)).getPiece(), board->getBoard().at(findroiblanc(board)- 1)))
-		blanc.push_back(-1);
-	if (findroiblanc(board)- 9 > -1 && isPossible(board, *board->getBoard().at(findroiblanc(board)).getPiece(), board->getBoard().at(findroiblanc(board)- 9)))
-		blanc.push_back(-9);
-	if (findroiblanc(board)- 8 > -1 && isPossible(board, *board->getBoard().at(findroiblanc(board)).getPiece(), board->getBoard().at(findroiblanc(board)- 8)))
-		blanc.push_back(-8);
-	if (findroiblanc(board)- 7 > -1 && isPossible(board, *board->getBoard().at(findroiblanc(board)).getPiece(), board->getBoard().at(findroiblanc(board)- 7)))
-		blanc.push_back(-7);
-
-	if (findroinoir(board)+ 1 < 64 && isPossible(board, *board->getBoard().at(findroinoir(board)).getPiece(), board->getBoard().at(findroinoir(board)+ 1)))
-		noir.push_back(1);
-	if (findroinoir(board)+ 9 < 64 && isPossible(board, *board->getBoard().at(findroinoir(board)).getPiece(), board->getBoard().at(findroinoir(board)+ 9)))
-		noir.push_back(9);
-	if (findroinoir(board)+ 8 < 64 && isPossible(board, *board->getBoard().at(findroinoir(board)).getPiece(), board->getBoard().at(findroinoir(board)+ 8)))
-		noir.push_back(8);
-	if (findroinoir(board)+ 7 < 64 && isPossible(board, *board->getBoard().at(findroinoir(board)).getPiece(), board->getBoard().at(findroinoir(board)+ 7)))
-		noir.push_back(7);
-	if (findroinoir(board)- 1 > -1 && isPossible(board, *board->getBoard().at(findroinoir(board)).getPiece(), board->getBoard().at(findroinoir(board)- 1)))
-		noir.push_back(-1);
-	if (findroinoir(board)- 9 > -1 && isPossible(board, *board->getBoard().at(findroinoir(board)).getPiece(), board->getBoard().at(findroinoir(board)- 9)))
-		noir.push_back(-9);
-	if (findroinoir(board)- 8 > -1 && isPossible(board, *board->getBoard().at(findroinoir(board)).getPiece(), board->getBoard().at(findroinoir(board)- 8)))
-		noir.push_back(-8);
-	if (findroinoir(board)- 7 > -1 && isPossible(board, *board->getBoard().at(findroinoir(board)).getPiece(), board->getBoard().at(findroinoir(board)- 7)))
-		noir.push_back(-7);
-
-
-	for (int i = 0; i < 64; i++)
-	{
-		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroiblanc(board))))
-			be++;
-		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroinoir(board))))
-			ne++;
-	}
-	
-	if (be > 0)
-	{
-		/*for (int i = 0; i < blanc.size(); i++)
-		{
-			if (echec(board, blanc[i]) == 1)
-				bem++;
-		}*/
-		if (bem == 0)
-			return 4;
-		else 
-			return 1;
-	}
-	if (ne > 0)
-	{
-		/*for (int i = 0; i < noir.size(); i++)
-		{
-			if (echec(board, noir[i]) == 1)
-				nem++;
-		}*/
-		if (nem == 0)
-			return 5;
-		else
-			return 2;
-	}
-	return 0;
-
-}
-
