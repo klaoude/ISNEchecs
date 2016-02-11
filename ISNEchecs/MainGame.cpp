@@ -139,12 +139,15 @@ void MainGame::serverManager()
 {
 	if (!_isMyTurn)
 	{
+		int add = 0;
+		if (_clientColor == BLANC)
+			add = 63;
 		sf::Packet packet = _client.recv();
 		int pieceID, caseID;
 		packet >> pieceID >> caseID;
 		if (pieceID != -1)
 		{
-			m_board.movePiece(m_board.getCase(pieceID).getPiece(), m_board.getCase(caseID));
+			m_board.movePiece(m_board.getCase(abs(add - pieceID)).getPiece(), m_board.getCase(abs(add - caseID)));
 			_isMyTurn = true;
 			debug("is my turn");
 		}
@@ -161,7 +164,7 @@ void MainGame::serverManager()
 			m_board = Board(&_gameObjectManager, _clientColor);
 			break;
 		case GameState::Joining:
-			_client.connect("90.9.27.208", 1337);
+			_client.connect("127.0.0.1", 1337);
 			_isMyTurn = false;
 			_clientColor = NOIR;
 			m_board = Board(&_gameObjectManager, _clientColor);
@@ -191,7 +194,7 @@ void MainGame::handleInput()
 					{
 						if (!m_board.getCase(event.mouseButton.x, event.mouseButton.y).isEmpty())
 						{
-							if (m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece()->getColor() != _clientColor)
+							if (m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece()->getColor() == _clientColor)
 							{
 								_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
 								m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
@@ -204,9 +207,12 @@ void MainGame::handleInput()
 						int oldPieceID = _selectedPiece->getID();
 						if (m_board.movePiece(_selectedPiece, m_board.getCase(event.mouseButton.x, event.mouseButton.y)))
 						{
+							int add = 0;
+							if (_clientColor == BLANC)
+								add = 63;
 							sf::Packet packet;
-							packet << oldPieceID;
-							packet << m_board.getCase(event.mouseButton.x, event.mouseButton.y).getID();
+							packet << abs(add - oldPieceID);
+							packet << abs(add - m_board.getCase(event.mouseButton.x, event.mouseButton.y).getID());
 							_client.send(packet);
 							m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
 							_isAPieceSelected = false;
@@ -241,9 +247,12 @@ void MainGame::handleInput()
 					int oldPieceID = _selectedPiece->getID();
 					if (m_board.movePiece(_selectedPiece, m_board.getCase(event.mouseButton.x, event.mouseButton.y)))
 					{
+						int add = 0;
+						if (m_board.getMasterColor() == BLANC)
+							add = 63;
 						sf::Packet packet;
-						packet << oldPieceID;
-						packet << m_board.getCase(event.mouseButton.x, event.mouseButton.y).getID();
+						packet << abs(add - oldPieceID);
+						packet << abs(add - m_board.getCase(event.mouseButton.x, event.mouseButton.y).getID());
 						_client.send(packet);
 						m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
 						_isAPieceSelected = false;
@@ -287,7 +296,7 @@ void MainGame::showMenu()
 	case MainMenu::Debug:
 		_debugMode = true;
 		_gameState = Debugging;
-		m_board = Board(&_gameObjectManager, BLANC);
+		m_board = Board(&_gameObjectManager, NOIR);
 		break;
 	}
 }

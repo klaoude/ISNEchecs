@@ -76,7 +76,8 @@ Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)
 			_gom->get(m_board.at(i).getPiece()->getTextureID())->setPosition(getCase(m_board.at(i).getPiece()->getID()).getPos());
 		}
 	}
-	_gom->fix();
+	if (mc == BLANC)
+		_gom->fix();
 }
 
 Board::~Board()

@@ -45,12 +45,12 @@ void GameObjectManager::fix()
 	std::unordered_map<std::string, GameObject*> test;
 	for (auto i = _gameObjects.begin(); i != _gameObjects.end(); i++)
 	{
-		if (i->first == "board")
+		if (i->first == "Board")
 			test.insert(std::pair<std::string, GameObject*>(i->first, i->second));
 	}
 	for (auto i = _gameObjects.begin(); i != _gameObjects.end(); i++)
 	{
-		if (i->first != "board")
+		if (i->first != "Board")
 			test.insert(std::pair<std::string, GameObject*>(i->first, i->second));
 	}
 	_gameObjects = test;

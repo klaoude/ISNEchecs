@@ -73,7 +73,7 @@ MainMenu::MenuResult  MainMenu::GetMenuResponse(sf::RenderWindow& window)
 {
 	sf::Event menuEvent;
 
-	while (window.waitEvent(menuEvent))
+	while (window.pollEvent(menuEvent))
 	{
 		if (menuEvent.type == sf::Event::MouseButtonPressed)
 		{

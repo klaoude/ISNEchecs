@@ -22,6 +22,8 @@ public:
 	Case getCase(int x, int y);
 	Case getCase(int caseID);
 
+	Couleur getMasterColor() { return _masterColor; }
+
 private:
 	std::vector<Case> m_board;
 	GameObjectManager* _gom;
