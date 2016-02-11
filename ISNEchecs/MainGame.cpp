@@ -78,7 +78,7 @@ void MainGame::start()
 	{
 		std::cout << "Enter Case : ";
 		std::cin >> choice;
-		Board board(&_gameObjectManager);
+		Board board(&_gameObjectManager, Couleur::BLANC);
 		//board.getTyCo(choice);
 		//board.getCase(choice).getPiece().move(&board, ID)
 
@@ -105,7 +105,6 @@ void MainGame::init()
 {
 	_gameState = GameState::ShowingMenu;
 	_window.create(sf::VideoMode(SCREEN_HEIGHT, SCREEN_WIDTH), "Chess");
-	m_board = Board(&_gameObjectManager);
 	_isAPieceSelected = false;
 	_debugMode = false;
 }
@@ -159,11 +158,13 @@ void MainGame::serverManager()
 			_client.createServer();
 			_isMyTurn = true;
 			_clientColor = BLANC;
+			m_board = Board(&_gameObjectManager, _clientColor);
 			break;
 		case GameState::Joining:
 			_client.connect("127.0.0.1", 1337);
 			_isMyTurn = false;
 			_clientColor = NOIR;
+			m_board = Board(&_gameObjectManager, _clientColor);
 			break;
 		default:
 			return;
@@ -246,8 +247,6 @@ void MainGame::handleInput()
 						_client.send(packet);
 						m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
 						_isAPieceSelected = false;
-						_isMyTurn = false;
-						debug("is not my turn");
 						_selectedPiece = new Piece();
 					}
 					else
@@ -288,6 +287,7 @@ void MainGame::showMenu()
 	case MainMenu::Debug:
 		_debugMode = true;
 		_gameState = Debugging;
+		m_board = Board(&_gameObjectManager, BLANC);
 		break;
 	}
 }

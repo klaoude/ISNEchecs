@@ -12,7 +12,7 @@ class Board
 {
 public:
 	Board();
-	Board(GameObjectManager* gom);
+	Board(GameObjectManager* gom, Couleur mc);
 	~Board();
 
 	void setPiece(Piece* piece); 
@@ -25,4 +25,5 @@ public:
 private:
 	std::vector<Case> m_board;
 	GameObjectManager* _gom;
+	Couleur _masterColor;
 };

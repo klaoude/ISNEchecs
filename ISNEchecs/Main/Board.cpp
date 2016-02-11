@@ -8,8 +8,9 @@ Board::Board()
 
 }
 
-Board::Board(GameObjectManager* gom) : _gom(gom)
+Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)
 {
+	_masterColor = mc;
 	int x=0;
 	int y=0;
 
@@ -27,34 +28,37 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 
 	GameObject* board = new GameObject("Sprites/board.png");
 	_gom->add("Board", board);
-	//_gom->get("Board")->scale(0.5, 0.5);
 	setScale(board, 1);
+
+	int add = 0;
+	if (_masterColor == BLANC)
+		add = 63;
 
 	for (int i = 0; i < 8; i++) //Placement des pions
 	{
-		setPiece(new Piece(i+8, Type::PION, Couleur::BLANC, "WhitePawn" + std::to_string(i + 1)));
-		setPiece(new Piece(i+48, Type::PION, Couleur::NOIR, "BlackPawn" + std::to_string(i + 1)));
+		setPiece(new Piece(abs(add-(i+8)), Type::PION, Couleur::BLANC, "WhitePawn" + std::to_string(i + 1)));
+		setPiece(new Piece(abs(add-(i+48)), Type::PION, Couleur::NOIR, "BlackPawn" + std::to_string(i + 1)));
 	}
 
-	setPiece(new Piece(0, Type::TOUR, Couleur::BLANC, "WhiteRook1")); //Placement des tours
-	setPiece(new Piece(7, Type::TOUR, Couleur::BLANC, "WhiteRook2"));
-	setPiece(new Piece(56, Type::TOUR, Couleur::NOIR, "BlackRook1"));
-	setPiece(new Piece(63, Type::TOUR, Couleur::NOIR, "BlackRook2"));
+	setPiece(new Piece(abs(add - 0), Type::TOUR, Couleur::BLANC, "WhiteRook1")); //Placement des tours
+	setPiece(new Piece(abs(add - 7), Type::TOUR, Couleur::BLANC, "WhiteRook2"));
+	setPiece(new Piece(abs(add - 56), Type::TOUR, Couleur::NOIR, "BlackRook1"));
+	setPiece(new Piece(abs(add - 63), Type::TOUR, Couleur::NOIR, "BlackRook2"));
 
-	setPiece(new Piece(1, Type::CAVALIER, Couleur::BLANC, "WhiteKnight1")); //Placement des cavaliers
-	setPiece(new Piece(6, Type::CAVALIER, Couleur::BLANC, "WhiteKnight2"));
-	setPiece(new Piece(57, Type::CAVALIER, Couleur::NOIR, "BlackKnight1"));
-	setPiece(new Piece(62, Type::CAVALIER, Couleur::NOIR, "BlackKnight2"));
+	setPiece(new Piece(abs(add - 1), Type::CAVALIER, Couleur::BLANC, "WhiteKnight1")); //Placement des cavaliers
+	setPiece(new Piece(abs(add - 6), Type::CAVALIER, Couleur::BLANC, "WhiteKnight2"));
+	setPiece(new Piece(abs(add - 57), Type::CAVALIER, Couleur::NOIR, "BlackKnight1"));
+	setPiece(new Piece(abs(add - 62), Type::CAVALIER, Couleur::NOIR, "BlackKnight2"));
 
-	setPiece(new Piece(2, Type::FOU, Couleur::BLANC, "WhiteBishop1")); //Placement des fous
-	setPiece(new Piece(5, Type::FOU, Couleur::BLANC, "WhiteBishop2"));
-	setPiece(new Piece(58, Type::FOU, Couleur::NOIR, "BlackBishop1"));
-	setPiece(new Piece(61, Type::FOU, Couleur::NOIR, "BlackBishop2"));
+	setPiece(new Piece(abs(add - 2), Type::FOU, Couleur::BLANC, "WhiteBishop1")); //Placement des fous
+	setPiece(new Piece(abs(add - 5), Type::FOU, Couleur::BLANC, "WhiteBishop2"));
+	setPiece(new Piece(abs(add - 58), Type::FOU, Couleur::NOIR, "BlackBishop1"));
+	setPiece(new Piece(abs(add - 61), Type::FOU, Couleur::NOIR, "BlackBishop2"));
 
-	setPiece(new Piece(3, Type::ROI, Couleur::BLANC, "WhiteKing")); //Placement des rois/reines
-	setPiece(new Piece(4, Type::REINE, Couleur::BLANC, "WhiteQueen"));
-	setPiece(new Piece(59, Type::ROI, Couleur::NOIR, "BlackKing"));
-	setPiece(new Piece(60, Type::REINE, Couleur::NOIR, "BlackQueen"));
+	setPiece(new Piece(abs(add - 3), Type::ROI, Couleur::BLANC, "WhiteKing")); //Placement des rois/reines
+	setPiece(new Piece(abs(add - 4), Type::REINE, Couleur::BLANC, "WhiteQueen"));
+	setPiece(new Piece(abs(add - 59), Type::ROI, Couleur::NOIR, "BlackKing"));
+	setPiece(new Piece(abs(add - 60), Type::REINE, Couleur::NOIR, "BlackQueen"));
 
 	for (size_t i = 0; i < m_board.size(); i++)
 	{
@@ -62,39 +66,17 @@ Board::Board(GameObjectManager* gom) : _gom(gom)
 		{
 			_gom->add(m_board.at(i).getPiece()->getTextureID(), m_board.at(i).getPiece());
 			setScale(m_board.at(i).getPiece(), 2);
-	}
+		}
 	}
 
-	//SET POSITION
-	for (int i = 0; i < 8; i++)
+	for (size_t i = 0; i < m_board.size(); i++)
 	{
-		_gom->get("WhitePawn" + std::to_string(i + 1))->setPosition(getCase(8 + i).getPos());
-		_gom->get("BlackPawn" + std::to_string(i + 1))->setPosition(getCase(48 + i).getPos());
+		if (i < 16 || i > 47)
+		{
+			_gom->get(m_board.at(i).getPiece()->getTextureID())->setPosition(getCase(m_board.at(i).getPiece()->getID()).getPos());
+		}
 	}
-
-	_gom->get("WhiteRook1")->setPosition(getCase(A1).getPos());
-	_gom->get("WhiteRook2")->setPosition(getCase(A8).getPos());
-
-	_gom->get("WhiteBishop1")->setPosition(getCase(A3).getPos());
-	_gom->get("WhiteBishop2")->setPosition(getCase(A6).getPos());
-
-	_gom->get("WhiteKnight1")->setPosition(getCase(A2).getPos());
-	_gom->get("WhiteKnight2")->setPosition(getCase(A7).getPos());
-
-	_gom->get("WhiteKing")->setPosition(getCase(A4).getPos());
-	_gom->get("WhiteQueen")->setPosition(getCase(A5).getPos());
-
-	_gom->get("BlackRook1")->setPosition(getCase(H1).getPos());
-	_gom->get("BlackRook2")->setPosition(getCase(H8).getPos());
-
-	_gom->get("BlackBishop1")->setPosition(getCase(H3).getPos());
-	_gom->get("BlackBishop2")->setPosition(getCase(H6).getPos());
-
-	_gom->get("BlackKnight1")->setPosition(getCase(H2).getPos());
-	_gom->get("BlackKnight2")->setPosition(getCase(H7).getPos());
-
-	_gom->get("BlackKing")->setPosition(getCase(H4).getPos());
-	_gom->get("BlackQueen")->setPosition(getCase(H5).getPos());
+	_gom->fix();
 }
 
 Board::~Board()

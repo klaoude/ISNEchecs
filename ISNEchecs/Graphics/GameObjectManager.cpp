@@ -10,7 +10,7 @@ GameObjectManager::~GameObjectManager()
 
 void GameObjectManager::add(std::string name, GameObject* gameObject)
 {
-	_gameObjects.insert(std::pair<std::string, GameObject*>(name, gameObject));
+	_gameObjects.emplace(std::pair<std::string, GameObject*>(name, gameObject));
 }
 
 void GameObjectManager::remove(std::string name)
@@ -34,8 +34,24 @@ GameObject* GameObjectManager::get(std::string name)
 
 void GameObjectManager::draw(sf::RenderWindow& window)
 {
-	for (std::unordered_map<std::string, GameObject*>::iterator i = _gameObjects.begin(); i != _gameObjects.end(); i++)
+	for (auto i = _gameObjects.begin(); i != _gameObjects.end(); i++)
 	{
 		i->second->draw(window);
 	}
+}
+
+void GameObjectManager::fix()
+{
+	std::unordered_map<std::string, GameObject*> test;
+	for (auto i = _gameObjects.begin(); i != _gameObjects.end(); i++)
+	{
+		if (i->first == "board")
+			test.insert(std::pair<std::string, GameObject*>(i->first, i->second));
+	}
+	for (auto i = _gameObjects.begin(); i != _gameObjects.end(); i++)
+	{
+		if (i->first != "board")
+			test.insert(std::pair<std::string, GameObject*>(i->first, i->second));
+	}
+	_gameObjects = test;
 }
