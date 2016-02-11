@@ -78,7 +78,7 @@ void MainGame::start()
 	{
 		std::cout << "Enter Case : ";
 		std::cin >> choice;
-		Board board(&_gameObjectManager);
+		Board board(&_gameObjectManager, Couleur::BLANC);
 		//board.getTyCo(choice);
 		//board.getCase(choice).getPiece().move(&board, ID)
 
@@ -105,8 +105,8 @@ void MainGame::init()
 {
 	_gameState = GameState::ShowingMenu;
 	_window.create(sf::VideoMode(SCREEN_HEIGHT, SCREEN_WIDTH), "Chess");
-	m_board = Board(&_gameObjectManager);
 	_isAPieceSelected = false;
+	_debugMode = false;
 }
 
 void MainGame::gameLoop()
@@ -158,11 +158,13 @@ void MainGame::serverManager()
 			_client.createServer();
 			_isMyTurn = true;
 			_clientColor = BLANC;
+			m_board = Board(&_gameObjectManager, _clientColor);
 			break;
 		case GameState::Joining:
 			_client.connect("90.9.27.208", 1337);
 			_isMyTurn = false;
 			_clientColor = NOIR;
+			m_board = Board(&_gameObjectManager, _clientColor);
 			break;
 		default:
 			return;
@@ -181,10 +183,47 @@ void MainGame::handleInput()
 			_window.close();
 		if (event.type == sf::Event::MouseButtonPressed)
 		{
-#if _debugMode
-			if (_isMyTurn)
+			if (!_debugMode)
 			{
-#endif			
+				if (_isMyTurn)
+				{
+					if (!_isAPieceSelected)
+					{
+						if (!m_board.getCase(event.mouseButton.x, event.mouseButton.y).isEmpty())
+						{
+							if (m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece()->getColor() != _clientColor)
+							{
+								_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
+								m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
+								_isAPieceSelected = true;
+							}
+						}
+					}
+					else
+					{
+						int oldPieceID = _selectedPiece->getID();
+						if (m_board.movePiece(_selectedPiece, m_board.getCase(event.mouseButton.x, event.mouseButton.y)))
+						{
+							sf::Packet packet;
+							packet << oldPieceID;
+							packet << m_board.getCase(event.mouseButton.x, event.mouseButton.y).getID();
+							_client.send(packet);
+							m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
+							_isAPieceSelected = false;
+							_isMyTurn = false;
+							debug("is not my turn");
+							_selectedPiece = new Piece();
+						}
+						else
+						{
+							_selectedPiece = new Piece();
+							_isAPieceSelected = false;
+						}
+					}
+				}
+			}			
+			else
+			{
 				if (!_isAPieceSelected)
 				{
 					if (!m_board.getCase(event.mouseButton.x, event.mouseButton.y).isEmpty())
@@ -208,19 +247,15 @@ void MainGame::handleInput()
 						_client.send(packet);
 						m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
 						_isAPieceSelected = false;
-						_isMyTurn = false;
-						debug("is not my turn");
 						_selectedPiece = new Piece();
 					}
-					else 
+					else
 					{
 						_selectedPiece = new Piece();
 						_isAPieceSelected = false;
 					}
 				}
-#if _debugMode
 			}
-#endif
 		}
 	}
 }
@@ -252,6 +287,7 @@ void MainGame::showMenu()
 	case MainMenu::Debug:
 		_debugMode = true;
 		_gameState = Debugging;
+		m_board = Board(&_gameObjectManager, BLANC);
 		break;
 	}
 }

@@ -18,6 +18,8 @@ public:
 
 	void draw(sf::RenderWindow& _window);
 
+	void fix();
+
 private:
 	std::unordered_map<std::string, GameObject*> _gameObjects;
 };
