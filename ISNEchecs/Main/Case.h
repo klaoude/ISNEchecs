@@ -14,7 +14,6 @@ public:
 	Piece* getPiece() { return m_piece; }
 
 	bool isEmpty() { return m_empty; }	
-	
 	void setPieceCase(Piece* piece);
 	void delPiece();
 

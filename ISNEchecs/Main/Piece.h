@@ -25,6 +25,8 @@ public:
 
 	void draw(sf::RenderWindow& window);
 
+	void del();
+
 private:
 	Type m_type;
 	Couleur m_color;

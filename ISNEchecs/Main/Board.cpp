@@ -3,6 +3,9 @@
 #include "../Fonctions.h"
 #include "../Main/CaseID.h"
 
+std::vector<Type> pnoir;
+std::vector<Type> pblanc;
+
 Board::Board()
 {
 
@@ -66,13 +69,6 @@ Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)
 		{
 			_gom->add(m_board.at(i).getPiece()->getTextureID(), m_board.at(i).getPiece());
 			setScale(m_board.at(i).getPiece(), 2);
-		}
-	}
-
-	for (size_t i = 0; i < m_board.size(); i++)
-	{
-		if (i < 16 || i > 47)
-		{
 			_gom->get(m_board.at(i).getPiece()->getTextureID())->setPosition(getCase(m_board.at(i).getPiece()->getID()).getPos());
 		}
 	}
@@ -93,17 +89,18 @@ void Board::setPiece(Piece* piece)
 
 bool Board::movePiece(Piece* piece, Case caze)
 {
+	Piece none(0, NONEt, NONEc, "");
 	if (caze.isEmpty()) //Si la case est libre
 	{
 		if (isPossible(this, *piece, caze, _masterColor))
 		{
-			m_board.at(piece->getID()).setEmpty(true);
-			m_board.at(piece->getID()).delPiece();
-			piece->setID(caze.getID());
-			piece->setHasMoved(1);
-			m_board.at(caze.getID()).setEmpty(0);
-			m_board.at(caze.getID()).setPieceCase(piece);
-			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py());
+			m_board.at(piece->getID()).setEmpty(true); //setempty old
+			m_board.at(piece->getID()).delPiece();  //delpiece old
+			piece->setID(caze.getID()); //new id
+			piece->setHasMoved(1); //hasmoved
+			m_board.at(caze.getID()).setEmpty(0); //setprise
+			m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
+			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite
 			std::cout << "deplacement effectuer" << std::endl;
 			
 			return true;
@@ -122,11 +119,47 @@ bool Board::movePiece(Piece* piece, Case caze)
 	}
 	else if (isPossible(this, *piece, caze, _masterColor))
 	{
-		std::cout << "piece mangée" << std::endl; //PUT OLD PIECE IN TRASH (TODO)
+		if (piece->getColor() == BLANC)
+		{
+
+			pblanc.push_back(caze.getPiece()->getType()); //push type in corbeile
+			_gom->remove(caze.getPiece()->getTextureID()); //del sprite
+			caze.delPiece(); // del m_piece
+			m_board.at(piece->getID()).setEmpty(true); //setempty old
+			m_board.at(piece->getID()).delPiece();  //delpiece old
+			piece->setID(caze.getID()); //new id
+			piece->setHasMoved(1); //hasmoved
+			m_board.at(caze.getID()).setEmpty(0); //setprise
+			m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
+			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite 
+			std::cout << pblanc[0] << std::endl;
+			std::cout << "piece mangee" << std::endl;
+		}
+
+		if (piece->getColor() == NOIR)
+		{
+			_gom->remove(caze.getPiece()->getTextureID()); //del sprite
+			pnoir.push_back(caze.getPiece()->getType()); //push type in corbeille
+			caze.delPiece(); //del m_piece
+			m_board.at(piece->getID()).setEmpty(true); //setempty old
+			m_board.at(piece->getID()).delPiece();  //delpiece old
+			piece->setID(caze.getID()); //new id
+			piece->setHasMoved(1); //hasmoved
+			m_board.at(caze.getID()).setEmpty(0); //setprise
+			m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
+			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite 
+			std::cout << pnoir[0] << std::endl;
+			std::cout << "piece mangee" << std::endl;
+		}
+
+
+		
 		return true;
 	} 
 	else 
 	{
+
+
 		std::cout << "déplament impossible" << std::endl;
 		return false;
 	}
