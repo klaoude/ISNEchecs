@@ -354,7 +354,7 @@ inline bool isPossible(Board *board, Piece piece, Case caze, Couleur color)
 			{
 				if (piece.getID() + 2 > 63)
 					return 0;
-				if (board->getBoard().at(piece.getID()+1).isEmpty() && board->getBoard().at(piece.getID()+2).isEmpty() && board->getBoard().at(piece.getID()+3).isEmpty() && !board->getBoard().at(piece.getID()+7).getPiece()->getHasMoved()) //si cases sont libres et les tour/roi hasn't moved
+				if (board->getBoard().at(piece.getID()+1).isEmpty() && board->getBoard().at(piece.getID()+2).isEmpty() && board->getBoard().at(piece.getID()+3).isEmpty() && !board->getBoard().at(piece.getID()+4).getPiece()->getHasMoved()) //si cases sont libres et les tour/roi hasn't moved
 					return 1;
 				else
 					return 0;
@@ -377,7 +377,7 @@ inline bool isPossible(Board *board, Piece piece, Case caze, Couleur color)
 			{
 				if (piece.getID() + 2 > 63)
 					return 0;
-				if (board->getBoard().at(piece.getID()+1).isEmpty() && board->getBoard().at(piece.getID()+2).isEmpty() && board->getBoard().at(piece.getID()+3).isEmpty() && !board->getBoard().at(piece.getID()+7).getPiece()->getHasMoved()) //si cases sont libres et les tour/roi hasn't moved
+				if (board->getBoard().at(piece.getID()+1).isEmpty() && board->getBoard().at(piece.getID()+2).isEmpty() && board->getBoard().at(piece.getID()+3).isEmpty() && !board->getBoard().at(piece.getID()+4).getPiece()->getHasMoved()) //si cases sont libres et les tour/roi hasn't moved
 					return 1;
 				else
 					return 0;
