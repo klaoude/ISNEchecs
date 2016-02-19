@@ -260,8 +260,9 @@ inline bool isPossible(Board *board, Piece piece, Case caze, Couleur color)
 							return 1;
 					}
 				}
-				else if (p>0 && !board->getBoard().at(piece.getID() + i * 9).isEmpty())
-					return 0;
+				if (!(i * 9 > 0))
+					if (p>0 && !board->getBoard().at(piece.getID() + i * 9).isEmpty())
+						return 0;
 
 				if (p == 0 && piece.getID() + i * 7 == caze.getID())
 				{
@@ -276,8 +277,9 @@ inline bool isPossible(Board *board, Piece piece, Case caze, Couleur color)
 							return 1;
 					}
 				}
-				else if (p == 0 && !board->getBoard().at(piece.getID() + i * 7).isEmpty())
-					return 0;
+				if (!(i * 7 > 0))
+					if (p == 0 && !board->getBoard().at(piece.getID() + i * 7).isEmpty())
+						return 0;
 
 			}
 			
@@ -313,8 +315,9 @@ inline bool isPossible(Board *board, Piece piece, Case caze, Couleur color)
 							return 1;
 					}
 				}
-				else if (n>0 && !board->getBoard().at(piece.getID() - i * 9).isEmpty())
-					return 0;
+				if (!(-i * 9 < 0))
+					if (n>0 && !board->getBoard().at(piece.getID() - i * 9).isEmpty()) //
+						return 0;
 			
 				if (n == 0 && piece.getID() - i * 7 == caze.getID())
 				{
@@ -327,7 +330,7 @@ inline bool isPossible(Board *board, Piece piece, Case caze, Couleur color)
 						return 1;
 				}
 				if (!(-i*7 < 0))
-					if (n==0 && !board->getBoard().at(piece.getID() - i * 7).isEmpty()) //
+					if (n==0 && !board->getBoard().at(piece.getID() - i * 7).isEmpty())
 						return 0;
 			}
 			
@@ -865,20 +868,47 @@ inline bool isPossible(Board *board, Piece piece, Case caze, Couleur color)
 	return 0;
 }
 
-int findroinoir(Board* board)
+int findroinoir(Board *board)
 {
 	for (int i = 0; i < 64; i++)
 	{
 		if (board->getBoard().at(i).getPiece()->getType() == ROI && board->getBoard().at(i).getPiece()->getColor() == NOIR)
-			return 1;
+			return i;
 	}
+	return 0;
 }
 
-int findroiblanc(Board* board)
+int findroiblanc(Board *board)
 {
 	for (int i = 0; i < 64; i++)
 	{
 		if (board->getBoard().at(i).getPiece()->getType() == ROI && board->getBoard().at(i).getPiece()->getColor() == BLANC)
 			return i;
 	}
+	return 0;
+}
+
+int echec(Board *board)
+{
+	// 0-> Rien 
+	// be 1-> blanc echec | ne 2-> noir echec
+	// bem 3-> blanc mat | nem 4-> noir mat
+	int ne=0;
+	int be=0;
+	int nem=0;
+	int bem=0;
+
+	for (int i = 0; i < 64; i++)
+	{
+		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroiblanc(board)), board->getMasterColor()))
+			be++;
+		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroinoir(board)), board->getMasterColor()))
+			ne++;
+		
+	}
+	if (be > 0)
+		return 1;
+	if (ne > 0)
+		return 2;
+	return 0;
 }
