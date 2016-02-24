@@ -77,6 +77,8 @@ void MainGame::start()
 
 			client.coutRecv();
 
+			client.coutRecv();
+
 			system("Pause");
 		}
 	}

@@ -2,8 +2,10 @@ var dgram = require('dgram');
 var fileSystem = require('fs');
 var account;
 var server = dgram.createSocket('udp4');
+var playerBuffer = [];
 
 function send(msg, rinfo) {
+    console.log("send message");
     console.log(rinfo);
     var buffer = new Buffer(msg.length);
     buffer.write(msg);
@@ -32,7 +34,6 @@ console.log("Socket created\n");
 
 server.on("message", function(msg, rinfo) {
     console.log("Received message" + msg.toString());
-    var playerBuffer = [[]];
 
     var jsonData;
     try {
@@ -76,16 +77,20 @@ server.on("message", function(msg, rinfo) {
             }
             break;
         case "find":
-            console.log(playerBuffer);
-            console.log(playerBuffer.lenght);
-            if (playerBuffer.lenght > 0) {
+            console.log(playerBuffer.length);
+            if (playerBuffer.length > 0) {
                 send("You fond a math against " + playerBuffer[0][0], rinfo);
-                send("You fond a math against " + jsonData.Usernmae, playerBuffer[0][1]);
+                send("", rinfo);
+                send("Connecting to " + playerBuffer[0][1].address + ":" + playerBuffer[0][1].port, rinfo);
+                send("You fond a math against " + jsonData.Username, playerBuffer[0][1]);
+                send(jsonData.Username + " is connecting to your lobby !", playerBuffer[0][1]);
+                break;
             }
 
             send("You are in queue...", rinfo);
-
-            playerBuffer[playerBuffer.lenght] = [jsonData.Username, rinfo];
+            playerBuffer = new Array();
+            playerBuffer[playerBuffer.length] = [jsonData.Username, rinfo];
+            console.log(playerBuffer);
             break;
 
     }
