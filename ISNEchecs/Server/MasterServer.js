@@ -79,11 +79,18 @@ server.on("message", function(msg, rinfo) {
         case "find":
             console.log(playerBuffer.length);
             if (playerBuffer.length > 0) {
+                send("You fond a math against " + jsonData.Username, playerBuffer[0][1]);
+                send(jsonData.Username + " is connecting to your lobby !", playerBuffer[0][1]);
+                send("create", playerBuffer[0][1]);
+
                 send("You fond a math against " + playerBuffer[0][0], rinfo);
                 send("", rinfo);
                 send("Connecting to " + playerBuffer[0][1].address + ":" + playerBuffer[0][1].port, rinfo);
-                send("You fond a math against " + jsonData.Username, playerBuffer[0][1]);
-                send(jsonData.Username + " is connecting to your lobby !", playerBuffer[0][1]);
+                send("join", rinfo);
+                send(playerBuffer[0][1].address, rinfo);
+
+                playerBuffer[0] = new Array();
+
                 break;
             }
 

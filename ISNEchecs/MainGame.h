@@ -46,5 +46,7 @@ private:
 	bool _isMyTurn;
 
 	Couleur _clientColor;
+
+	std::string _ipaddress;
 };
 

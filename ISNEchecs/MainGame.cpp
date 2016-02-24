@@ -79,6 +79,21 @@ void MainGame::start()
 
 			client.coutRecv();
 
+			std::string receive = client.recv();
+			if (receive == "create")
+			{
+				init();
+				_gameState = Playing;
+				gameLoop();
+			}
+			else if (receive == "join")
+			{
+				init();
+				_ipaddress = client.recv();
+				_gameState = Joining;
+				gameLoop();
+			}
+
 			system("Pause");
 		}
 	}
@@ -111,6 +126,7 @@ void MainGame::start()
 
 void MainGame::init()
 {
+	_ipaddress = "127.0.0.1";
 	_gameState = GameState::ShowingMenu;
 	_window.create(sf::VideoMode(SCREEN_HEIGHT, SCREEN_WIDTH), "Chess");
 	_isAPieceSelected = false;
@@ -172,7 +188,7 @@ void MainGame::serverManager()
 			m_board = Board(&_gameObjectManager, _clientColor);
 			break;
 		case GameState::Joining:
-			_client.connect("90.9.27.208", 1337);
+			_client.connect(_ipaddress, 4269);
 			_isMyTurn = false;
 			_clientColor = NOIR;
 			m_board = Board(&_gameObjectManager, _clientColor);
