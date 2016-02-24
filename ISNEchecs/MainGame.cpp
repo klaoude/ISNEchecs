@@ -54,7 +54,7 @@ void MainGame::start()
 		}
 		else if (choice == 3)
 		{
-			sf::IpAddress ip = sf::IpAddress::getLocalAddress();
+			sf::IpAddress ip = "90.9.126.153";
 			MSClient client(ip, 4269);
 			
 			std::string username;
@@ -89,7 +89,7 @@ void MainGame::start()
 			else if (receive == "join")
 			{
 				init();
-				_ipaddress = client.recv();
+				_ipaddress = "90.9.126.153";
 				_gameState = Joining;
 				gameLoop();
 			}
