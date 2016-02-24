@@ -903,8 +903,7 @@ int echec(Board *board)
 		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroiblanc(board)), board->getMasterColor()))
 			be++;
 		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroinoir(board)), board->getMasterColor()))
-			ne++;
-		
+			ne++;		
 	}
 	if (be > 0)
 		return 1;

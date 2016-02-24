@@ -30,8 +30,8 @@ Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)
 	}
 
 	GameObject* board = new GameObject("Sprites/board.png");
-	_gom->add("Board", board);
 	setScale(board, 1);
+	_gom->setBackground(board);
 
 	int add = 0;
 	if (_masterColor == BLANC)
@@ -72,8 +72,6 @@ Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)
 			_gom->get(m_board.at(i).getPiece()->getTextureID())->setPosition(getCase(m_board.at(i).getPiece()->getID()).getPos());
 		}
 	}
-	if (mc == BLANC)
-		_gom->fix();
 }
 
 Board::~Board()

@@ -9,6 +9,8 @@ public:
 	GameObjectManager();
 	~GameObjectManager();
 
+	void setBackground(GameObject* background) { _background = background; }
+
 	int getObjectCount() const { return _gameObjects.size(); }
 	std::unordered_map<std::string, GameObject*> getMap() { return _gameObjects; }
 
@@ -22,5 +24,6 @@ public:
 
 private:
 	std::unordered_map<std::string, GameObject*> _gameObjects;
+	GameObject* _background;
 };
 

@@ -1,4 +1,5 @@
 #include "../Server/MSClient.h"
+#include <iostream>
 
 MSClient::MSClient(sf::IpAddress ip, unsigned short port)
 {
@@ -23,15 +24,8 @@ void MSClient::send(sf::Packet packet)
 	_socket.send(packet, _ipaddr, _port);
 }
 
-void MSClient::connect(char* username, char* password)
+void MSClient::sendData()
 {
-	_username = username;
-	_password = password;
-
-	_data[L"Action"] = new JSONValue(L"connect");
-	_data[L"Username"] = new JSONValue(std::wstring(username, username + strlen(username)));
-	_data[L"Password"] = new JSONValue(std::wstring(password, password + strlen(password)));
-
 	JSONValue *val = new JSONValue(_data);
 	_data.clear();
 
@@ -47,6 +41,27 @@ void MSClient::connect(char* username, char* password)
 	send(packet);
 }
 
+void MSClient::connect(char* username, char* password)
+{
+	_username = username;
+	_password = password;
+
+	_data[L"Action"] = new JSONValue(L"connect");
+	_data[L"Username"] = new JSONValue(std::wstring(username, username + strlen(username)));
+	_data[L"Password"] = new JSONValue(std::wstring(password, password + strlen(password)));
+
+	sendData();
+}
+
+void MSClient::find()
+{
+	const char* username = _username.c_str();
+	_data[L"Action"] = new JSONValue(L"find");
+	_data[L"Username"] = new JSONValue(std::wstring(username, username + strlen(username)));
+
+	sendData();
+}
+
 std::string MSClient::recv()
 {
 	char buffer[512];
@@ -57,4 +72,10 @@ std::string MSClient::recv()
 
 	std::string recvString(buffer, recvSize);
 	return recvString;
+}
+
+void MSClient::coutRecv()
+{
+	std::string recv = this->recv();
+	std::cout << recv << std::endl;
 }

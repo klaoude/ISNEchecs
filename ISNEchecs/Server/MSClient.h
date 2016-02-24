@@ -11,10 +11,13 @@ public:
 
 	void send(char* msg);
 	void send(sf::Packet packet);
+	void sendData();
 
 	void connect(char* username, char* password);
+	void find();
 
 	std::string recv();
+	void coutRecv();
 
 private:
 	sf::UdpSocket _socket;

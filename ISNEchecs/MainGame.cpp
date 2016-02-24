@@ -22,6 +22,7 @@ MainGame::MainGame()
 
 MainGame::~MainGame()
 {
+
 }
 
 void MainGame::start()
@@ -68,10 +69,15 @@ void MainGame::start()
 
 
 			std::cout << (char*)username.c_str() << " " << (char*)password.c_str() << std::endl;
-			client.connect((char*)username.c_str(), (char*)password.c_str());
-		
-			std::string recv = client.recv();
-			std::cout << recv << std::endl;
+			client.connect((char*)username.c_str(), (char*)password.c_str());		
+			client.coutRecv();
+
+			client.find();
+			client.coutRecv();
+
+			client.coutRecv();
+
+			system("Pause");
 		}
 	}
 	else if (choice == 2)

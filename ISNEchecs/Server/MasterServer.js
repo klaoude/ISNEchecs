@@ -3,6 +3,17 @@ var fileSystem = require('fs');
 var account;
 var server = dgram.createSocket('udp4');
 
+function send(msg, rinfo) {
+    console.log(rinfo);
+    var buffer = new Buffer(msg.length);
+    buffer.write(msg);
+    server.send(buffer, 0, buffer.length, rinfo.port, rinfo.address,
+        function (err, sent) {
+            if (err)
+                console.log("Error sending packet");
+        });
+}
+
 fileSystem.readFile("account.json", 'utf-8', function (err, data) {
     if (err) {
         console.log("Error loading file");
@@ -21,6 +32,7 @@ console.log("Socket created\n");
 
 server.on("message", function(msg, rinfo) {
     console.log("Received message" + msg.toString());
+    var playerBuffer = [[]];
 
     var jsonData;
     try {
@@ -63,6 +75,19 @@ server.on("message", function(msg, rinfo) {
                     });
             }
             break;
+        case "find":
+            console.log(playerBuffer);
+            console.log(playerBuffer.lenght);
+            if (playerBuffer.lenght > 0) {
+                send("You fond a math against " + playerBuffer[0][0], rinfo);
+                send("You fond a math against " + jsonData.Usernmae, playerBuffer[0][1]);
+            }
+
+            send("You are in queue...", rinfo);
+
+            playerBuffer[playerBuffer.lenght] = [jsonData.Username, rinfo];
+            break;
+
     }
 });
 
