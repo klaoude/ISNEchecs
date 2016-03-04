@@ -40,7 +40,6 @@ inline void setScale(GameObject* go, int code)
 
 inline bool isPossible(Board *board, Piece piece, Case caze, Couleur color)
 {
-	std::cout << piece.getID() << caze.getID() << piece.getType() << piece.getColor() << std::endl;
 	if (piece.getType() == CAVALIER) //CAVALIER
 	{
 		if (piece.getID() + 6== caze.getID())
