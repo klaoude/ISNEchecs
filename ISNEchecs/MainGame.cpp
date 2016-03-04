@@ -89,7 +89,10 @@ void MainGame::start()
 			else if (receive == "join")
 			{
 				init();
-				_ipaddress = "90.9.126.153";
+				std::string ip;
+				std::cout << "IP : ";
+				std::cin >> ip;
+				_ipaddress = ip;
 				_gameState = Joining;
 				gameLoop();
 			}
