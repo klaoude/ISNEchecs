@@ -89,10 +89,7 @@ void MainGame::start()
 			else if (receive == "join")
 			{
 				init();
-				std::string ip;
-				std::cout << "IP : ";
-				std::cin >> ip;
-				_ipaddress = ip;
+				_ipaddress = "127.0.0.1";
 				_gameState = Joining;
 				gameLoop();
 			}
@@ -182,6 +179,7 @@ void MainGame::serverManager()
 	}
 	if (!_client.isConnected())
 	{
+		std::string ip;
 		switch (_gameState)
 		{
 		case GameState::Playing:
@@ -190,8 +188,10 @@ void MainGame::serverManager()
 			_clientColor = BLANC;
 			m_board = Board(&_gameObjectManager, _clientColor);
 			break;
-		case GameState::Joining:
-			_client.connect(_ipaddress, 4269);
+		case GameState::Joining:			
+			std::cout << "IP : ";
+			std::cin >> ip;
+			_client.connect(ip, 1337);
 			_isMyTurn = false;
 			_clientColor = NOIR;
 			m_board = Board(&_gameObjectManager, _clientColor);

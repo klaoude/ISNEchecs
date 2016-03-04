@@ -889,6 +889,9 @@ int findroiblanc(Board *board)
 
 int echec(Board *board)
 {
+	std::vector<Piece> lb; //id piece qui mangent le roi blanc
+	std::vector<Piece> ln; //id piece qui mangent le roi noir
+	int depl[8] = {-9, -8, -7, -1, +1, 7, 8, 9};
 	// 0-> Rien 
 	// be 1-> blanc echec | ne 2-> noir echec
 	// bem 3-> blanc mat | nem 4-> noir mat
@@ -896,6 +899,10 @@ int echec(Board *board)
 	int be=0;
 	int nem=0;
 	int bem=0;
+	int bm = 0;
+	int nm = 0;
+	std::map<Piece, std::vector<int>> mapb;
+	std::map<Piece, std::vector<int>> mapn;
 
 	for (int i = 0; i < 64; i++)
 	{
@@ -904,9 +911,35 @@ int echec(Board *board)
 		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroinoir(board)), board->getMasterColor()))
 			ne++;		
 	}
+	
 	if (be > 0)
-		return 1;
-	if (ne > 0)
-		return 2;
-	return 0;
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			for (int i = 0; i < 64; i++)
+			{
+				if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroiblanc(board) + depl[i]), board->getMasterColor()))
+				if (board->getBoard().at(i).getPiece()->getColor() == board->getBoard().at(findroiblanc(board) + depl[i]).getPiece()->getColor())
+					;
+				else
+				{
+					bm; //return nb piece couleur opposé qui peuvent eat king
+					lb.push_back(*board->getBoard().at(i).getPiece());
+				}
+					
+			}
+		}
+
+		for (int i = 0; i < lb.size(); i++)
+		{
+			if (lb[i].getType() == PION)
+			{
+				if (board->getMasterColor()==BLANC)
+					if 
+			}
+		}
+
+
+
+	}
 }
