@@ -22,6 +22,7 @@ public:
 	std::vector<Case> getBoard(){ return m_board; }
 	Case getCase(int x, int y);
 	Case getCase(int caseID);
+	std::vector<Piece*> getAlivePiece() { return _alivePiece; }
 
 	Couleur getMasterColor() { return _masterColor; }
 
@@ -29,4 +30,5 @@ private:
 	std::vector<Case> m_board;
 	GameObjectManager* _gom;
 	Couleur _masterColor;
+	std::vector<Piece*> _alivePiece;
 };

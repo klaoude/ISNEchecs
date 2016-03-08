@@ -6,7 +6,58 @@
 #include "Main/PieceInfo.h"
 #include "Global.h"
 
+inline std::vector<int> getPath(Piece* piece)
+{
 
+}
+
+inline int getNumPiece(std::vector<Piece*> allPiece, Type type, Couleur color)
+{
+	int ret = 0;
+	for (int i = 0; i < allPiece.size; i++)
+	{
+		if (allPiece[i]->getType() == type && allPiece[i]->getColor() == color)
+			ret++;
+	}
+	return ret;
+}
+
+inline int find(std::vector<Piece*> vec, Piece* piece)
+{
+	for (auto i = 0; i < vec.size(); i++)
+	{
+		if (vec.at(i) == piece)
+			return i;
+	}
+	return 0;
+}
+
+inline int getValPiece(Piece* piece)
+{
+	switch (piece->getType())
+	{
+	case ROI:
+		return 6;
+		break;
+	case REINE:
+		return 5;
+		break;
+	case TOUR:
+		return 4;
+		break;
+	case FOU:
+		return 3;
+		break;
+	case CAVALIER:
+		return 2;
+		break;
+	case PION:
+		return 1;
+		break;
+	default:
+		break;
+	}
+}
 
 inline void setScale(GameObject* go, int code)
 {
@@ -934,8 +985,8 @@ int echec(Board *board)
 		{
 			if (lb[i].getType() == PION)
 			{
-				if (board->getMasterColor()==BLANC)
-					if 
+				if (board->getMasterColor() == BLANC)
+					;
 			}
 		}
 

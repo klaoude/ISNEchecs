@@ -70,6 +70,7 @@ Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)
 			_gom->add(m_board.at(i).getPiece()->getTextureID(), m_board.at(i).getPiece());
 			setScale(m_board.at(i).getPiece(), 2);
 			_gom->get(m_board.at(i).getPiece()->getTextureID())->setPosition(getCase(m_board.at(i).getPiece()->getID()).getPos());
+			_alivePiece.push_back(m_board.at(i).getPiece());
 		}
 	}
 }
@@ -187,6 +188,8 @@ bool Board::movePiece(Piece* piece, Case caze)
 		}
 		if (isPossible(this, *piece, caze, _masterColor))
 		{
+			if (find(_alivePiece, piece) != 0)
+				_alivePiece.erase(_alivePiece.begin() + find(_alivePiece, piece));
 			m_board.at(piece->getID()).setEmpty(true); //setempty old
 			m_board.at(piece->getID()).delPiece();  //delpiece old
 			piece->setID(caze.getID()); //new id

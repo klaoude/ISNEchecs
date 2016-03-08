@@ -87,6 +87,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AI.cpp" />
     <ClCompile Include="Graphics\GameObject.cpp" />
     <ClCompile Include="Graphics\GameObjectManager.cpp" />
     <ClCompile Include="Graphics\MainMenu.cpp" />
@@ -102,6 +103,7 @@
     <ClCompile Include="Server\Server.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AI.h" />
     <ClInclude Include="Fonctions.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Graphics\GameObject.h" />

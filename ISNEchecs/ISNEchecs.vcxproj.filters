@@ -78,6 +78,9 @@
     <ClCompile Include="Graphics\MainMenu.cpp">
       <Filter>Fichiers sources\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="AI.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -127,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="Graphics\MainMenu.h">
       <Filter>Fichiers d%27en-tête\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="AI.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
