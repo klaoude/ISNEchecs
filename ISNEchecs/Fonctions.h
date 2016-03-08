@@ -892,6 +892,8 @@ int echec(Board *board)
 	std::vector<Piece> lb; //id piece qui mangent le roi blanc
 	std::vector<Piece> ln; //id piece qui mangent le roi noir
 	int depl[8] = {-9, -8, -7, -1, +1, 7, 8, 9};
+	int deplb = 0;
+	int depln = 0;
 	// 0-> Rien 
 	// be 1-> blanc echec | ne 2-> noir echec
 	// bem 3-> blanc mat | nem 4-> noir mat
@@ -918,13 +920,16 @@ int echec(Board *board)
 		{
 			for (int i = 0; i < 64; i++)
 			{
-				if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroiblanc(board) + depl[i]), board->getMasterColor()))
-				if (board->getBoard().at(i).getPiece()->getColor() == board->getBoard().at(findroiblanc(board) + depl[i]).getPiece()->getColor())
+				if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroiblanc(board) + depl[i]), board->getMasterColor())) //check si on peut manger le roi partour ou il peut aller
+					deplb++;
+				if (deplb == 8) //si on peut manger le roi partour ou il peut aller
+					return be;
+				if (board->getBoard().at(i).getPiece()->getColor() == board->getBoard().at(findroiblanc(board) + depl[i]).getPiece()->getColor()) //pour ne pas remplir bm avec des pieces blanches
 					;
 				else
 				{
 					bm; //return nb piece couleur opposé qui peuvent eat king
-					lb.push_back(*board->getBoard().at(i).getPiece());
+					lb.push_back(*board->getBoard().at(i).getPiece()); //push piece dans liste
 				}
 					
 			}
@@ -934,12 +939,470 @@ int echec(Board *board)
 		{
 			if (lb[i].getType() == PION)
 			{
-				if (board->getMasterColor()==BLANC)
-					if 
+				mapb.emplace(std::pair < Piece, std::vector<int>> ( lb[i], std::vector<int>(lb[i].getID() ) )); 
+
+			}
+
+			if (lb[i].getType() == CAVALIER)
+			{
+
+				mapb.emplace(std::pair < Piece, std::vector<int>>(lb[i], std::vector<int>(lb[i].getID() ) ));
 			}
 		}
 
 
 
 	}
+}
+
+std::vector<int> getPathRoi(Board *board, Piece piece)
+{
+	std::vector<int> path;
+	if (piece.getColor() == BLANC)
+	{
+		if (piece.getType() == CAVALIER || piece.getType() == PION)
+		{
+			path.push_back(piece.getID());
+			return path;
+		}
+
+		if (piece.getType() == FOU)
+		{
+			int hg; //diag haut gauche
+			int hd; //diag haut droite
+			int bg; //diag bas gauche
+			int bd; //diag bas droite
+			for (int i = 1; i < 8; i++)
+			{
+				if (findroiblanc(board) == piece.getID() + i * 9)
+					bd = i;
+				else if (findroiblanc(board) == piece.getID() - i * 9)
+					hg = -i;
+				else if (findroiblanc(board) == piece.getID() + i * 7)
+					bg = i;
+				else if (findroiblanc(board) == piece.getID() - i * 7)
+					hd = -i;
+			}
+
+			if (bd > 0)
+			{
+				for (int i; i < bd; i++)//de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 9);
+				}
+				return path;
+			}
+
+			if (hg < 0)
+			{
+				for (int i; i > hg; i--)//de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 9);
+				}
+				return path;
+			}
+
+			if (bg > 0)
+			{
+				for (int i; i < bg; i++)//de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 7);
+				}
+				return path;
+			}
+
+			if (hd < 0)
+			{
+				for (int i; i > hd; i--)//de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 7);
+				}
+				return path;
+			}
+		}
+
+		if (piece.getType() == TOUR)
+		{
+			int h; //haut
+			int b; //bas
+			int g; //gauche
+			int d; //droite
+			for (int i = 1; i < 8; i++)
+			{
+				if (findroiblanc(board) == piece.getID() + i * 8)
+					b = i;
+				else if (findroiblanc(board) == piece.getID() - i * 8)
+					h= -i;
+				else if (floor(findroiblanc(board) / 8) * 8 + 8 == ceil(piece.getID() / 8.0f) * 8)
+					g = -i;
+				else if (ceil(findroiblanc(board) / 8.0f) * 8 == floor(piece.getID() / 8.0f) * 8 + 8)
+					d = i;
+			}
+
+			if (b > 0)
+			{
+				for (int i; i < b; i++) //de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 8);
+				}
+				return path;
+			}
+
+			if (h < 0)
+			{
+				for (int i; i > h; i--) //de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 8);
+				}
+				return path;
+			}
+
+			if (d > 0)
+			{
+				for (int i; i < d; i++) //de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i);
+				}
+				return path;
+			}
+
+			if (g < 0)
+			{
+				for (int i; i > g; i--) //de id a case avant le roi 
+				{
+					path.push_back(piece.getID() + i);
+				}
+				return path;
+			}
+		}
+		
+		if (piece.getType() == REINE)
+		{
+			int h; //haut
+			int b; //bas
+			int g; //gauche
+			int d; //droite
+			int hg; //diag haut gauche
+			int hd; //diag haut droite
+			int bg; //diag bas gauche
+			int bd; //diag bas droite
+			for (int i = 1; i < 8; i++)
+			{
+				if (findroiblanc(board) == piece.getID() + i * 8)
+					b = i;
+				else if (findroiblanc(board) == piece.getID() - i * 8)
+					h = -i;
+				else if (floor(findroiblanc(board) / 8) * 8 + 8 == ceil(piece.getID() / 8.0f) * 8)
+					g = -i;
+				else if (ceil(findroiblanc(board) / 8.0f) * 8 == floor(piece.getID() / 8.0f) * 8 + 8)
+					d = i;
+				else if (findroiblanc(board) == piece.getID() + i * 9)
+					bd = i;
+				else if (findroiblanc(board) == piece.getID() - i * 9)
+					hg = -i;
+				else if (findroiblanc(board) == piece.getID() + i * 7)
+					bg = i;
+				else if (findroiblanc(board) == piece.getID() - i * 7)
+					hd = -i;
+			}
+
+			if (b > 0)
+			{
+				for (int i; i < b; i++) //de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 8);
+				}
+				return path;
+			}
+
+			if (h < 0)
+			{
+				for (int i; i > h; i--) //de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 8);
+				}
+				return path;
+			}
+
+			if (d > 0)
+			{
+				for (int i; i < d; i++) //de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i);
+				}
+				return path;
+			}
+
+			if (g < 0)
+			{
+				for (int i; i > g; i--) //de id a case avant le roi 
+				{
+					path.push_back(piece.getID() + i);
+				}
+				return path;
+			}
+
+
+			if (bd > 0)
+			{
+				for (int i; i < bd; i++)//de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 9);
+				}
+				return path;
+			}
+
+			if (hg < 0)
+			{
+				for (int i; i > hg; i--)//de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 9);
+				}
+				return path;
+			}
+
+			if (bg > 0)
+			{
+				for (int i; i < bg; i++)//de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 7);
+				}
+				return path;
+			}
+
+			if (hd < 0)
+			{
+				for (int i; i > hd; i--)//de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 7);
+				}
+				return path;
+			}
+		}
+	}
+
+	if (piece.getColor() == NOIR) //noir
+	{
+		if (piece.getType() == CAVALIER || piece.getType() == PION)
+		{
+			path.push_back(piece.getID());
+			return path;
+		}
+
+		if (piece.getType() == FOU)
+		{
+			int hg; //diag haut gauche
+			int hd; //diag haut droite
+			int bg; //diag bas gauche
+			int bd; //diag bas droite
+			for (int i = 1; i < 8; i++)
+			{
+				if (findroinoir(board) == piece.getID() + i * 9)
+					bd = i;
+				else if (findroinoir(board) == piece.getID() - i * 9)
+					hg = -i;
+				else if (findroinoir(board) == piece.getID() + i * 7)
+					bg = i;
+				else if (findroinoir(board) == piece.getID() - i * 7)
+					hd = -i;
+			}
+
+			if (bd > 0)
+			{
+				for (int i; i < bd; i++)//de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 9);
+				}
+				return path;
+			}
+
+			if (hg < 0)
+			{
+				for (int i; i > hg; i--)//de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 9);
+				}
+				return path;
+			}
+
+			if (bg > 0)
+			{
+				for (int i; i < bg; i++)//de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 7);
+				}
+				return path;
+			}
+
+			if (hd < 0)
+			{
+				for (int i; i > hd; i--)//de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 7);
+				}
+				return path;
+			}
+		}
+
+		if (piece.getType() == TOUR)
+		{
+			int h; //haut
+			int b; //bas
+			int g; //gauche
+			int d; //droite
+			for (int i = 1; i < 8; i++)
+			{
+				if (findroinoir(board) == piece.getID() + i * 8)
+					b = i;
+				else if (findroinoir(board) == piece.getID() - i * 8)
+					h= -i;
+				else if (floor(findroinoir(board) / 8) * 8 + 8 == ceil(piece.getID() / 8.0f) * 8)
+					g = -i;
+				else if (ceil(findroinoir(board) / 8.0f) * 8 == floor(piece.getID() / 8.0f) * 8 + 8)
+					d = i;
+			}
+
+			if (b > 0)
+			{
+				for (int i; i < b; i++) //de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 8);
+				}
+				return path;
+			}
+
+			if (h < 0)
+			{
+				for (int i; i > h; i--) //de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 8);
+				}
+				return path;
+			}
+
+			if (d > 0)
+			{
+				for (int i; i < d; i++) //de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i);
+				}
+				return path;
+			}
+
+			if (g < 0)
+			{
+				for (int i; i > g; i--) //de id a case avant le roi 
+				{
+					path.push_back(piece.getID() + i);
+				}
+				return path;
+			}
+		}
+		
+		if (piece.getType() == REINE)
+		{
+			int h; //haut
+			int b; //bas
+			int g; //gauche
+			int d; //droite
+			int hg; //diag haut gauche
+			int hd; //diag haut droite
+			int bg; //diag bas gauche
+			int bd; //diag bas droite
+			for (int i = 1; i < 8; i++)
+			{
+				if (findroinoir(board) == piece.getID() + i * 8)
+					b = i;
+				else if (findroinoir(board) == piece.getID() - i * 8)
+					h = -i;
+				else if (floor(findroinoir(board) / 8) * 8 + 8 == ceil(piece.getID() / 8.0f) * 8)
+					g = -i;
+				else if (ceil(findroinoir(board) / 8.0f) * 8 == floor(piece.getID() / 8.0f) * 8 + 8)
+					d = i;
+				else if (findroinoir(board) == piece.getID() + i * 9)
+					bd = i;
+				else if (findroinoir(board) == piece.getID() - i * 9)
+					hg = -i;
+				else if (findroinoir(board) == piece.getID() + i * 7)
+					bg = i;
+				else if (findroinoir(board) == piece.getID() - i * 7)
+					hd = -i;
+			}
+
+			if (b > 0)
+			{
+				for (int i; i < b; i++) //de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 8);
+				}
+				return path;
+			}
+
+			if (h < 0)
+			{
+				for (int i; i > h; i--) //de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 8);
+				}
+				return path;
+			}
+
+			if (d > 0)
+			{
+				for (int i; i < d; i++) //de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i);
+				}
+				return path;
+			}
+
+			if (g < 0)
+			{
+				for (int i; i > g; i--) //de id a case avant le roi 
+				{
+					path.push_back(piece.getID() + i);
+				}
+				return path;
+			}
+
+
+			if (bd > 0)
+			{
+				for (int i; i < bd; i++)//de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 9);
+				}
+				return path;
+			}
+
+			if (hg < 0)
+			{
+				for (int i; i > hg; i--)//de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 9);
+				}
+				return path;
+			}
+
+			if (bg > 0)
+			{
+				for (int i; i < bg; i++)//de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 7);
+				}
+				return path;
+			}
+
+			if (hd < 0)
+			{
+				for (int i; i > hd; i--)//de id a case avant le roi
+				{
+					path.push_back(piece.getID() + i * 7);
+				}
+				return path;
+			}
+		}
+	}
+	return path;
+
 }
