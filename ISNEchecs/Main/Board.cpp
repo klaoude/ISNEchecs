@@ -1,6 +1,7 @@
 #include "../Main/Board.h"
 #include "../Global.h"
 #include "../Fonctions.h"
+#include "../IsPossible.h"
 #include "../Main/CaseID.h"
 
 std::vector<Type> pnoir;

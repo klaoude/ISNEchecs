@@ -109,6 +109,7 @@
     <ClInclude Include="Graphics\GameObject.h" />
     <ClInclude Include="Graphics\GameObjectManager.h" />
     <ClInclude Include="Graphics\MainMenu.h" />
+    <ClInclude Include="IsPossible.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Main\Board.h" />
     <ClInclude Include="Main\Case.h" />
