@@ -11,6 +11,7 @@ AI::~AI()
 {
 }
 
+/*
 void AI::play()
 {
 	int num = 0;
@@ -37,4 +38,4 @@ void AI::play()
 	{
 
 	}
-}
+}*/

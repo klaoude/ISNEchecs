@@ -6,11 +6,36 @@
 #include "Main/PieceInfo.h"
 #include "Global.h"
 
-inline std::vector<int> getPath(Piece* piece)
+inline std::vector<int> getPath(Board* board, Piece* piece, Couleur color)
 {
+	Couleur enemyColor;
+	if (color == BLANC)
+		enemyColor = NOIR;
+	else if (color == NOIR)
+		enemyColor = BLANC;
 
+	std::vector<int> ret;
+	switch (piece->getType())
+	{
+	case PION:
+		if (piece->getID() + 8 < 64)
+			if (board->getCase(piece->getID() + 8).isEmpty())
+				ret.push_back(piece->getID() + 8);
+
+		if (piece->getID() + 7 < 64)
+			if (board->getCase(piece->getID() + 7).getPiece()->getColor() == enemyColor)
+				ret.push_back(piece->getID() + 7);
+
+		if (piece->getID() + 7 < 64)
+			if (board->getCase(piece->getID() + 9).getPiece()->getColor() == enemyColor)
+				ret.push_back(piece->getID() + 9);
+		break;
+	//case CAVALIER:
+
+	}
 }
 
+/*
 inline int getNumPiece(std::vector<Piece*> allPiece, Type type, Couleur color)
 {
 	int ret = 0;
@@ -20,7 +45,7 @@ inline int getNumPiece(std::vector<Piece*> allPiece, Type type, Couleur color)
 			ret++;
 	}
 	return ret;
-}
+}*/
 
 inline int find(std::vector<Piece*> vec, Piece* piece)
 {
