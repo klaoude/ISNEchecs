@@ -114,7 +114,6 @@ bool Board::movePiece(Piece* piece, Case caze)
 					m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
 
 					std::cout << "grand rock effectuer" << std::endl;
-					std::cout << "Echec:" << echec(this) << std::endl;
 				}
 				if (piece->getID() - 2 == caze.getID() && isPossible(this, *piece, caze, _masterColor)) //grand rock 
 				{
@@ -135,7 +134,6 @@ bool Board::movePiece(Piece* piece, Case caze)
 					m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
 
 					std::cout << "petit rock effectuer" << std::endl;
-					std::cout << "Echec:" << echec(this) << std::endl;
 				}
 			}
 
@@ -160,7 +158,6 @@ bool Board::movePiece(Piece* piece, Case caze)
 					m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
 
 					std::cout << "grand rock effectuer" << std::endl;
-					std::cout << "Echec:" << echec(this) << std::endl;
 				}
 				if (piece->getID() - 2 == caze.getID() && isPossible(this, *piece, caze, _masterColor)) //petit rock 
 				{
@@ -181,7 +178,6 @@ bool Board::movePiece(Piece* piece, Case caze)
 					m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
 
 					std::cout << "petit rock effectuer" << std::endl;
-					std::cout << "Echec:" << echec(this) << std::endl;
 				}
 			}
 					
@@ -198,11 +194,6 @@ bool Board::movePiece(Piece* piece, Case caze)
 			m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
 			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite
 			std::cout << "deplacement effectuer" << std::endl;
-			std::cout << "Echec:" << echec(this) << std::endl;
-			if (echec(this) == 2)
-			{
-				;
-			}
 			
 			return true;
 		}
@@ -235,7 +226,6 @@ bool Board::movePiece(Piece* piece, Case caze)
 			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite 
 			std::cout << pblanc[0] << std::endl;
 			std::cout << "piece mangee" << std::endl;
-			std::cout << "Echec:" << echec(this) << std::endl;
 		}
 
 		if (piece->getColor() == NOIR)
@@ -252,7 +242,6 @@ bool Board::movePiece(Piece* piece, Case caze)
 			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite 
 			std::cout << pnoir[0] << std::endl;
 			std::cout << "piece mangee" << std::endl;
-			std::cout << "Echec:" << echec(this) << std::endl;
 		}
 
 

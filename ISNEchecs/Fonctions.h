@@ -943,7 +943,7 @@ inline bool isPossible(Board *board, Piece piece, Case caze, Couleur color)
 	return 0;
 }
 
-int findroinoir(Board *board)
+inline int findroinoir(Board *board)
 {
 	for (int i = 0; i < 64; i++)
 	{
@@ -953,7 +953,7 @@ int findroinoir(Board *board)
 	return 0;
 }
 
-int findroiblanc(Board *board)
+inline int findroiblanc(Board *board)
 {
 	for (int i = 0; i < 64; i++)
 	{
@@ -963,66 +963,7 @@ int findroiblanc(Board *board)
 	return 0;
 }
 
-std::map<Piece*, std::vector<int>> echec(Board *board)
-{
-	std::vector<Piece*> lb; //id piece qui mangent le roi blanc
-	std::vector<Piece*> ln; //id piece qui mangent le roi noir
-	int depl[8] = {-9, -8, -7, -1, +1, 7, 8, 9};
-	int deplb = 0;
-	int depln = 0;
-	// 0-> Rien 
-	// be 1-> blanc echec | ne 2-> noir echec
-	// bem 3-> blanc mat | nem 4-> noir mat
-	int ne=0;
-	int be=0;
-	int nem=0;
-	int bem=0;
-	int bm = 0;
-	int nm = 0;
-	std::map<Piece*, std::vector<int>> mapb;
-	std::map<Piece*, std::vector<int>> mapn;
-
-	for (int i = 0; i < 64; i++)
-	{
-		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroiblanc(board)), board->getMasterColor()))
-		{
-			be++;
-			lb.push_back(board->getBoard().at(i).getPiece());
-		}
-
-		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroinoir(board)), board->getMasterColor()))
-		{
-			ne++;
-			ln.push_back(board->getBoard().at(i).getPiece());
-		}
-	}
-	
-	if (be > 0)
-	{
-		for (int i = 0; i < lb.size(); i++)
-		{
-			mapb.emplace(std::pair <Piece*, std::vector<int>>(lb[i], getPathRoi(board, lb[i])));
-		}
-
-		return mapb;
-	}
-
-	if (ne > 0)
-	{
-		for (int i = 0; i < lb.size(); i++)
-		{
-			mapn.emplace(std::pair <Piece*, std::vector<int>>(lb[i], getPathRoi(board, lb[i])));
-		}
-
-		return mapn;
-	}
-
-	return mapb;
-}
-
-
-
-std::vector<int> getPathRoi(Board* board, Piece* piece)
+inline std::vector<int> getPathRoi(Board* board, Piece* piece)
 {
 	std::vector<int> path;
 	if (piece->getColor() == BLANC)
@@ -1099,7 +1040,7 @@ std::vector<int> getPathRoi(Board* board, Piece* piece)
 				if (findroiblanc(board) == piece->getID() + i * 8)
 					b = i;
 				else if (findroiblanc(board) == piece->getID() - i * 8)
-					h= -i;
+					h = -i;
 				else if (floor(findroiblanc(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8)
 					g = -i;
 				else if (ceil(findroiblanc(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8)
@@ -1142,7 +1083,7 @@ std::vector<int> getPathRoi(Board* board, Piece* piece)
 				return path;
 			}
 		}
-		
+
 		if (piece->getType() == REINE)
 		{
 			int h; //haut
@@ -1322,7 +1263,7 @@ std::vector<int> getPathRoi(Board* board, Piece* piece)
 				if (findroinoir(board) == piece->getID() + i * 8)
 					b = i;
 				else if (findroinoir(board) == piece->getID() - i * 8)
-					h= -i;
+					h = -i;
 				else if (floor(findroinoir(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8)
 					g = -i;
 				else if (ceil(findroinoir(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8)
@@ -1365,7 +1306,7 @@ std::vector<int> getPathRoi(Board* board, Piece* piece)
 				return path;
 			}
 		}
-		
+
 		if (piece->getType() == REINE)
 		{
 			int h; //haut
@@ -1438,9 +1379,9 @@ std::vector<int> getPathRoi(Board* board, Piece* piece)
 				for (int i; i < bd; i++)//de id a case avant le roi
 				{
 					path.push_back(piece->getID() + i * 9);
-			}
+				}
 				return path;
-		}
+			}
 
 			if (hg < 0)
 			{
@@ -1472,4 +1413,61 @@ std::vector<int> getPathRoi(Board* board, Piece* piece)
 	}
 	return path;
 
+}
+
+inline std::map<Piece*, std::vector<int>> echec(Board *board)
+{
+	std::vector<Piece*> lb; //id piece qui mangent le roi blanc
+	std::vector<Piece*> ln; //id piece qui mangent le roi noir
+	int depl[8] = {-9, -8, -7, -1, +1, 7, 8, 9};
+	int deplb = 0;
+	int depln = 0;
+	// 0-> Rien 
+	// be 1-> blanc echec | ne 2-> noir echec
+	// bem 3-> blanc mat | nem 4-> noir mat
+	int ne=0;
+	int be=0;
+	int nem=0;
+	int bem=0;
+	int bm = 0;
+	int nm = 0;
+	std::map<Piece*, std::vector<int>> mapb;
+	std::map<Piece*, std::vector<int>> mapn;
+
+	for (int i = 0; i < 64; i++)
+	{
+		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroiblanc(board)), board->getMasterColor()))
+		{
+			be++;
+			lb.push_back(board->getBoard().at(i).getPiece());
+		}
+
+		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroinoir(board)), board->getMasterColor()))
+		{
+			ne++;
+			ln.push_back(board->getBoard().at(i).getPiece());
+		}
+	}
+	
+	if (be > 0)
+	{
+		for (int i = 0; i < lb.size(); i++)
+		{
+			mapb.emplace(std::pair <Piece*, std::vector<int>>(lb[i], getPathRoi(board, lb[i])));
+		}
+
+		return mapb;
+	}
+
+	if (ne > 0)
+	{
+		for (int i = 0; i < lb.size(); i++)
+		{
+			mapn.emplace(std::pair <Piece*, std::vector<int>>(lb[i], getPathRoi(board, lb[i])));
+		}
+
+		return mapn;
+	}
+
+	return mapb;
 }
