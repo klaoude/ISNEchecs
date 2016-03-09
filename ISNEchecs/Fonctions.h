@@ -1415,10 +1415,33 @@ inline std::vector<int> getPathRoi(Board* board, Piece* piece)
 
 }
 
-inline std::map<Piece*, std::vector<int>> echec(Board *board)
+
+
+inline std::vector<Piece*> lb(Board *board)
 {
 	std::vector<Piece*> lb; //id piece qui mangent le roi blanc
+	for (int i = 0; i < 64; i++)
+	{
+		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroiblanc(board)), board->getMasterColor()))
+			lb.push_back(board->getBoard().at(i).getPiece());
+
+	}
+	return lb;
+}
+
+inline std::vector<Piece*> ln(Board *board)
+{
 	std::vector<Piece*> ln; //id piece qui mangent le roi noir
+	for (int i = 0; i < 64; i++)
+	{
+		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroinoir(board)), board->getMasterColor()))
+			ln.push_back(board->getBoard().at(i).getPiece());
+	}
+	return ln;
+}
+
+inline std::map<Piece*, std::vector<int>> echec(Board *board)
+{
 	int depl[8] = {-9, -8, -7, -1, +1, 7, 8, 9};
 	int deplb = 0;
 	int depln = 0;
@@ -1433,27 +1456,12 @@ inline std::map<Piece*, std::vector<int>> echec(Board *board)
 	int nm = 0;
 	std::map<Piece*, std::vector<int>> mapb;
 	std::map<Piece*, std::vector<int>> mapn;
-
-	for (int i = 0; i < 64; i++)
-	{
-		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroiblanc(board)), board->getMasterColor()))
-		{
-			be++;
-			lb.push_back(board->getBoard().at(i).getPiece());
-		}
-
-		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroinoir(board)), board->getMasterColor()))
-		{
-			ne++;
-			ln.push_back(board->getBoard().at(i).getPiece());
-		}
-	}
 	
 	if (be > 0)
 	{
-		for (int i = 0; i < lb.size(); i++)
+		for (int i = 0; i < lb(board).size(); i++)
 		{
-			mapb.emplace(std::pair <Piece*, std::vector<int>>(lb[i], getPathRoi(board, lb[i])));
+			mapb.emplace(std::pair <Piece*, std::vector<int>>(lb(board)[i], getPathRoi(board, lb(board)[i])));
 		}
 
 		return mapb;
@@ -1461,9 +1469,9 @@ inline std::map<Piece*, std::vector<int>> echec(Board *board)
 
 	if (ne > 0)
 	{
-		for (int i = 0; i < lb.size(); i++)
+		for (int i = 0; i < ln(board).size(); i++)
 		{
-			mapn.emplace(std::pair <Piece*, std::vector<int>>(lb[i], getPathRoi(board, lb[i])));
+			mapn.emplace(std::pair <Piece*, std::vector<int>>(ln(board)[i], getPathRoi(board, ln(board)[i])));
 		}
 
 		return mapn;

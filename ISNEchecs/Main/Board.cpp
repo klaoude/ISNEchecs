@@ -242,6 +242,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite 
 			std::cout << pnoir[0] << std::endl;
 			std::cout << "piece mangee" << std::endl;
+			std::cout << echec(this).find(ln(this)[0])->second[0];
 		}
 
 
