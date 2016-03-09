@@ -30,22 +30,23 @@ inline std::vector<int> getPath(Board* board, Piece* piece, Couleur color)
 			if (board->getCase(piece->getID() + 9).getPiece()->getColor() == enemyColor)
 				ret.push_back(piece->getID() + 9);
 		break;
-	//case CAVALIER:
+	case CAVALIER:
 
+		break;
 	}
 }
 
-/*
+
 inline int getNumPiece(std::vector<Piece*> allPiece, Type type, Couleur color)
 {
 	int ret = 0;
-	for (int i = 0; i < allPiece.size; i++)
+	for (int i = 0; i < allPiece.size(); i++)
 	{
 		if (allPiece[i]->getType() == type && allPiece[i]->getColor() == color)
 			ret++;
 	}
 	return ret;
-}*/
+}
 
 inline int find(std::vector<Piece*> vec, Piece* piece)
 {
