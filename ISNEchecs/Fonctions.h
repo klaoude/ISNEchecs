@@ -960,9 +960,16 @@ int echec(Board *board)
 	for (int i = 0; i < 64; i++)
 	{
 		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroiblanc(board)), board->getMasterColor()))
+		{
 			be++;
+			return 1; //tempo
+		}
+
 		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroinoir(board)), board->getMasterColor()))
-			ne++;		
+		{
+			ne++;
+			return 2; //tempo
+		}
 	}
 	
 	if (be > 0)
@@ -986,23 +993,9 @@ int echec(Board *board)
 			}
 		}
 
-		for (int i = 0; i < lb.size(); i++)
-		{
-			if (lb[i].getType() == PION)
-			{
-				mapb.emplace(std::pair < Piece, std::vector<int>> ( lb[i], std::vector<int>(lb[i].getID() ) )); 
+		
 
-			}
-
-			if (lb[i].getType() == CAVALIER)
-			{
-
-				mapb.emplace(std::pair < Piece, std::vector<int>>(lb[i], std::vector<int>(lb[i].getID() ) ));
-			}
-		}
-
-
-
+		return 0;
 	}
 }
 

@@ -199,6 +199,10 @@ bool Board::movePiece(Piece* piece, Case caze)
 			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite
 			std::cout << "deplacement effectuer" << std::endl;
 			std::cout << "Echec:" << echec(this) << std::endl;
+			if (echec(this) == 2)
+			{
+				std::cout << 
+			}
 			
 			return true;
 		}
