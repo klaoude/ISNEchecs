@@ -18,7 +18,7 @@ private:
 	Piece getMinVal(std::vector<Piece> vec);
 
 	Board* _board;
-	Type _rangPiece[5] = { Type::REINE, Type::TOUR, Type::FOU, Type::CAVALIER, Type::ROI };
+	//Type _rangPiece[5] = { Type::REINE, Type::TOUR, Type::FOU, Type::CAVALIER, Type::ROI };
 	Couleur _iaColor;
 };
 

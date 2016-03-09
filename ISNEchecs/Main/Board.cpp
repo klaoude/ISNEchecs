@@ -201,7 +201,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 			std::cout << "Echec:" << echec(this) << std::endl;
 			if (echec(this) == 2)
 			{
-				std::cout << 
+				;
 			}
 			
 			return true;
