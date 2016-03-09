@@ -938,10 +938,10 @@ int findroiblanc(Board *board)
 	return 0;
 }
 
-int echec(Board *board)
+std::map<Piece*, std::vector<int>> echec(Board *board)
 {
-	std::vector<Piece> lb; //id piece qui mangent le roi blanc
-	std::vector<Piece> ln; //id piece qui mangent le roi noir
+	std::vector<Piece*> lb; //id piece qui mangent le roi blanc
+	std::vector<Piece*> ln; //id piece qui mangent le roi noir
 	int depl[8] = {-9, -8, -7, -1, +1, 7, 8, 9};
 	int deplb = 0;
 	int depln = 0;
@@ -954,63 +954,61 @@ int echec(Board *board)
 	int bem=0;
 	int bm = 0;
 	int nm = 0;
-	std::map<Piece, std::vector<int>> mapb;
-	std::map<Piece, std::vector<int>> mapn;
+	std::map<Piece*, std::vector<int>> mapb;
+	std::map<Piece*, std::vector<int>> mapn;
 
 	for (int i = 0; i < 64; i++)
 	{
 		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroiblanc(board)), board->getMasterColor()))
 		{
 			be++;
-			return 1; //tempo
+			lb.push_back(board->getBoard().at(i).getPiece());
 		}
 
 		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroinoir(board)), board->getMasterColor()))
 		{
 			ne++;
-			return 2; //tempo
+			ln.push_back(board->getBoard().at(i).getPiece());
 		}
 	}
 	
 	if (be > 0)
 	{
-		for (int j = 0; j < 8; j++)
+		for (int i = 0; i < lb.size(); i++)
 		{
-			for (int i = 0; i < 64; i++)
-			{
-				if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroiblanc(board) + depl[i]), board->getMasterColor())) //check si on peut manger le roi partour ou il peut aller
-					deplb++;
-				if (deplb == 8) //si on peut manger le roi partour ou il peut aller
-					return be;
-				if (board->getBoard().at(i).getPiece()->getColor() == board->getBoard().at(findroiblanc(board) + depl[i]).getPiece()->getColor()) //pour ne pas remplir bm avec des pieces blanches
-					;
-				else
-				{
-					bm; //return nb piece couleur opposé qui peuvent eat king
-					lb.push_back(*board->getBoard().at(i).getPiece()); //push piece dans liste
-				}
-					
-			}
+			mapb.emplace(std::pair <Piece*, std::vector<int>>(lb[i], getPathRoi(board, lb[i])));
 		}
 
-		
-
-		return 0;
+		return mapb;
 	}
+
+	if (ne > 0)
+	{
+		for (int i = 0; i < lb.size(); i++)
+		{
+			mapn.emplace(std::pair <Piece*, std::vector<int>>(lb[i], getPathRoi(board, lb[i])));
+		}
+
+		return mapn;
+	}
+
+	return mapb;
 }
 
-std::vector<int> getPathRoi(Board *board, Piece piece)
+
+
+std::vector<int> getPathRoi(Board* board, Piece* piece)
 {
 	std::vector<int> path;
-	if (piece.getColor() == BLANC)
+	if (piece->getColor() == BLANC)
 	{
-		if (piece.getType() == CAVALIER || piece.getType() == PION)
+		if (piece->getType() == CAVALIER || piece->getType() == PION)
 		{
-			path.push_back(piece.getID());
+			path.push_back(piece->getID());
 			return path;
 		}
 
-		if (piece.getType() == FOU)
+		if (piece->getType() == FOU)
 		{
 			int hg; //diag haut gauche
 			int hd; //diag haut droite
@@ -1018,13 +1016,13 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			int bd; //diag bas droite
 			for (int i = 1; i < 8; i++)
 			{
-				if (findroiblanc(board) == piece.getID() + i * 9)
+				if (findroiblanc(board) == piece->getID() + i * 9)
 					bd = i;
-				else if (findroiblanc(board) == piece.getID() - i * 9)
+				else if (findroiblanc(board) == piece->getID() - i * 9)
 					hg = -i;
-				else if (findroiblanc(board) == piece.getID() + i * 7)
+				else if (findroiblanc(board) == piece->getID() + i * 7)
 					bg = i;
-				else if (findroiblanc(board) == piece.getID() - i * 7)
+				else if (findroiblanc(board) == piece->getID() - i * 7)
 					hd = -i;
 			}
 
@@ -1032,7 +1030,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i < bd; i++)//de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 9);
+					path.push_back(piece->getID() + i * 9);
 				}
 				return path;
 			}
@@ -1041,7 +1039,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i > hg; i--)//de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 9);
+					path.push_back(piece->getID() + i * 9);
 				}
 				return path;
 			}
@@ -1050,7 +1048,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i < bg; i++)//de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 7);
+					path.push_back(piece->getID() + i * 7);
 				}
 				return path;
 			}
@@ -1059,13 +1057,13 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i > hd; i--)//de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 7);
+					path.push_back(piece->getID() + i * 7);
 				}
 				return path;
 			}
 		}
 
-		if (piece.getType() == TOUR)
+		if (piece->getType() == TOUR)
 		{
 			int h; //haut
 			int b; //bas
@@ -1073,13 +1071,13 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			int d; //droite
 			for (int i = 1; i < 8; i++)
 			{
-				if (findroiblanc(board) == piece.getID() + i * 8)
+				if (findroiblanc(board) == piece->getID() + i * 8)
 					b = i;
-				else if (findroiblanc(board) == piece.getID() - i * 8)
+				else if (findroiblanc(board) == piece->getID() - i * 8)
 					h= -i;
-				else if (floor(findroiblanc(board) / 8) * 8 + 8 == ceil(piece.getID() / 8.0f) * 8)
+				else if (floor(findroiblanc(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8)
 					g = -i;
-				else if (ceil(findroiblanc(board) / 8.0f) * 8 == floor(piece.getID() / 8.0f) * 8 + 8)
+				else if (ceil(findroiblanc(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8)
 					d = i;
 			}
 
@@ -1087,7 +1085,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i < b; i++) //de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 8);
+					path.push_back(piece->getID() + i * 8);
 				}
 				return path;
 			}
@@ -1096,7 +1094,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i > h; i--) //de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 8);
+					path.push_back(piece->getID() + i * 8);
 				}
 				return path;
 			}
@@ -1105,7 +1103,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i < d; i++) //de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i);
+					path.push_back(piece->getID() + i);
 				}
 				return path;
 			}
@@ -1114,13 +1112,13 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i > g; i--) //de id a case avant le roi 
 				{
-					path.push_back(piece.getID() + i);
+					path.push_back(piece->getID() + i);
 				}
 				return path;
 			}
 		}
 		
-		if (piece.getType() == REINE)
+		if (piece->getType() == REINE)
 		{
 			int h; //haut
 			int b; //bas
@@ -1132,21 +1130,21 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			int bd; //diag bas droite
 			for (int i = 1; i < 8; i++)
 			{
-				if (findroiblanc(board) == piece.getID() + i * 8)
+				if (findroiblanc(board) == piece->getID() + i * 8)
 					b = i;
-				else if (findroiblanc(board) == piece.getID() - i * 8)
+				else if (findroiblanc(board) == piece->getID() - i * 8)
 					h = -i;
-				else if (floor(findroiblanc(board) / 8) * 8 + 8 == ceil(piece.getID() / 8.0f) * 8)
+				else if (floor(findroiblanc(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8)
 					g = -i;
-				else if (ceil(findroiblanc(board) / 8.0f) * 8 == floor(piece.getID() / 8.0f) * 8 + 8)
+				else if (ceil(findroiblanc(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8)
 					d = i;
-				else if (findroiblanc(board) == piece.getID() + i * 9)
+				else if (findroiblanc(board) == piece->getID() + i * 9)
 					bd = i;
-				else if (findroiblanc(board) == piece.getID() - i * 9)
+				else if (findroiblanc(board) == piece->getID() - i * 9)
 					hg = -i;
-				else if (findroiblanc(board) == piece.getID() + i * 7)
+				else if (findroiblanc(board) == piece->getID() + i * 7)
 					bg = i;
-				else if (findroiblanc(board) == piece.getID() - i * 7)
+				else if (findroiblanc(board) == piece->getID() - i * 7)
 					hd = -i;
 			}
 
@@ -1154,7 +1152,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i < b; i++) //de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 8);
+					path.push_back(piece->getID() + i * 8);
 				}
 				return path;
 			}
@@ -1163,7 +1161,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i > h; i--) //de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 8);
+					path.push_back(piece->getID() + i * 8);
 				}
 				return path;
 			}
@@ -1172,7 +1170,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i < d; i++) //de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i);
+					path.push_back(piece->getID() + i);
 				}
 				return path;
 			}
@@ -1181,7 +1179,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i > g; i--) //de id a case avant le roi 
 				{
-					path.push_back(piece.getID() + i);
+					path.push_back(piece->getID() + i);
 				}
 				return path;
 			}
@@ -1191,7 +1189,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i < bd; i++)//de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 9);
+					path.push_back(piece->getID() + i * 9);
 				}
 				return path;
 			}
@@ -1200,7 +1198,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i > hg; i--)//de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 9);
+					path.push_back(piece->getID() + i * 9);
 				}
 				return path;
 			}
@@ -1209,7 +1207,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i < bg; i++)//de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 7);
+					path.push_back(piece->getID() + i * 7);
 				}
 				return path;
 			}
@@ -1218,22 +1216,22 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i > hd; i--)//de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 7);
+					path.push_back(piece->getID() + i * 7);
 				}
 				return path;
 			}
 		}
 	}
 
-	if (piece.getColor() == NOIR) //noir
+	if (piece->getColor() == NOIR) //noir
 	{
-		if (piece.getType() == CAVALIER || piece.getType() == PION)
+		if (piece->getType() == CAVALIER || piece->getType() == PION)
 		{
-			path.push_back(piece.getID());
+			path.push_back(piece->getID());
 			return path;
 		}
 
-		if (piece.getType() == FOU)
+		if (piece->getType() == FOU)
 		{
 			int hg; //diag haut gauche
 			int hd; //diag haut droite
@@ -1241,13 +1239,13 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			int bd; //diag bas droite
 			for (int i = 1; i < 8; i++)
 			{
-				if (findroinoir(board) == piece.getID() + i * 9)
+				if (findroinoir(board) == piece->getID() + i * 9)
 					bd = i;
-				else if (findroinoir(board) == piece.getID() - i * 9)
+				else if (findroinoir(board) == piece->getID() - i * 9)
 					hg = -i;
-				else if (findroinoir(board) == piece.getID() + i * 7)
+				else if (findroinoir(board) == piece->getID() + i * 7)
 					bg = i;
-				else if (findroinoir(board) == piece.getID() - i * 7)
+				else if (findroinoir(board) == piece->getID() - i * 7)
 					hd = -i;
 			}
 
@@ -1255,7 +1253,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i < bd; i++)//de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 9);
+					path.push_back(piece->getID() + i * 9);
 				}
 				return path;
 			}
@@ -1264,7 +1262,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i > hg; i--)//de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 9);
+					path.push_back(piece->getID() + i * 9);
 				}
 				return path;
 			}
@@ -1273,7 +1271,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i < bg; i++)//de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 7);
+					path.push_back(piece->getID() + i * 7);
 				}
 				return path;
 			}
@@ -1282,13 +1280,13 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i > hd; i--)//de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 7);
+					path.push_back(piece->getID() + i * 7);
 				}
 				return path;
 			}
 		}
 
-		if (piece.getType() == TOUR)
+		if (piece->getType() == TOUR)
 		{
 			int h; //haut
 			int b; //bas
@@ -1296,13 +1294,13 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			int d; //droite
 			for (int i = 1; i < 8; i++)
 			{
-				if (findroinoir(board) == piece.getID() + i * 8)
+				if (findroinoir(board) == piece->getID() + i * 8)
 					b = i;
-				else if (findroinoir(board) == piece.getID() - i * 8)
+				else if (findroinoir(board) == piece->getID() - i * 8)
 					h= -i;
-				else if (floor(findroinoir(board) / 8) * 8 + 8 == ceil(piece.getID() / 8.0f) * 8)
+				else if (floor(findroinoir(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8)
 					g = -i;
-				else if (ceil(findroinoir(board) / 8.0f) * 8 == floor(piece.getID() / 8.0f) * 8 + 8)
+				else if (ceil(findroinoir(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8)
 					d = i;
 			}
 
@@ -1310,7 +1308,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i < b; i++) //de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 8);
+					path.push_back(piece->getID() + i * 8);
 				}
 				return path;
 			}
@@ -1319,7 +1317,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i > h; i--) //de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 8);
+					path.push_back(piece->getID() + i * 8);
 				}
 				return path;
 			}
@@ -1328,7 +1326,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i < d; i++) //de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i);
+					path.push_back(piece->getID() + i);
 				}
 				return path;
 			}
@@ -1337,13 +1335,13 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i > g; i--) //de id a case avant le roi 
 				{
-					path.push_back(piece.getID() + i);
+					path.push_back(piece->getID() + i);
 				}
 				return path;
 			}
 		}
 		
-		if (piece.getType() == REINE)
+		if (piece->getType() == REINE)
 		{
 			int h; //haut
 			int b; //bas
@@ -1355,21 +1353,21 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			int bd; //diag bas droite
 			for (int i = 1; i < 8; i++)
 			{
-				if (findroinoir(board) == piece.getID() + i * 8)
+				if (findroinoir(board) == piece->getID() + i * 8)
 					b = i;
-				else if (findroinoir(board) == piece.getID() - i * 8)
+				else if (findroinoir(board) == piece->getID() - i * 8)
 					h = -i;
-				else if (floor(findroinoir(board) / 8) * 8 + 8 == ceil(piece.getID() / 8.0f) * 8)
+				else if (floor(findroinoir(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8)
 					g = -i;
-				else if (ceil(findroinoir(board) / 8.0f) * 8 == floor(piece.getID() / 8.0f) * 8 + 8)
+				else if (ceil(findroinoir(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8)
 					d = i;
-				else if (findroinoir(board) == piece.getID() + i * 9)
+				else if (findroinoir(board) == piece->getID() + i * 9)
 					bd = i;
-				else if (findroinoir(board) == piece.getID() - i * 9)
+				else if (findroinoir(board) == piece->getID() - i * 9)
 					hg = -i;
-				else if (findroinoir(board) == piece.getID() + i * 7)
+				else if (findroinoir(board) == piece->getID() + i * 7)
 					bg = i;
-				else if (findroinoir(board) == piece.getID() - i * 7)
+				else if (findroinoir(board) == piece->getID() - i * 7)
 					hd = -i;
 			}
 
@@ -1377,7 +1375,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i < b; i++) //de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 8);
+					path.push_back(piece->getID() + i * 8);
 				}
 				return path;
 			}
@@ -1386,7 +1384,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i > h; i--) //de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 8);
+					path.push_back(piece->getID() + i * 8);
 				}
 				return path;
 			}
@@ -1395,7 +1393,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i < d; i++) //de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i);
+					path.push_back(piece->getID() + i);
 				}
 				return path;
 			}
@@ -1404,7 +1402,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i > g; i--) //de id a case avant le roi 
 				{
-					path.push_back(piece.getID() + i);
+					path.push_back(piece->getID() + i);
 				}
 				return path;
 			}
@@ -1414,7 +1412,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i < bd; i++)//de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 9);
+					path.push_back(piece->getID() + i * 9);
 			}
 				return path;
 		}
@@ -1423,7 +1421,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i > hg; i--)//de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 9);
+					path.push_back(piece->getID() + i * 9);
 				}
 				return path;
 			}
@@ -1432,7 +1430,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i < bg; i++)//de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 7);
+					path.push_back(piece->getID() + i * 7);
 				}
 				return path;
 			}
@@ -1441,7 +1439,7 @@ std::vector<int> getPathRoi(Board *board, Piece piece)
 			{
 				for (int i; i > hd; i--)//de id a case avant le roi
 				{
-					path.push_back(piece.getID() + i * 7);
+					path.push_back(piece->getID() + i * 7);
 				}
 				return path;
 			}
