@@ -10,7 +10,7 @@
 
 inline bool Cavalier(Board *board, Piece piece, Case caze, Couleur color)
 {
-	if (piece.getID() + 6 == caze.getID() && piece.getID() % 8 != (0 || 1))
+	if (piece.getID() + 6 == caze.getID() && piece.getID() % 8 != (0 && 1))
 	{
 		if (caze.isEmpty())
 			return 1;
@@ -18,7 +18,7 @@ inline bool Cavalier(Board *board, Piece piece, Case caze, Couleur color)
 			(caze.getPiece()->getColor() != NONEc))
 			return 1;
 	}
-	if (piece.getID() - 6 == caze.getID() && (piece.getID()+1) % 8 != (0 || 7)) // WTF
+	if (piece.getID() - 6 == caze.getID() && (piece.getID()+1) % 8 != (0 && 7)) // WTF
 	{
 		if (caze.isEmpty())
 			return 1;
@@ -26,7 +26,7 @@ inline bool Cavalier(Board *board, Piece piece, Case caze, Couleur color)
 			(caze.getPiece()->getColor() != NONEc))
 			return 1;
 	}
-	if (piece.getID() + 10 == caze.getID() && (piece.getID() + 1) % 8 != (0 || 7))
+	if (piece.getID() + 10 == caze.getID() && (piece.getID() + 1) % 8 != (0 && 7))
 	{
 		if (caze.isEmpty())
 			return 1;
@@ -34,7 +34,7 @@ inline bool Cavalier(Board *board, Piece piece, Case caze, Couleur color)
 			(caze.getPiece()->getColor() != NONEc))
 			return 1;
 	}
-	if (piece.getID() - 10 == caze.getID() && piece.getID() % 8 != (0 || 1))
+	if (piece.getID() - 10 == caze.getID() && piece.getID() % 8 != (0 && 1))
 	{
 		if (caze.isEmpty())
 			return 1;
