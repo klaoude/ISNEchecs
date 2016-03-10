@@ -25,6 +25,9 @@ private:
 	void draw();
 	void showMenu();
 
+	void enableSurbrillance(Piece piece, Couleur color);
+	void disableSurbrillance();
+
 	enum GameState { Uninitialized, ShowingMenu, Playing, Exiting, Joining, Debugging };
 	static GameState _gameState;
 
@@ -48,5 +51,7 @@ private:
 	Couleur _clientColor;
 
 	std::string _ipaddress;
+
+	std::vector<std::string> _surbrillance;
 };
 

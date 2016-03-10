@@ -74,6 +74,10 @@ Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)
 			_alivePiece.push_back(m_board.at(i).getPiece());
 		}
 	}
+	for each (Piece* piece in _alivePiece)
+	{
+		std::cout << piece->getID() << std::endl;
+	}
 }
 
 Board::~Board()

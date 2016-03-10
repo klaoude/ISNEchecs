@@ -10,9 +10,34 @@
 #include "Server/Client.h"
 #include "Server/MSClient.h"
 
+#include "Fonctions.h"
+
 void debug(std::string debugstring)
 {
 	std::cout << "[DEBUG] " << debugstring << std::endl;
+}
+
+void MainGame::enableSurbrillance(Piece piece, Couleur color)
+{
+	auto allPath = getAllPath(&m_board, &piece, color);
+	for (int i = 0; i < allPath.size(); i++)
+	{
+		GameObject* go = new GameObject("Sprites/surbrillance.png");
+		go->setPosition(m_board.getCase(allPath[i]).getPos());
+		setScale(go, 2);
+		_gameObjectManager.add("Surbrillance" + std::to_string(i), go);
+		_surbrillance.push_back("Surbrillance" + std::to_string(i));
+		std::cout << "add surbrillance : " << i << std::endl;
+	}
+}
+
+void MainGame::disableSurbrillance()
+{
+	for (int i = 0; i < _surbrillance.size(); i++)
+	{
+		_gameObjectManager.remove(_surbrillance[i]);
+	}
+	_surbrillance.clear();
 }
 
 MainGame::MainGame()
@@ -225,6 +250,7 @@ void MainGame::handleInput()
 							{
 								_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
 								m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
+								enableSurbrillance(*_selectedPiece, _selectedPiece->getColor());
 								_isAPieceSelected = true;
 							}
 						}
@@ -246,11 +272,13 @@ void MainGame::handleInput()
 							_isMyTurn = false;
 							debug("is not my turn");
 							_selectedPiece = new Piece();
+							disableSurbrillance();
 						}
 						else
 						{
 							_selectedPiece = new Piece();
 							_isAPieceSelected = false;
+							disableSurbrillance();
 						}
 					}
 				}
@@ -265,6 +293,7 @@ void MainGame::handleInput()
 						{
 							_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
 							m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
+							enableSurbrillance(*_selectedPiece, _selectedPiece->getColor());
 							_isAPieceSelected = true;
 						}
 					}
@@ -284,11 +313,13 @@ void MainGame::handleInput()
 						m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
 						_isAPieceSelected = false;
 						_selectedPiece = new Piece();
+						disableSurbrillance();
 					}
 					else
 					{
 						_selectedPiece = new Piece();
 						_isAPieceSelected = false;
+						disableSurbrillance();
 					}
 				}
 			}

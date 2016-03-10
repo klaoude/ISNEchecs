@@ -7,17 +7,12 @@
 #include "Global.h"
 #include "IsPossible.h"
 
-inline std::vector<int> getPath(Board* board, Piece* piece, Couleur color)
+inline std::vector<int> getAllPath(Board* board, Piece* piece, Couleur color)
 {
-	Couleur enemyColor;
-	if (color == BLANC)
-		enemyColor = NOIR;
-	else if (color == NOIR)
-		enemyColor = BLANC;
-
 	std::vector<int> ret;
-	switch (piece->getType())
+	for (auto i = 0; i < 64; i++)
 	{
+<<<<<<< Updated upstream
 	case PION:
 		if (piece->getID() + 8 < board->getAlivePiece().size())
 			if (board->getCase(piece->getID() + 8).isEmpty())
@@ -34,7 +29,12 @@ inline std::vector<int> getPath(Board* board, Piece* piece, Couleur color)
 	case CAVALIER:
 
 		break;
+=======
+		if (isPossible(board, *piece, board->getCase(i), color))
+			ret.push_back(i);
+>>>>>>> Stashed changes
 	}
+	return ret;
 }
 
 
