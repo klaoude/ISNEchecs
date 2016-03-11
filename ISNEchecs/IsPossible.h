@@ -10,19 +10,19 @@
 
 inline bool Cavalier(Board *board, Piece piece, Case caze, Couleur color)
 {
-	if (piece.getID() + 6 == caze.getID() && piece.getID() % 8 != (0 && 1))
+	if (piece.getID() + 6 == caze.getID() && piece.getID() % 8 != 0 && piece.getID() % 8 != 1)
 	{
 		return 1;
 	}
-	if (piece.getID() - 6 == caze.getID() && (piece.getID()+1) % 8 != (0 && 7)) // WTF
+	if (piece.getID() - 6 == caze.getID() && (piece.getID() + 1) % 8 != 0 && (piece.getID() + 1) % 8 != 7) // WTF
 	{
 		return 1;
 	}
-	if (piece.getID() + 10 == caze.getID() && (piece.getID() + 1) % 8 != (0 && 7))
+	if (piece.getID() + 10 == caze.getID() && (piece.getID() + 1) % 8 != 0 && (piece.getID() + 1) % 8 != 7)
 	{
 		return 1;
 	}
-	if (piece.getID() - 10 == caze.getID() && piece.getID() % 8 != (0 && 1))
+	if (piece.getID() - 10 == caze.getID() && piece.getID() % 8 != 0 && piece.getID() % 8 != 1)
 	{
 		return 1;
 	}
@@ -320,12 +320,18 @@ inline bool Pion(Board *board, Piece piece, Case caze, Couleur color)
 
 			if (piece.getID() + 7 == caze.getID() && piece.getID() % 8 != 0)
 			{
-				return 1;
+				if (caze.getPiece()->getColor() != BLANC && caze.getPiece()->getColor() != NONEc)
+					return 1;
+				else
+					return 0;
 			}
 
 			if (piece.getID() + 9 == caze.getID() && (piece.getID()+1) % 8 != 0)
 			{
-				return 1;
+				if (caze.getPiece()->getColor() != BLANC && caze.getPiece()->getColor() != NONEc)
+					return 1;
+				else
+					return 0;
 			}
 		}
 
@@ -370,12 +376,18 @@ inline bool Pion(Board *board, Piece piece, Case caze, Couleur color)
 
 			if (piece.getID() - 7 == caze.getID() &&  (piece.getID()+1) % 8 != 0)
 			{
-				return 1;
+				if (caze.getPiece()->getColor() != NOIR && caze.getPiece()->getColor() != NONEc)
+					return 1;
+				else
+					return 0;
 			}
 
 			if (piece.getID() - 9 == caze.getID() && piece.getID() % 8 != 0)
 			{
-				return 1;
+				if (caze.getPiece()->getColor() != NOIR && caze.getPiece()->getColor() != NONEc)
+					return 1;
+				else
+					return 0;
 			}
 		}
 
