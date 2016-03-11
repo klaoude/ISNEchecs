@@ -8,6 +8,21 @@ GameObjectManager::~GameObjectManager()
 {
 }
 
+void GameObjectManager::addSurbrillance(std::string name, GameObject* gameObject)
+{
+	_surbrillance.emplace(std::pair<std::string, GameObject*>(name, gameObject));
+}
+
+void GameObjectManager::removeSurbrillance(std::string name)
+{
+	std::map<std::string, GameObject*>::iterator result = _surbrillance.find(name);
+	if (result != _surbrillance.end())
+	{
+		delete result->second;
+		_surbrillance.erase(result);
+	}
+}
+
 void GameObjectManager::add(std::string name, GameObject* gameObject)
 {
 	_gameObjects.emplace(std::pair<std::string, GameObject*>(name, gameObject));
@@ -35,6 +50,10 @@ GameObject* GameObjectManager::get(std::string name)
 void GameObjectManager::draw(sf::RenderWindow& window)
 {
 	_background->draw(window);
+	
+	for (auto i = _surbrillance.begin(); i != _surbrillance.end(); i++)
+		i->second->draw(window);
+
 	for (auto i = _gameObjects.begin(); i != _gameObjects.end(); i++)
 	{
 		i->second->draw(window);
