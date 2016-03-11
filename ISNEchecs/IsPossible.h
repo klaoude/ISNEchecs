@@ -131,6 +131,7 @@ inline bool Fou(Board *board, Piece piece, Case caze, Couleur color)
 					break;
 				}
 				if (piece.getID() + j * 7 == caze.getID())
+					std::cout << "bite" << std::endl;;
 					break;
 				if (piece.getID() + j * 9 > 63)
 					return 0;
@@ -145,7 +146,7 @@ inline bool Fou(Board *board, Piece piece, Case caze, Couleur color)
 				else
 					return 0;
 			}
-			else if (piece.getID() + i * 9 < 63)
+			else if (p > 0 && piece.getID() + i * 9 < 63)
 			{
 				if (!board->getBoard().at(piece.getID() + i * 9).isEmpty() )
 									return 0;
@@ -157,7 +158,7 @@ inline bool Fou(Board *board, Piece piece, Case caze, Couleur color)
 			if (p == 0 && piece.getID() + i * 7 == caze.getID())
 			{
 				
-				if (i <= piece.getID() % 8) //depassement des bords (across the map)
+				if (i <=  piece.getID() % 8) //depassement des bords (across the map)
 				{
 					return 1;
 				}
@@ -165,7 +166,7 @@ inline bool Fou(Board *board, Piece piece, Case caze, Couleur color)
 					return 0;
 
 			}
-			else if (piece.getID() + i * 7 < 63)
+			else if ( p==0 && piece.getID() + i * 7 < 63)
 			{
 				if (!board->getBoard().at(piece.getID() + i * 7).isEmpty())
 					return 0;
@@ -185,8 +186,6 @@ inline bool Fou(Board *board, Piece piece, Case caze, Couleur color)
 					break;
 				if (piece.getID() - (j * 7) < 0)
 					return 0;
-				if (piece.getID() - (j * 7) < 0)
-					return 0;
 			}
 
 			if (n > 0 && piece.getID() - i * 9 == caze.getID())
@@ -198,7 +197,7 @@ inline bool Fou(Board *board, Piece piece, Case caze, Couleur color)
 				else
 					return 0;
 			}
-			else if (piece.getID() - i * 9 > 0)
+			else if (n > 0 && piece.getID() - i * 9 > 0)
 			{
 				if (!board->getBoard().at(piece.getID() - i * 9).isEmpty())
 					return 0;
@@ -206,14 +205,14 @@ inline bool Fou(Board *board, Piece piece, Case caze, Couleur color)
 
 			if (n == 0 && piece.getID() - i * 7 == caze.getID())
 			{
-				if (i <= 8 - (div(piece.getID(), 8).quot + 1) && div(piece.getID(), 8).quot + 1 != 0)
+				if (i <= piece.getID() % 8)
 				{
 					return 1;
 				}
 				else
 					return 0;
 			}
-			else if (piece.getID() - i * 7 > 0)
+			else if (n ==0 && piece.getID() - i * 7 > 0)
 			{
 				if (!board->getBoard().at(piece.getID() - i * 7).isEmpty())
 					return 0;
