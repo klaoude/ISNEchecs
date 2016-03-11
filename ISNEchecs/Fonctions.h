@@ -6,6 +6,7 @@
 #include "Main/PieceInfo.h"
 #include "Global.h"
 #include "IsPossible.h"
+
 inline std::vector<int> getAllPath(Board* board, Piece* piece, Couleur color)
 {
 	std::vector<int> ret;
@@ -17,6 +18,16 @@ inline std::vector<int> getAllPath(Board* board, Piece* piece, Couleur color)
 	return ret;
 }
 
+inline bool isPieceOnPath(Board* board, Piece* pieceA, Piece* pieceB)
+{
+	auto path = getAllPath(board, pieceA, pieceA->getColor());
+	for (int i = 0; i < path.size(); i++)
+	{
+		if (board->getCase(path[i]).getPiece() == pieceB)
+			return true;
+	}
+	return false;
+}
 
 inline int getNumPiece(std::vector<Piece*> allPiece, Type type, Couleur color)
 {
@@ -623,14 +634,29 @@ inline int echec(Board *board)
 		if (findroiblanc(board) + depl[i] < 63 && findroiblanc(board) + depl[i] > 0)
 		{
 			if (isPossible(board, *board->getBoard().at(findroiblanc(board)).getPiece(), board->getBoard().at(findroiblanc(board) + depl[i]), board->getMasterColor())) //si possible roi aille sur case
-				for (int j = 0; j < board->getAliveNoir().size(); j++)
+			{
+				if (board->getBoard().at(findroiblanc(board) + depl[i]).getPiece()->getColor() == BLANC)
 				{
-					if (isPossible(board, *board->getAliveNoir()[j], board->getBoard().at(findroiblanc(board) + depl[i]), board->getMasterColor()))
+					bm++;
+				}
+				else
+				{
+					for (int j = 0; j < board->getAliveNoir().size(); j++)
 					{
-						bm++;
-						break;
+						//delete
+						int tmpID = findroiblanc(board);
+						board->getBoard().at(tmpID).setEmpty(1);
+						if (isPossible(board, *board->getAliveNoir()[j], board->getBoard().at(tmpID + depl[i]), board->getMasterColor()))
+						{
+							bm++;
+							board->getBoard().at(tmpID).setEmpty(0);
+							break;
+						}
+						board->getBoard().at(tmpID).setEmpty(0);
+						//remette
 					}
 				}
+			}				
 			else //si le roi peux pas aller sur une case
 				bm++; //depl bloqué en plus 
 		}
@@ -642,14 +668,24 @@ inline int echec(Board *board)
 		if (findroinoir(board) + depl[i] < 63 && findroinoir(board) + depl[i] > 0)
 		{
 			if (isPossible(board, *board->getBoard().at(findroinoir(board)).getPiece(), board->getBoard().at(findroinoir(board) + depl[i]), board->getMasterColor())) //si possible roi aille sur case
-				for (int j = 0; j < board->getAliveBlanc().size(); j++)
+			{
+				if (board->getBoard().at(findroinoir(board) + depl[i]).getPiece()->getColor() == NOIR)
 				{
-					if (isPossible(board, *board->getAliveBlanc()[j], board->getBoard().at(findroinoir(board) + depl[i]), board->getMasterColor())) //si possible any piece aille sur case
+					nm++;
+				}
+				else
+				{
+					for (int j = 0; j < board->getAliveBlanc().size(); j++)
 					{
-						nm++; //roi a un emplacement bloqué de plus
-						break;
+
+						if (isPossible(board, *board->getAliveBlanc()[j], board->getBoard().at(findroinoir(board) + depl[i]), board->getMasterColor())) //si possible any piece aille sur case
+						{
+							nm++; //roi a un emplacement bloqué de plus
+							break;
+						}
 					}
 				}
+			}			
 			else //si le roi peux pas aller sur une case
 				nm++; //depl bloqué en plus 
 		}
@@ -667,11 +703,11 @@ inline int echec(Board *board)
 				{
 					for (int i = 0; i < getPathRoi(board, lb(board)[0]).size(); i++) 
 					{
-						if (!isPossible(board, *board->getBoard().at(j).getPiece(), board->getBoard().at(getPathRoi(board, lb(board)[0])[i]), board->getMasterColor()))
-							return 3;
+						if (isPossible(board, *board->getBoard().at(j).getPiece(), board->getBoard().at(getPathRoi(board, lb(board)[0])[i]), board->getMasterColor()))
+							return 1;
 					}
 					std::cout << "size lb: " << lb(board).size() << std::endl;
-					return 1; 
+					return 3; 
 
 				}
 			}
@@ -696,10 +732,10 @@ inline int echec(Board *board)
 				{
 					for (int i = 0; i < getPathRoi(board, ln(board)[0]).size(); i++) 
 					{
-						if (!isPossible(board, *board->getBoard().at(j).getPiece(), board->getBoard().at(getPathRoi(board, ln(board)[0])[i]), board->getMasterColor()))
-							return 4;
+						if (isPossible(board, *board->getBoard().at(j).getPiece(), board->getBoard().at(getPathRoi(board, ln(board)[0])[i]), board->getMasterColor()))
+							return 1;
 					}
-					return 2;
+					return 4;
 				}
 			}
 			if (ln(board).size() > 1)
