@@ -22,13 +22,16 @@ void MainGame::enableSurbrillance(Piece piece, Couleur color)
 	auto allPath = getAllPath(&m_board, &piece, color);
 	for (int i = 0; i < allPath.size(); i++)
 	{
-		GameObject* go = new GameObject("Sprites/surbrillance.png");
-		go->setPosition(m_board.getCase(allPath[i]).getPos());
-		go->setColor(sf::Color(255, 255, 255, 100));
-		setScale(go, 2);
-		_gameObjectManager.addSurbrillance("Surbrillance" + std::to_string(i), go);
-		_surbrillance.push_back("Surbrillance" + std::to_string(i));
-		std::cout << "add surbrillance : " << i << std::endl;
+		if (m_board.getCase(allPath[i]).getPiece()->getColor() != piece.getColor())
+		{
+			GameObject* go = new GameObject("Sprites/surbrillance.png");
+			go->setPosition(m_board.getCase(allPath[i]).getPos());
+			go->setColor(sf::Color(255, 255, 255, 100));
+			setScale(go, 2);
+			_gameObjectManager.addSurbrillance("Surbrillance" + std::to_string(i), go);
+			_surbrillance.push_back("Surbrillance" + std::to_string(i));
+			std::cout << "add surbrillance : " << i << std::endl;
+		}		
 	}
 }
 
