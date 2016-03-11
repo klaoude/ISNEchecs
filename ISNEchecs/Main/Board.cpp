@@ -270,13 +270,13 @@ Case Board::getCase(int x, int y)
 	int b=0; // b->y
 	for (size_t i = 0; i < 8; i++)
 	{
-		if (m_board.at(i).get_px() < x && x < m_board.at(i).get_px() + (SCREEN_WIDTH / 8))
+		if (m_board.at(i).get_px() <= x && x <= m_board.at(i).get_px() + (SCREEN_WIDTH / 8))
 			a = i;
 	}
 
 	for (size_t i = 0; i < 8; i++)
 	{
-		if (m_board.at(i*8).get_py() < y && y < m_board.at(i*8).get_py() + (SCREEN_WIDTH / 8))
+		if (m_board.at(i*8).get_py() <= y && y <= m_board.at(i*8).get_py() + (SCREEN_WIDTH / 8))
 			b = i;
 	}
 	return m_board.at(a + (b*8));
