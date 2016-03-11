@@ -29,14 +29,14 @@ inline int getNumPiece(std::vector<Piece*> allPiece, Type type, Couleur color)
 	return ret;
 }
 
-inline int find(std::vector<Piece*> vec, Piece* piece)
+inline int find(std::vector<Piece*>* vec, Piece* piece)
 {
-	for (auto i = 0; i < vec.size(); i++)
+	for (auto i = 0; i < vec->size(); i++)
 	{
-		if (vec.at(i) == piece)
+		if (vec->at(i) == piece)
 			return i;
 	}
-	return 0;
+	return -1;
 }
 
 inline int getValPiece(Piece* piece)
@@ -98,20 +98,20 @@ inline void setScale(GameObject* go, int code)
 
 inline int findroinoir(Board *board)
 {
-	for (int i = 0; i < board->getAlivePiece().size(); i++)
+	for (int i = 0; i < board->getAliveNoir().size(); i++)
 	{
-		if (board->getAlivePiece()[i]->getType() == ROI && board->getAlivePiece()[i]->getColor() == NOIR)
-			return board->getAlivePiece()[i]->getID();
+		if (board->getAliveNoir()[i]->getType() == ROI)
+			return board->getAliveNoir()[i]->getID();
 	}
 	return 0;
 }
 
 inline int findroiblanc(Board *board)
 {
-	for (int i = 0; i < board->getAlivePiece().size(); i++)
+	for (int i = 0; i < board->getAliveBlanc().size(); i++)
 	{
-		if (board->getAlivePiece()[i]->getType() == ROI && board->getAlivePiece()[i]->getColor() == BLANC)
-			return board->getAlivePiece()[i]->getID();
+		if (board->getAliveBlanc()[i]->getType() == ROI)
+			return board->getAliveBlanc()[i]->getID();
 	}
 	return 0;
 }
@@ -572,10 +572,13 @@ inline std::vector<Piece*> lb(Board *board)
 {
 	std::vector <Piece*> alive = board->getAliveNoir();
 	std::vector<Piece*> lb; //id piece qui mangent le roi blanc
+	std::cout << "noir alive : " << alive.size() << std::endl;
 	for (int i = 0; i < alive.size(); i++)
 	{
 		if (isPossible(board, *alive[i], board->getBoard().at(findroiblanc(board)), board->getMasterColor()))
+		{
 			lb.push_back(alive[i]);
+		}
 	}
 	return lb;
 }
@@ -587,7 +590,9 @@ inline std::vector<Piece*> ln(Board *board)
 	for (int i = 0; i < alive.size(); i++)
 	{
 		if (isPossible(board, *alive[i], board->getBoard().at(findroinoir(board)), board->getMasterColor()))
+		{
 			ln.push_back(alive[i]);
+		}
 	}
 	return ln;
 }
@@ -619,7 +624,7 @@ inline int echec(Board *board)
 		{
 			if (findroiblanc(board) + depl[i] > 0 && findroiblanc(board) + depl[i] < 63)
 			{
-				if (isPossible(board, *board->getAlivePiece()[i], board->getBoard().at(findroiblanc(board) + depl[i]), board->getMasterColor()))
+				if (isPossible(board, *board->getAliveNoir()[i], board->getBoard().at(findroiblanc(board) + depl[i]), board->getMasterColor()))
 				{
 					bm++;
 				}
@@ -643,7 +648,7 @@ inline int echec(Board *board)
 	
 	if (be > 0)
 	{
-		if (bm == 0)
+		if (bm == 8)
 		{
 			for (int j = 0; j < board->getAlivePiece().size(); j++)
 			{
@@ -652,7 +657,7 @@ inline int echec(Board *board)
 					if (!isPossible(board, *board->getBoard().at(j).getPiece(), board->getBoard().at(getPathRoi(board, lb(board)[0])[i]), board->getMasterColor()))
 						return 3;
 				}
-				return 1;
+				return 1; //
 			}
 		}
 		else
@@ -661,7 +666,7 @@ inline int echec(Board *board)
 
 	if (ne > 0)
 	{
-		if (nm == 0)
+		if (nm == 8)
 		{
 			for (int j = 0; j < board->getAlivePiece().size(); j++)
 			{

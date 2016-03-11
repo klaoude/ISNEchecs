@@ -53,7 +53,6 @@ inline bool Tour(Board *board, Piece piece, Case caze, Couleur color)
 		if (piece.getID() + 7 < caze.getID())
 		{
 			v++;
-			if (caze.getID() == 63)
 			if (piece.getID() + i * 8 == caze.getID())
 			{
 					return 1;

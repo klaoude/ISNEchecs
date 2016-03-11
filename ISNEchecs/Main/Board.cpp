@@ -223,6 +223,15 @@ bool Board::movePiece(Piece* piece, Case caze)
 	}
 	else if (isPossible(this, *piece, caze, _masterColor))
 	{
+		if (find(&_alivePiece, caze.getPiece()) != -1)
+			_alivePiece.erase(_alivePiece.begin() + find(&_alivePiece, caze.getPiece()));
+		if (find(&_aliveNoir, caze.getPiece()) != -1)
+			_aliveNoir.erase(_aliveNoir.begin() + find(&_aliveNoir, caze.getPiece()));
+		if (find(&_aliveBlanc, caze.getPiece()) != -1)
+			_aliveBlanc.erase(_aliveBlanc.begin() + find(&_aliveBlanc, caze.getPiece()));
+
+		debugNoir();
+
 		if (piece->getColor() == BLANC)
 		{
 			pblanc.push_back(caze.getPiece()->getType()); //push type in corbeile
@@ -253,14 +262,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite 
 			std::cout << "piece mangee" << std::endl;
 			std::cout << "echec: " << echec(this) << std::endl;
-		}
-
-		if (find(_alivePiece, piece) != 0)
-			_alivePiece.erase(_alivePiece.begin() + find(_alivePiece, piece));
-		if (find(_aliveNoir, piece) != 0)
-			_aliveNoir.erase(_aliveNoir.begin() + find(_aliveNoir, piece));
-		if (find(_aliveBlanc, piece) != 0)
-			_aliveBlanc.erase(_aliveBlanc.begin() + find(_aliveBlanc, piece));
+		}		
 		
 		return true;
 	} 
