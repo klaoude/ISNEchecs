@@ -19,6 +19,7 @@ public:
 	virtual void setTexture(std::string texturePath);
 	virtual void setPosition(unsigned int x, unsigned int y) { _sprite.setPosition(x, y); }
 	virtual void setPosition(sf::Vector2u pos) { _sprite.setPosition(pos.x, pos.y); }
+	virtual void setColor(sf::Color color) { _sprite.setColor(color); }
 
 	virtual void scale(float scalex, float scaley);
 

@@ -24,6 +24,7 @@ void MainGame::enableSurbrillance(Piece piece, Couleur color)
 	{
 		GameObject* go = new GameObject("Sprites/surbrillance.png");
 		go->setPosition(m_board.getCase(allPath[i]).getPos());
+		go->setColor(sf::Color(255, 255, 255, 100));
 		setScale(go, 2);
 		_gameObjectManager.add("Surbrillance" + std::to_string(i), go);
 		_surbrillance.push_back("Surbrillance" + std::to_string(i));

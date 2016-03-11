@@ -12,27 +12,8 @@ inline std::vector<int> getAllPath(Board* board, Piece* piece, Couleur color)
 	std::vector<int> ret;
 	for (auto i = 0; i < 64; i++)
 	{
-<<<<<<< Updated upstream
-	case PION:
-		if (piece->getID() + 8 < board->getAlivePiece().size())
-			if (board->getCase(piece->getID() + 8).isEmpty())
-				ret.push_back(piece->getID() + 8);
-
-		if (piece->getID() + 7 < board->getAlivePiece().size())
-			if (board->getCase(piece->getID() + 7).getPiece()->getColor() == enemyColor)
-				ret.push_back(piece->getID() + 7);
-
-		if (piece->getID() + 7 < board->getAlivePiece().size())
-			if (board->getCase(piece->getID() + 9).getPiece()->getColor() == enemyColor)
-				ret.push_back(piece->getID() + 9);
-		break;
-	case CAVALIER:
-
-		break;
-=======
 		if (isPossible(board, *piece, board->getCase(i), color))
 			ret.push_back(i);
->>>>>>> Stashed changes
 	}
 	return ret;
 }
