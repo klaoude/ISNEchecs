@@ -146,13 +146,13 @@ inline std::vector<int> getPathRoi(Board* board, Piece* piece)
 			int bd=0; //diag bas droite
 			for (int i = 1; i < 8; i++)
 			{
-				if (findroiblanc(board) == piece->getID() + i * 9)
+				if (findroinoir(board) == piece->getID() + i * 9)
 					bd = i;
-				else if (findroiblanc(board) == piece->getID() - i * 9)
+				else if (findroinoir(board) == piece->getID() - i * 9)
 					hg = -i;
-				else if (findroiblanc(board) == piece->getID() + i * 7)
+				else if (findroinoir(board) == piece->getID() + i * 7)
 					bg = i;
-				else if (findroiblanc(board) == piece->getID() - i * 7)
+				else if (findroinoir(board) == piece->getID() - i * 7)
 					hd = -i;
 			}
 
@@ -201,13 +201,13 @@ inline std::vector<int> getPathRoi(Board* board, Piece* piece)
 			int d=0; //droite
 			for (int i = 1; i < 8; i++)
 			{
-				if (findroiblanc(board) == piece->getID() + i * 8)
+				if (findroinoir(board) == piece->getID() + i * 8)
 					b = i;
-				else if (findroiblanc(board) == piece->getID() - i * 8)
+				else if (findroinoir(board) == piece->getID() - i * 8)
 					h = -i;
-				else if (floor(findroiblanc(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8)
+				else if (floor(findroinoir(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8)
 					g = -i;
-				else if (ceil(findroiblanc(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8)
+				else if (ceil(findroinoir(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8)
 					d = i;
 			}
 
@@ -260,21 +260,21 @@ inline std::vector<int> getPathRoi(Board* board, Piece* piece)
 			int bd=0; //diag bas droite
 			for (int i = 1; i < 8; i++)
 			{
-				if (findroiblanc(board) == piece->getID() + i * 8)
+				if (findroinoir(board) == piece->getID() + i * 8)
 					b = i;
-				else if (findroiblanc(board) == piece->getID() - i * 8)
+				else if (findroinoir(board) == piece->getID() - i * 8)
 					h = -i;
-				else if (floor(findroiblanc(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8)
+				else if (floor(findroinoir(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8)
 					g = -i;
-				else if (ceil(findroiblanc(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8)
+				else if (ceil(findroinoir(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8)
 					d = i;
-				else if (findroiblanc(board) == piece->getID() + i * 9)
+				else if (findroinoir(board) == piece->getID() + i * 9)
 					bd = i;
-				else if (findroiblanc(board) == piece->getID() - i * 9)
+				else if (findroinoir(board) == piece->getID() - i * 9)
 					hg = -i;
-				else if (findroiblanc(board) == piece->getID() + i * 7)
+				else if (findroinoir(board) == piece->getID() + i * 7)
 					bg = i;
-				else if (findroiblanc(board) == piece->getID() - i * 7)
+				else if (findroinoir(board) == piece->getID() - i * 7)
 					hd = -i;
 			}
 
@@ -369,13 +369,13 @@ inline std::vector<int> getPathRoi(Board* board, Piece* piece)
 			int bd = 0; //diag bas droite
 			for (int i = 1; i < 8; i++)
 			{
-				if (findroinoir(board) == piece->getID() + i * 9)
+				if (findroiblanc(board) == piece->getID() + i * 9)
 					bd = i;
-				else if (findroinoir(board) == piece->getID() - i * 9)
+				else if (findroiblanc(board) == piece->getID() - i * 9)
 					hg = -i;
-				else if (findroinoir(board) == piece->getID() + i * 7)
+				else if (findroiblanc(board) == piece->getID() + i * 7)
 					bg = i;
-				else if (findroinoir(board) == piece->getID() - i * 7)
+				else if (findroiblanc(board) == piece->getID() - i * 7)
 					hd = -i;
 			}
 
@@ -424,13 +424,13 @@ inline std::vector<int> getPathRoi(Board* board, Piece* piece)
 			int d=0; //droite
 			for (int i = 1; i < 8; i++)
 			{
-				if (findroinoir(board) == piece->getID() + i * 8)
+				if (findroiblanc(board) == piece->getID() + i * 8)
 					b = i;
-				else if (findroinoir(board) == piece->getID() - i * 8)
+				else if (findroiblanc(board) == piece->getID() - i * 8)
 					h = -i;
-				else if (floor(findroinoir(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8)
+				else if (floor(findroiblanc(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8)
 					g = -i;
-				else if (ceil(findroinoir(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8)
+				else if (ceil(findroiblanc(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8)
 					d = i;
 			}
 
@@ -483,21 +483,21 @@ inline std::vector<int> getPathRoi(Board* board, Piece* piece)
 			int bd=0; //diag bas droite
 			for (int i = 1; i < 8; i++)
 			{
-				if (findroinoir(board) == piece->getID() + i * 8)
+				if (findroiblanc(board) == piece->getID() + i * 8)
 					b = i;
-				else if (findroinoir(board) == piece->getID() - i * 8)
+				else if (findroiblanc(board) == piece->getID() - i * 8)
 					h = -i;
-				else if (floor(findroinoir(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8)
+				else if (floor(findroiblanc(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8)
 					g = -i;
-				else if (ceil(findroinoir(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8)
+				else if (ceil(findroiblanc(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8)
 					d = i;
-				else if (findroinoir(board) == piece->getID() + i * 9)
+				else if (findroiblanc(board) == piece->getID() + i * 9)
 					bd = i;
-				else if (findroinoir(board) == piece->getID() - i * 9)
+				else if (findroiblanc(board) == piece->getID() - i * 9)
 					hg = -i;
-				else if (findroinoir(board) == piece->getID() + i * 7)
+				else if (findroiblanc(board) == piece->getID() + i * 7)
 					bg = i;
-				else if (findroinoir(board) == piece->getID() - i * 7)
+				else if (findroiblanc(board) == piece->getID() - i * 7)
 					hd = -i;
 			}
 
@@ -631,28 +631,30 @@ inline int echec(Board *board)
 
 	for (int i=0; i < 8; i++) //check if roi blanc peut move
 	{
-		if (findroiblanc(board) + depl[i] < 63 && findroiblanc(board) + depl[i] > 0)
+		if (findroiblanc(board) + depl[i] < 63 && findroiblanc(board) + depl[i] > 0) //out of board
 		{
 			if (isPossible(board, *board->getBoard().at(findroiblanc(board)).getPiece(), board->getBoard().at(findroiblanc(board) + depl[i]), board->getMasterColor())) //si possible roi aille sur case
 			{
-				if (board->getBoard().at(findroiblanc(board) + depl[i]).getPiece()->getColor() == BLANC)
+				if (board->getBoard().at(findroiblanc(board) + depl[i]).getPiece()->getColor() == BLANC) //si il y a un allié sur cette case
 				{
 					bm++;
 				}
-				else
+				else //si pas d'allié
 				{
 					for (int j = 0; j < board->getAliveNoir().size(); j++)
 					{
-						//delete
-						int tmpID = findroiblanc(board);
-						board->getBoard().at(tmpID).setEmpty(1);
-						if (isPossible(board, *board->getAliveNoir()[j], board->getBoard().at(tmpID + depl[i]), board->getMasterColor()))
+						
+						board->getBoard().at(findroiblanc(board)).setEmpty(1);
+	
+						std::cout << "isempty: " << board->getBoard().at(findroiblanc(board)).isEmpty() << std::endl;
+						if (isPossible(board, *board->getAliveNoir()[j], board->getBoard().at(findroiblanc(board) + depl[i]), board->getMasterColor())) //
 						{
 							bm++;
-							board->getBoard().at(tmpID).setEmpty(0);
+							board->getBoard().at(findroiblanc(board)).setEmpty(0);
 							break;
 						}
-						board->getBoard().at(tmpID).setEmpty(0);
+
+						board->getBoard().at(findroiblanc(board)).setEmpty(0);
 						//remette
 					}
 				}
@@ -699,17 +701,19 @@ inline int echec(Board *board)
 		{
 			if (lb(board).size() == 1)
 			{
-				for (int j = 0; j < board->getAlivePiece().size(); j++)
+				for (int j = 0; j < board->getAliveBlanc().size(); j++)
 				{
 					for (int i = 0; i < getPathRoi(board, lb(board)[0]).size(); i++) 
 					{
-						if (isPossible(board, *board->getBoard().at(j).getPiece(), board->getBoard().at(getPathRoi(board, lb(board)[0])[i]), board->getMasterColor()))
+						std::cout << "pathroi: " << getPathRoi(board, lb(board)[0])[i] << std::endl;
+						if (isPossible(board, *board->getAliveBlanc()[j], board->getBoard().at(getPathRoi(board, lb(board)[0])[i]), board->getMasterColor()))
 							return 1;
 					}
-					std::cout << "size lb: " << lb(board).size() << std::endl;
+					
+				}
+				std::cout << "size lb: " << lb(board).size() << std::endl;
 					return 3; 
 
-				}
 			}
 			if (lb(board).size() > 1)
 				return 3;
