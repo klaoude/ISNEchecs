@@ -193,8 +193,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 		}
 		if (isPossible(this, *piece, caze, _masterColor))
 		{
-			int f = find(_alivePiece, piece);
-
+			Piece* oldval = piece;
 			m_board.at(piece->getID()).setEmpty(true); //setempty old
 			m_board.at(piece->getID()).delPiece();  //delpiece old
 			piece->setID(caze.getID()); //new id
@@ -204,11 +203,10 @@ bool Board::movePiece(Piece* piece, Case caze)
 			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite
 			std::cout << "deplacement effectuer" << std::endl;
 			std::cout << "echec: " << echec(this) << std::endl;
-			
-			int f = find(_alivePiece, piece);
-
-			debugNoir();
-
+			Piece* newVal = piece;
+			std::replace(_alivePiece.begin(), _alivePiece.end(), oldval, newVal);
+			std::replace(_aliveNoir.begin(), _aliveNoir.end(), oldval, newVal);
+			std::replace(_aliveBlanc.begin(), _aliveBlanc.end(), oldval, newVal);
 			return true;
 		}
 		else {
