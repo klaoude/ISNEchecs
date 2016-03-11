@@ -47,18 +47,18 @@ inline bool Cavalier(Board *board, Piece piece, Case caze, Couleur color)
 
 inline bool Tour(Board *board, Piece piece, Case caze, Couleur color)
 {
+	int v = 0;
 	for (int i = 1; i < 9; i++)
 	{
 		if (piece.getID() + 7 < caze.getID())
 		{
+			v++;
+			if (caze.getID() == 63)
+				std::cout << i << std::endl;
 			if (piece.getID() + i * 8 == caze.getID())
 			{
-				if (caze.isEmpty())
 					return 1;
-				else
-				{
-					return 1;
-				}
+
 			}
 			else if (piece.getID() + i * 8 > 63)
 				return 0;
@@ -68,18 +68,19 @@ inline bool Tour(Board *board, Piece piece, Case caze, Couleur color)
 
 		if (piece.getID() > caze.getID() + 7)
 		{
+
 			if (piece.getID() - i * 8 == caze.getID())
 			{
-				return 1;
+					return 1;
 				
 			}
-			else if (piece.getID() - i * 8 < 0)
+			else if (piece.getID() - i * 8 < 0) //if out of range
 				return 0;
 			else if (!board->getBoard().at(piece.getID() - i * 8).isEmpty())
 				return 0;
 		}
 
-		if (caze.getID() < piece.getID())
+		if (v==0 && caze.getID() < piece.getID())
 		{
 
 			if (caze.getID() >= div(piece.getID(), 8).quot * 8 && (div(piece.getID(), 8).quot + 1) * 8 - 1 >= caze.getID())
@@ -94,7 +95,7 @@ inline bool Tour(Board *board, Piece piece, Case caze, Couleur color)
 
 		}
 
-		if (caze.getID() > piece.getID())
+		if ( v==0 && caze.getID() > piece.getID())
 		{
 
 			if (caze.getID() >= div(piece.getID(), 8).quot * 8 && ((div(piece.getID(), 8).quot + 1) * 8) - 1 >= caze.getID())
@@ -131,7 +132,6 @@ inline bool Fou(Board *board, Piece piece, Case caze, Couleur color)
 					break;
 				}
 				if (piece.getID() + j * 7 == caze.getID())
-					std::cout << "bite" << std::endl;;
 					break;
 				if (piece.getID() + j * 9 > 63)
 					return 0;
@@ -430,185 +430,7 @@ inline bool Pion(Board *board, Piece piece, Case caze, Couleur color)
 
 inline bool Reine(Board *board, Piece piece, Case caze, Couleur color)
 {
-	int vh = 0;
-	int vb = 0;
-	int hd = 0;
-	int hg = 0;
-	int dhd = 0;
-	int dhg = 0;
-	int dbd = 0;
-	int dbg = 0;
-
-	if (caze.getID() > piece.getID())
-	{
-		for (int j = 1; j < 9; j++)
-		{
-			if (piece.getID() + j * 8 == caze.getID())
-			{
-				vb = j;
-				break;
-			}
-
-			if (piece.getID() + j * 9 == caze.getID())
-			{
-				dbd = j;
-				break;
-			}
-
-			if (piece.getID() + j * 7 == caze.getID())
-			{
-				dbg = j;
-				break;
-			}
-
-			if (ceil(caze.getID() / 8.0f) * 8 == floor(piece.getID() / 8.0f) * 8 + 8)
-			{
-				if (piece.getID() + j == caze.getID())
-				{
-					hd = j;
-					break;
-				}
-			}
-		}
-
-		if (vb > 0)
-		{
-			if (vb > 1)
-			{
-				for (int i = 1; i < vb; i++)
-				{
-					if (!board->getBoard().at(piece.getID() + i * 8).isEmpty())
-						return 0;
-				}
-			}
-			return 1;
-		}
-
-		if (dbd > 0 && dbd <= 8 - (piece.getID() + 1) % 8 && (piece.getID() + 1) % 8 != 0)
-		{
-			if (dbd > 1)
-			{
-				for (int i = 1; i < dbd; i++)
-				{
-					if (!board->getBoard().at(piece.getID() + i * 9).isEmpty())
-						return 0;
-				}
-			}
-			return 1;
-		}
-
-		if (dbg > 0 && dbg <= piece.getID() % 8 )
-		{
-			if (dbg > 1)
-			{
-				for (int i = 1; i < dbg; i++)
-				{
-					if (!board->getBoard().at(piece.getID() + i * 7).isEmpty())
-						return 0;
-				}
-			}
-			return 1;
-		}
-
-		if (hd > 0)
-		{
-			if (hd > 1)
-			{
-				for (int i = 1; i < hd; i++)
-				{
-					if (!board->getBoard().at(piece.getID() + i).isEmpty())
-						return 0;
-				}
-			}
-			return 1;
-		}
-		return 0;
-	}
-
-	if (caze.getID() < piece.getID())
-	{
-		for (int j = 1; j < 9; j++)
-		{
-			if (piece.getID() - j * 8 == caze.getID())
-			{
-				vh = j;
-				break;
-			}
-
-			if (piece.getID() - j * 9 == caze.getID())
-			{
-				dhg = j;
-				break;
-			}
-
-			if (piece.getID() - j * 7 == caze.getID())
-			{
-				dhd = j;
-				break;
-			}
-
-			if (floor(caze.getID() / 8) * 8 + 8 == ceil(piece.getID() / 8.0f) * 8)
-			{
-				if (piece.getID() - j == caze.getID())
-				{
-					hg = j;
-					break;
-				}
-			}
-		}
-
-		if (vh > 0)
-		{
-			if (vh > 1)
-			{
-				for (int i = 1; i < vh; i++)
-				{
-					if (!board->getBoard().at(piece.getID() - i * 8).isEmpty())
-						return 0;
-				}
-			}
-			return 1;
-		}
-		if (dhg > 0 && dhg <= piece.getID() % 8)
-		{
-			if (dhg > 1)
-			{
-				for (int i = 1; i < dhg; i++)
-				{
-					if (!board->getBoard().at(piece.getID() - i * 9).isEmpty())
-						return 0;
-				}
-			}
-			return 1;
-		}
-
-		if (dhd > 0 && dhd <= 8 - (piece.getID() + 1) % 8 && (piece.getID()+1) % 8 != 0)
-		{
-			if (dhd > 1)
-			{
-				for (int i = 1; i < dhd; i++)
-				{
-					if (!board->getBoard().at(piece.getID() - i * 7).isEmpty())
-						return 0;
-				}
-			}
-			return 1;
-		}
-
-		if (hg > 0)
-		{
-			if (hg > 1)
-			{
-				for (int i = 1; i < vb; i++)
-				{
-					if (!board->getBoard().at(piece.getID() - i).isEmpty())
-						return 0;
-				}
-			}
-			return 1;
-		}
-		return 0;
-	}
+	return Fou(board, piece, caze, color) || Tour(board, piece, caze, color);
 }
 
 inline bool isPossible(Board *board, Piece piece, Case caze, Couleur color)
