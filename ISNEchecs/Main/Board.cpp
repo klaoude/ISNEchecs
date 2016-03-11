@@ -71,6 +71,10 @@ Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)
 			_gom->add(m_board.at(i).getPiece()->getTextureID(), m_board.at(i).getPiece());
 			setScale(m_board.at(i).getPiece(), 2);
 			_gom->get(m_board.at(i).getPiece()->getTextureID())->setPosition(getCase(m_board.at(i).getPiece()->getID()).getPos());
+			if (m_board.at(i).getPiece()->getColor() == BLANC)
+				_aliveBlanc.push_back(m_board.at(i).getPiece());
+			else if (m_board.at(i).getPiece()->getColor() == NOIR)
+				_aliveNoir.push_back(m_board.at(i).getPiece());
 			_alivePiece.push_back(m_board.at(i).getPiece());
 		}
 	}
