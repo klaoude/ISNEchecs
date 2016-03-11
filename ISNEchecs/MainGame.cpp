@@ -26,7 +26,7 @@ void MainGame::enableSurbrillance(Piece piece, Couleur color)
 		go->setPosition(m_board.getCase(allPath[i]).getPos());
 		go->setColor(sf::Color(255, 255, 255, 100));
 		setScale(go, 2);
-		_gameObjectManager.add("Surbrillance" + std::to_string(i), go);
+		_gameObjectManager.addSurbrillance("Surbrillance" + std::to_string(i), go);
 		_surbrillance.push_back("Surbrillance" + std::to_string(i));
 		std::cout << "add surbrillance : " << i << std::endl;
 	}
@@ -36,7 +36,7 @@ void MainGame::disableSurbrillance()
 {
 	for (int i = 0; i < _surbrillance.size(); i++)
 	{
-		_gameObjectManager.remove(_surbrillance[i]);
+		_gameObjectManager.removeSurbrillance(_surbrillance[i]);
 	}
 	_surbrillance.clear();
 }
