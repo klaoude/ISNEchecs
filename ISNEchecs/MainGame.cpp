@@ -232,11 +232,11 @@ void MainGame::serverManager()
 void MainGame::handleInput()
 {
 	sf::Event event;
-
+	
 	while (_window.pollEvent(event))
 	{
 		if (event.type == sf::Event::EventType::Closed)
-			_window.close();
+			_window.close();		
 		if (event.type == sf::Event::MouseButtonPressed)
 		{
 			if (!_debugMode)

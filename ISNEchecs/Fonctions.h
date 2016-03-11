@@ -570,24 +570,24 @@ inline std::vector<int> getPathRoi(Board* board, Piece* piece)
 
 inline std::vector<Piece*> lb(Board *board)
 {
+	std::vector <Piece*> alive = board->getAliveNoir();
 	std::vector<Piece*> lb; //id piece qui mangent le roi blanc
-	for (int i = 0; i < 64; i++)
+	for (int i = 0; i < alive.size(); i++)
 	{
-		if (isPossible(board, *board->getBoard().at(i).getPiece(), board->getBoard().at(findroiblanc(board)), board->getMasterColor()))
-			lb.push_back(board->getBoard().at(i).getPiece());
-
+		if (isPossible(board, *alive[i], board->getBoard().at(findroiblanc(board)), board->getMasterColor()))
+			lb.push_back(alive[i]);
 	}
 	return lb;
 }
 
 inline std::vector<Piece*> ln(Board *board)
 {
-	std::vector <Piece*> alive = board->getAlivePiece();
+	std::vector <Piece*> alive = board->getAliveBlanc();
 	std::vector<Piece*> ln; //id piece qui mangent le roi noir
 	for (int i = 0; i < alive.size(); i++)
 	{
 		if (isPossible(board, *alive[i], board->getBoard().at(findroinoir(board)), board->getMasterColor()))
-			ln.push_back(board->getAlivePiece()[i]);
+			ln.push_back(alive[i]);
 	}
 	return ln;
 }

@@ -54,7 +54,6 @@ inline bool Tour(Board *board, Piece piece, Case caze, Couleur color)
 		{
 			v++;
 			if (caze.getID() == 63)
-				std::cout << i << std::endl;
 			if (piece.getID() + i * 8 == caze.getID())
 			{
 					return 1;

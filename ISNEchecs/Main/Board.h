@@ -29,6 +29,15 @@ public:
 
 	Couleur getMasterColor() { return _masterColor; }
 
+	void updateAlive();
+
+	void debugNoir() {
+		for each (Piece* piece in _aliveNoir)
+		{
+			std::cout << piece->getID() << std::endl;
+		}
+	}
+
 private:
 	std::vector<Case> m_board;
 	GameObjectManager* _gom;

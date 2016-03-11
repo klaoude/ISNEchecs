@@ -78,7 +78,7 @@ Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)
 			_alivePiece.push_back(m_board.at(i).getPiece());
 		}
 	}
-	for each (Piece* piece in _alivePiece)
+	for each (Piece* piece in _aliveNoir)
 	{
 		std::cout << piece->getID() << std::endl;
 	}
@@ -193,8 +193,8 @@ bool Board::movePiece(Piece* piece, Case caze)
 		}
 		if (isPossible(this, *piece, caze, _masterColor))
 		{
-			if (find(_alivePiece, piece) != 0)
-				_alivePiece.erase(_alivePiece.begin() + find(_alivePiece, piece));
+			int f = find(_alivePiece, piece);
+
 			m_board.at(piece->getID()).setEmpty(true); //setempty old
 			m_board.at(piece->getID()).delPiece();  //delpiece old
 			piece->setID(caze.getID()); //new id
@@ -205,6 +205,10 @@ bool Board::movePiece(Piece* piece, Case caze)
 			std::cout << "deplacement effectuer" << std::endl;
 			std::cout << "echec: " << echec(this) << std::endl;
 			
+			int f = find(_alivePiece, piece);
+
+			debugNoir();
+
 			return true;
 		}
 		else {
@@ -223,7 +227,6 @@ bool Board::movePiece(Piece* piece, Case caze)
 	{
 		if (piece->getColor() == BLANC)
 		{
-
 			pblanc.push_back(caze.getPiece()->getType()); //push type in corbeile
 			_gom->remove(caze.getPiece()->getTextureID()); //del sprite
 			caze.delPiece(); // del m_piece
@@ -254,14 +257,17 @@ bool Board::movePiece(Piece* piece, Case caze)
 			std::cout << "echec: " << echec(this) << std::endl;
 		}
 
-
+		if (find(_alivePiece, piece) != 0)
+			_alivePiece.erase(_alivePiece.begin() + find(_alivePiece, piece));
+		if (find(_aliveNoir, piece) != 0)
+			_aliveNoir.erase(_aliveNoir.begin() + find(_aliveNoir, piece));
+		if (find(_aliveBlanc, piece) != 0)
+			_aliveBlanc.erase(_aliveBlanc.begin() + find(_aliveBlanc, piece));
 		
 		return true;
 	} 
 	else 
 	{
-
-
 		std::cout << "deplacment impossible" << std::endl;
 		return false;
 	}
@@ -295,4 +301,13 @@ Case Board::getCase(int caseID)
 	}
 
 	return m_board.at(0);
+}
+
+void Board::updateAlive()
+{
+	
+	for (int i = 0; i < 63; i++)
+	{
+		
+	}
 }
