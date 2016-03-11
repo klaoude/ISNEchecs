@@ -82,41 +82,42 @@ inline bool Tour(Board *board, Piece piece, Case caze, Couleur color)
 		if (caze.getID() < piece.getID())
 		{
 
-			if (floor(caze.getID() / 8) * 8 + 8 == ceil(piece.getID() / 8.0f) * 8)
+			if (caze.getID() >= div(piece.getID(), 8).quot * 8 && (div(piece.getID(), 8).quot + 1) * 8 - 1 >= caze.getID())
 			{
-				if (piece.getID() - i == caze.getID())
-				{
+				if (caze.getID() + i == piece.getID())
 					return 1;
-					
-				}
 				else if (piece.getID() - i < 0)
 					return 0;
 				else if (!board->getBoard().at(piece.getID() - i).isEmpty())
 					return 0;
 			}
+
 		}
 
 		if (caze.getID() > piece.getID())
 		{
-			if (ceil(caze.getID() / 8.0f) * 8 == floor(piece.getID() / 8.0f) * 8 + 8)
+
+			if (caze.getID() >= div(piece.getID(), 8).quot * 8 && ((div(piece.getID(), 8).quot + 1) * 8) - 1 >= caze.getID())
 			{
-				if (piece.getID() + i == caze.getID())
-				{
+				if (caze.getID() - i == piece.getID())
 					return 1;
-				}
-				if (piece.getID() + i > 63)
+				else if (piece.getID() - i > 63)
 					return 0;
 				else if (!board->getBoard().at(piece.getID() + i).isEmpty())
 					return 0;
 			}
+			else
+				return 0;
 		}
+
 	}
+	return 0;
 }
 
 inline bool Fou(Board *board, Piece piece, Case caze, Couleur color)
 {
-	int p = 0;
-	int n = 0;
+	int p = 0; //positif
+	int n = 0; //negatif
 
 	for (int i = 1; i < 9; i++)
 	{
@@ -144,14 +145,19 @@ inline bool Fou(Board *board, Piece piece, Case caze, Couleur color)
 				else
 					return 0;
 			}
+			else if (piece.getID() + i * 9 < 63)
+			{
+				if (!board->getBoard().at(piece.getID() + i * 9).isEmpty() )
+									return 0;
+			}
+				
 
-			if (!(i * 9 > 0))
-				if (p>0 && !board->getBoard().at(piece.getID() + i * 9).isEmpty())
-					return 0;
+
 
 			if (p == 0 && piece.getID() + i * 7 == caze.getID())
 			{
-				if (i <= piece.getID() % 8)
+				
+				if (i <= piece.getID() % 8) //depassement des bords (across the map)
 				{
 					return 1;
 				}
@@ -159,9 +165,11 @@ inline bool Fou(Board *board, Piece piece, Case caze, Couleur color)
 					return 0;
 
 			}
-			if (!(i * 7 > 0))
-				if (p == 0 && !board->getBoard().at(piece.getID() + i * 7).isEmpty())
+			else if (piece.getID() + i * 7 < 63)
+			{
+				if (!board->getBoard().at(piece.getID() + i * 7).isEmpty())
 					return 0;
+			}
 		}
 
 		if (caze.getID() < piece.getID())
@@ -183,29 +191,33 @@ inline bool Fou(Board *board, Piece piece, Case caze, Couleur color)
 
 			if (n > 0 && piece.getID() - i * 9 == caze.getID())
 			{
-				if (i <= piece.getID() % 8)
+				if (i <= piece.getID() % 8) //depassement des bords (across the map)
 				{
 					return 1;
 				}
 				else
 					return 0;
 			}
-			if (!(-i * 9 < 0))
-				if (n>0 && !board->getBoard().at(piece.getID() - i * 9).isEmpty()) //
+			else if (piece.getID() - i * 9 > 0)
+			{
+				if (!board->getBoard().at(piece.getID() - i * 9).isEmpty())
 					return 0;
+			}
 
 			if (n == 0 && piece.getID() - i * 7 == caze.getID())
 			{
-				if (i <= 8 - (piece.getID()+1) % 8 && (piece.getID()+1) % 8 != 0)
+				if (i <= 8 - (div(piece.getID(), 8).quot + 1) && div(piece.getID(), 8).quot + 1 != 0)
 				{
 					return 1;
 				}
 				else
 					return 0;
 			}
-			if (!(-i * 7 < 0))
-				if (n == 0 && !board->getBoard().at(piece.getID() - i * 7).isEmpty())
+			else if (piece.getID() - i * 7 > 0)
+			{
+				if (!board->getBoard().at(piece.getID() - i * 7).isEmpty())
 					return 0;
+			}
 		}
 	}
 	return 0;
