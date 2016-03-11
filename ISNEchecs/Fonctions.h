@@ -609,7 +609,7 @@ inline int echec(Board *board)
 	int bem = 0; //noir mat
 	int nm = 0; //poss noir move
 	int bm = 0; //poss blanc move
-
+	std::vector<int> whbm;
 	if (lb(board).size() > 0) //si un piece peut manger le roi blanc
 		be++; //alors le roi blanc est en echec
 
@@ -620,63 +620,90 @@ inline int echec(Board *board)
 
 	for (int i=0; i < 8; i++) //check if roi blanc peut move
 	{
-		for (int j=0; j < board->getAlivePiece().size(); j++)
+		if (findroiblanc(board) + depl[i] < 63 && findroiblanc(board) + depl[i] > 0)
 		{
-			if (findroiblanc(board) + depl[i] > 0 && findroiblanc(board) + depl[i] < 63)
-			{
-				if (isPossible(board, *board->getAliveNoir()[i], board->getBoard().at(findroiblanc(board) + depl[i]), board->getMasterColor()))
+			if (isPossible(board, *board->getBoard().at(findroiblanc(board)).getPiece(), board->getBoard().at(findroiblanc(board) + depl[i]), board->getMasterColor())) //si possible roi aille sur case
+				for (int j = 0; j < board->getAliveNoir().size(); j++)
 				{
-					bm++;
+					if (isPossible(board, *board->getAliveNoir()[j], board->getBoard().at(findroiblanc(board) + depl[i]), board->getMasterColor()))
+					{
+						bm++;
+						break;
+					}
 				}
-			}
+			else //si le roi peux pas aller sur une case
+				bm++; //depl bloqué en plus 
 		}
+		else
+			bm++;
 	}
 	for (int i=0; i < 8; i++) //check if roi noir peut move
 	{
-		for (int j=0; j < board->getAlivePiece().size(); j++)
+		if (findroinoir(board) + depl[i] < 63 && findroinoir(board) + depl[i] > 0)
 		{
-			if (findroinoir(board) + depl[i] > 0 && findroinoir(board) + depl[i] < 63)
-			{
-
-				if (isPossible(board, *board->getAlivePiece()[i], board->getBoard().at(findroinoir(board) + depl[i]), board->getMasterColor()))
+			if (isPossible(board, *board->getBoard().at(findroinoir(board)).getPiece(), board->getBoard().at(findroinoir(board) + depl[i]), board->getMasterColor())) //si possible roi aille sur case
+				for (int j = 0; j < board->getAliveBlanc().size(); j++)
 				{
-					nm++;
+					if (isPossible(board, *board->getAliveBlanc()[j], board->getBoard().at(findroinoir(board) + depl[i]), board->getMasterColor())) //si possible any piece aille sur case
+					{
+						nm++; //roi a un emplacement bloqué de plus
+						break;
+					}
 				}
-			}
+			else //si le roi peux pas aller sur une case
+				nm++; //depl bloqué en plus 
 		}
+		else
+			nm++;
 	}
 	
 	if (be > 0)
 	{
-		if (bm == 8)
+		if (bm == 8) //si le roi peut pas bouger
 		{
-			for (int j = 0; j < board->getAlivePiece().size(); j++)
+			if (lb(board).size() == 1)
 			{
-				for (int i = 0; i < getPathRoi(board, lb(board)[0]).size(); i++) //
+				for (int j = 0; j < board->getAlivePiece().size(); j++)
 				{
-					if (!isPossible(board, *board->getBoard().at(j).getPiece(), board->getBoard().at(getPathRoi(board, lb(board)[0])[i]), board->getMasterColor()))
-						return 3;
+					for (int i = 0; i < getPathRoi(board, lb(board)[0]).size(); i++) 
+					{
+						if (!isPossible(board, *board->getBoard().at(j).getPiece(), board->getBoard().at(getPathRoi(board, lb(board)[0])[i]), board->getMasterColor()))
+							return 3;
+					}
+					std::cout << "size lb: " << lb(board).size() << std::endl;
+					return 1; 
+
 				}
-				return 1; //
 			}
+			if (lb(board).size() > 1)
+				return 3;
 		}
 		else
+		{
+			std::cout << "can move, size lb: " << lb(board).size() << std::endl;
+			std::cout << "size bm: " << bm << std::endl;
 			return 1;
+		}
 	}
 
 	if (ne > 0)
 	{
 		if (nm == 8)
 		{
-			for (int j = 0; j < board->getAlivePiece().size(); j++)
+			if (ln(board).size() == 1)
 			{
-				for (int i = 0; i < getPathRoi(board, ln(board)[0]).size(); i++) //
+				for (int j = 0; j < board->getAlivePiece().size(); j++)
 				{
-					if (!isPossible(board, *board->getBoard().at(j).getPiece(), board->getBoard().at(getPathRoi(board, ln(board)[0])[i]), board->getMasterColor()))
-						return 4;
+					for (int i = 0; i < getPathRoi(board, ln(board)[0]).size(); i++) 
+					{
+						if (!isPossible(board, *board->getBoard().at(j).getPiece(), board->getBoard().at(getPathRoi(board, ln(board)[0])[i]), board->getMasterColor()))
+							return 4;
+					}
+					return 2;
 				}
-				return 2;
 			}
+			if (ln(board).size() > 1)
+				return 4;
 		}
 		else
 			return 2;
