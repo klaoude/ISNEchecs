@@ -561,7 +561,7 @@ inline std::vector<Piece*> lb(Board *board)
 {
 	std::vector <Piece*> alive = board->getAliveNoir();
 	std::vector<Piece*> lb; //id piece qui mangent le roi blanc
-	std::cout << "noir alive : " << alive.size() << std::endl;
+	//std::cout << "noir alive : " << alive.size() << std::endl;
 	for (int i = 0; i < alive.size(); i++)
 	{
 		if (isPossible(board, *alive[i], board->getBoard().at(findroiblanc(board)), board->getMasterColor()))
@@ -619,21 +619,15 @@ inline int echec(Board *board)
 				}
 				else //si pas d'allié
 				{
-					for (int j = 0; j < board->getAliveNoir().size(); j++)
-					{
-						
-						board->getBoard().at(findroiblanc(board)).setEmpty(1);
-	
-						std::cout << "isempty: " << board->getBoard().at(findroiblanc(board)).isEmpty() << std::endl;
+					int aliveNoir = board->getAliveNoir().size();
+					for (int j = 0; j < aliveNoir; j++)
+					{						
 						if (isPossible(board, *board->getAliveNoir()[j], board->getBoard().at(findroiblanc(board) + depl[i]), board->getMasterColor())) //
 						{
 							bm++;
 							board->getBoard().at(findroiblanc(board)).setEmpty(0);
 							break;
 						}
-
-						board->getBoard().at(findroiblanc(board)).setEmpty(0);
-
 					}
 				}
 			}				
@@ -655,7 +649,8 @@ inline int echec(Board *board)
 				}
 				else
 				{
-					for (int j = 0; j < board->getAliveBlanc().size(); j++)
+					int aliveBlanc = board->getAliveBlanc().size();
+					for (int j = 0; j < aliveBlanc; j++)
 					{
 
 						if (isPossible(board, *board->getAliveBlanc()[j], board->getBoard().at(findroinoir(board) + depl[i]), board->getMasterColor())) //si possible any piece aille sur case
@@ -679,9 +674,11 @@ inline int echec(Board *board)
 		{
 			if (lb(board).size() == 1)
 			{
-				for (int j = 0; j < board->getAliveBlanc().size(); j++)
+				int aliveBlanc = board->getAliveBlanc().size();
+				for (int j = 0; j < aliveBlanc; j++)
 				{
-					for (int i = 0; i < getPathRoi(board, lb(board)[0]).size(); i++) 
+					int pathRoiSize = getPathRoi(board, lb(board)[0]).size();
+					for (int i = 0; i < pathRoiSize; i++)
 					{
 						std::cout << "pathroi: " << getPathRoi(board, lb(board)[0])[i] << std::endl;
 						if (isPossible(board, *board->getAliveBlanc()[j], board->getBoard().at(getPathRoi(board, lb(board)[0])[i]), board->getMasterColor()) && board->getAliveBlanc()[j]->getType() != ROI)
@@ -709,9 +706,11 @@ inline int echec(Board *board)
 		{
 			if (ln(board).size() == 1)
 			{
-				for (int j = 0; j < board->getAlivePiece().size(); j++)
+				int alivePiece = board->getAlivePiece().size();
+				for (int j = 0; j < alivePiece; j++)
 				{
-					for (int i = 0; i < getPathRoi(board, ln(board)[0]).size(); i++) 
+					int pathRoiSize = getPathRoi(board, ln(board)[0]).size();
+					for (int i = 0; i < pathRoiSize; i++)
 					{
 						if (isPossible(board, *board->getBoard().at(j).getPiece(), board->getBoard().at(getPathRoi(board, ln(board)[0])[i]), board->getMasterColor()))
 							return 5;
