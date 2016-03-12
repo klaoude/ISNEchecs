@@ -575,9 +575,11 @@ inline std::vector<Piece*> ln(Board *board)
 {
 	std::vector <Piece*> alive = board->getAliveBlanc();
 	std::vector<Piece*> ln; //id piece qui mangent le roi noir
+	int roiNoir = findroinoir(board);
+
 	for (int i = 0; i < alive.size(); i++)
 	{
-		if (isPossible(board, *alive[i], board->getBoard().at(findroinoir(board)), board->getMasterColor()))
+		if (isPossible(board, *alive[i], board->getCase(roiNoir), board->getMasterColor()))
 		{
 			ln.push_back(alive[i]);
 		}
@@ -743,16 +745,21 @@ inline int echecm(Board *board)
 inline bool echec(Board* board)
 {
 	auto alive = board->getAlivePiece();
+
 	Case roiblanc = board->getBoard().at(findroiblanc(board));
 	Case roinoir = board->getBoard().at(findroinoir(board));
+
 	auto mastercolor = board->getMasterColor();
 
 	for (int i = 0; i < alive.size(); i++)
 	{
-		if (isPossible(board, *alive[i], roiblanc, mastercolor))
-			return 1;
-		if (isPossible(board, *alive[i], roinoir, mastercolor))
-			return 2;
+		if (alive[i]->getColor() == BLANC)
+			if (isPossible(board, *alive[i], roinoir, mastercolor))
+				return 2;
+
+		if (alive[i]->getColor() == NOIR)
+			if (isPossible(board, *alive[i], roiblanc, mastercolor))
+				return 1;
 	}
 	return 0;
 }
