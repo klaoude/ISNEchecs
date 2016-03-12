@@ -561,7 +561,6 @@ inline std::vector<Piece*> lb(Board *board)
 {
 	std::vector <Piece*> alive = board->getAliveNoir();
 	std::vector<Piece*> lb; //id piece qui mangent le roi blanc
-	std::cout << "noir alive : " << alive.size() << std::endl;
 	for (int i = 0; i < alive.size(); i++)
 	{
 		if (isPossible(board, *alive[i], board->getBoard().at(findroiblanc(board)), board->getMasterColor()))
