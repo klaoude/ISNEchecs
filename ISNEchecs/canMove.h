@@ -43,6 +43,7 @@ bool blancMove(Board *board, Piece piece, Case caze, Couleur color, int echec)
 				}
 				else if (lbr.size() == 1)//si la piece n'est pas un roi et qu'il n'y a qu'une seule piece qui met le roi en echec
 				{
+
 					for (int i = 0; i < getPathRoi(board, lbr[0]).size(); i++) //si caze est sur le path de la piece qui met en echec
 					{
 						if (caze.getID() == getPathRoi(board, lbr[0])[i])
@@ -214,7 +215,7 @@ inline std::vector<int> getAllPath(Board* board, Piece* piece, Couleur color)
 		if (canMove(board, *piece, board->getCase(possible[i]), color, _echec))
 			ret.push_back(possible[i]);
 	}
-	return ret;
+	return possible;
 }
 
 inline bool isPieceOnPath(Board* board, Piece* pieceA, Piece* pieceB)

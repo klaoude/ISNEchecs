@@ -201,13 +201,14 @@ bool Board::movePiece(Piece* piece, Case caze)
 			m_board.at(caze.getID()).setEmpty(0); //setprise
 			m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
 			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite
-			std::cout << "deplacement effectuer" << std::endl;
-			std::cout << "echec: " << echec(this) << std::endl;
-			std::cout << "echec mat: " << echecm(this) << std::endl;
+
 			Piece* newVal = piece;
 			std::replace(_alivePiece.begin(), _alivePiece.end(), oldval, newVal);
 			std::replace(_aliveNoir.begin(), _aliveNoir.end(), oldval, newVal);
 			std::replace(_aliveBlanc.begin(), _aliveBlanc.end(), oldval, newVal);
+			std::cout << "deplacement effectuer" << std::endl;
+			std::cout << "echec: " << echec(this) << std::endl;
+			std::cout << "echec mat: " << echecm(this) << std::endl;
 			return true;
 		}
 		else {
