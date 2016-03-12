@@ -612,8 +612,8 @@ inline int echec(Board *board)
 {
 	int depl[8] = {-9, -8, -7, -1, +1, 7, 8, 9};
 	// 0-> Rien 
-	// be 1-> blanc echec | ne 2-> noir echec
-	// bem 3-> blanc mat | nem 4-> noir mat
+	//  1-> blanc echec, king can move |  2-> blanc echec, king can't move | 3-> blanc mat
+	//	4-> noir echec, king can move |  5-> noir echec, king can't move | 6-> noir mat
 	int ne = 0; //noir echec
 	int be = 0; //blanc echec
 	int nem = 0; //blanc mat
@@ -707,7 +707,7 @@ inline int echec(Board *board)
 					{
 						std::cout << "pathroi: " << getPathRoi(board, lb(board)[0])[i] << std::endl;
 						if (isPossible(board, *board->getAliveBlanc()[j], board->getBoard().at(getPathRoi(board, lb(board)[0])[i]), board->getMasterColor()) && board->getAliveBlanc()[j]->getType() != ROI)
-							return 1;
+							return 2;
 					}
 					
 				}
@@ -720,7 +720,6 @@ inline int echec(Board *board)
 		}
 		else
 		{
-			std::cout << "can move, size lb: " << lb(board).size() << std::endl;
 			std::cout << "size bm: " << bm << std::endl;
 			return 1;
 		}
@@ -737,18 +736,97 @@ inline int echec(Board *board)
 					for (int i = 0; i < getPathRoi(board, ln(board)[0]).size(); i++) 
 					{
 						if (isPossible(board, *board->getBoard().at(j).getPiece(), board->getBoard().at(getPathRoi(board, ln(board)[0])[i]), board->getMasterColor()))
-							return 1;
+							return 5;
 					}
-					return 4;
+					return 6;
 				}
 			}
 			if (ln(board).size() > 1)
-				return 4;
+				return 6;
 		}
 		else
-			return 2;
-	}
+		{
+			std::cout << "can move, size lb: " << lb(board).size() << std::endl;
+			std::cout << "size bm: " << bm << std::endl;
+			return 4;
+		}
+			
+	-}
 	return 0;
 }
 
 
+bool canMove(Board *board, Piece piece, Case caze, Couleur color)
+{
+	bool ennmove = 0;
+	bool isOnPath = 0;
+	if (piece.getColor() == BLANC) //si on veut bouger une piece blanc
+	{
+		if (echec(board) == 1) //si le roi blanc est en echec et peux bouger
+		{
+			if (piece.getType() == ROI) //si on souhaite deplacer le roi
+			{
+				if (isPossible(board, piece, caze, color)) //si le roi peut aller sur la case
+				{
+					for (int j = 0; j < board->getAliveNoir().size(); j++)
+					{
+
+						if (isPossible(board, *board->getAliveNoir()[j], caze, board->getMasterColor())) //si une piece ennemi peut aller sur cette case
+							ennmove = 1;
+
+					}
+					if (ennmove = 1) //si une piece peut aller sur cette case
+						return 0; //le roi peut pas bouger
+					else //si personne ne peux aller sur la case
+						return 1; //le roi peux bouger
+				}
+			}
+			else if (lb(board).size() == 1)//si la piece n'est pas un roi et qu'il n'y a qu'une seule piece qui met le roi en echec
+			{
+				for (int i = 0; i < getPathRoi(board, lb(board)[0]).size(); i++) //si caze est sur le path de la piece qui met en echec
+				{
+					if (caze.getID() == getPathRoi(board, lb(board)[0])[i])
+						isOnPath = 1;
+				}
+				if (isOnPath == 1)
+					return 1;
+				else
+					return 0;
+			}
+			else //si pas un roi et que plusieurs pieces metteent le roi en echec
+				return 0;
+
+		}
+		else if (echec(board) == 2) //si le roi blanc est en echec et ne peux pas bouger
+		{
+			if (piece.getType() == ROI) //si on veut bouger le roi
+				return 0;
+			else
+			{
+				for (int i = 0; i < getPathRoi(board, lb(board)[0]).size(); i++) //si caze est sur le path de la piece qui met en echec
+				{
+					if (caze.getID() == getPathRoi(board, lb(board)[0])[i])
+						isOnPath = 1;
+				}
+				if (isOnPath == 1)
+					return 1;
+				else
+					return 0;
+			}
+
+		}
+		
+		else if (echec(board) < 1 || echec(board) > 3) //si le roi blanc n'est pas en echec
+		{
+			if (isPossible(board, piece, caze, color)) //si c'est possible d'aller sur cette case 
+			{
+				if (caze.getPiece()->getColor() == BLANC) //s'il y'a un allié sur la case
+					return 0;
+				else //NEED ADD SI LE DEPL MET LE ROI EN ECHEC
+				{
+					return 1;
+				}
+			}
+		}
+	}
+}
