@@ -677,12 +677,12 @@ inline bool echec(Board* board)
 	for (int i = 0; i < alive.size(); i++)
 	{
 		if (alive[i]->getColor() == BLANC)
-		if (isPossible(board, *alive[i], roinoir, mastercolor))
-			return 2;
+			if (isPossible(board, *alive[i], roinoir, mastercolor))
+				return 2;
 
 		if (alive[i]->getColor() == NOIR)
-		if (isPossible(board, *alive[i], roiblanc, mastercolor))
-			return 1;
+			if (isPossible(board, *alive[i], roiblanc, mastercolor))
+				return 1;
 	}
 	return 0;
 }

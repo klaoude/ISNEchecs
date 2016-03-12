@@ -10,10 +10,10 @@
 #include "Fonctions.h"
 #include "Global.h"
 
-bool blancMove(Board *board, Piece piece, Case caze, Couleur color)
+bool blancMove(Board *board, Piece piece, Case caze, Couleur color, int echec)
 {
 	std::vector<Piece*> lbr = lb(board);
-	int echecr = echec(board);
+	int echecr = echec;
 	bool isPos = isPossible(board, piece, caze, color);
 
 	bool ennmove = 0;
@@ -56,7 +56,7 @@ bool blancMove(Board *board, Piece piece, Case caze, Couleur color)
 
 		}
 
-		else if (echec(board) == 2) //si le roi blanc est en echec et ne peux pas bouger
+		else if (echecr == 2) //si le roi blanc est en echec et ne peux pas bouger
 		{
 			if (piece.getType() == ROI) //si on veut bouger le roi
 				return 0;
@@ -91,11 +91,11 @@ bool blancMove(Board *board, Piece piece, Case caze, Couleur color)
 			return 0;
 	}
 
-bool noirMove(Board *board, Piece piece, Case caze, Couleur color)
+bool noirMove(Board *board, Piece piece, Case caze, Couleur color, int echec)
 {
 	std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 	std::vector<Piece*> lnr;
-	int echecr = echec(board);
+	int echecr = echec;
 	std::cout << "echecr : " << echecr << std::endl;
 	std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
 	if (echecr > 0)
@@ -187,15 +187,15 @@ bool noirMove(Board *board, Piece piece, Case caze, Couleur color)
 	}
 }
 
-inline bool canMove(Board *board, Piece piece, Case caze, Couleur color)
+inline bool canMove(Board *board, Piece piece, Case caze, Couleur color, int echec)
 {
 	switch (piece.getColor())
 	{
 	case BLANC:
-		return blancMove(board, piece, caze, color);
+		return blancMove(board, piece, caze, color, echec);
 		break;
 	case NOIR:
-		return noirMove(board, piece, caze, color);
+		return noirMove(board, piece, caze, color, echec);
 		break;
 	}
 }
@@ -204,6 +204,7 @@ inline std::vector<int> getAllPath(Board* board, Piece* piece, Couleur color)
 {
 	std::vector<int> possible;
 	std::vector<int> ret;
+	int _echec = echec(board);
 	for (auto i = 0; i < 64; i++)
 	{
 		if (isPossible(board, *piece, board->getCase(i), color))
@@ -211,7 +212,7 @@ inline std::vector<int> getAllPath(Board* board, Piece* piece, Couleur color)
 	}
 	for (auto i = 0; i < possible.size(); i++)
 	{
-		if (canMove(board, *piece, board->getCase(possible[i]), color))
+		if (canMove(board, *piece, board->getCase(possible[i]), color, _echec))
 			ret.push_back(possible[i]);
 	}
 	return ret;
