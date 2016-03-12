@@ -79,6 +79,7 @@ bool blancMove(Board *board, Piece piece, Case caze, Couleur color)
 					return 1;
 				}
 			}
+			return 0;
 		}
 	}
 }
@@ -154,6 +155,7 @@ bool noirMove(Board *board, Piece piece, Case caze, Couleur color)
 					return 1;
 				}
 			}
+			return 0;
 		}
 	}
 }
