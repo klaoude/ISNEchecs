@@ -74,7 +74,7 @@ bool blancMove(Board *board, Piece piece, Case caze, Couleur color)
 			}
 		}
 
-		else if (echecr < 1 || echecr > 3) //si le roi blanc n'est pas en echec
+		else if (echecr != 1) //si le roi blanc n'est pas en echec
 		{
 		if (isPos) //si c'est possible d'aller sur cette case 
 			{
