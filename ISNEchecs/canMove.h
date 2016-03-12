@@ -12,6 +12,9 @@ bool blancMove(Board *board, Piece piece, Case caze, Couleur color)
 {
 	bool ennmove = 0;
 	bool isOnPath = 0;
+
+	std::cout << "test" << std::endl;
+
 	if (piece.getColor() == BLANC) //si on veut bouger une piece blanc
 	{
 		if (echec(board) == 1) //si le roi blanc est en echec et peux bouger
@@ -22,12 +25,10 @@ bool blancMove(Board *board, Piece piece, Case caze, Couleur color)
 				{
 					for (int j = 0; j < board->getAliveNoir().size(); j++)
 					{
-
 						if (isPossible(board, *board->getAliveNoir()[j], caze, board->getMasterColor())) //si une piece ennemi peut aller sur cette case
 							ennmove = 1;
-
 					}
-					if (ennmove = 1) //si une piece peut aller sur cette case
+					if (ennmove == 1) //si une piece peut aller sur cette case
 						return 0; //le roi peut pas bouger
 					else //si personne ne peux aller sur la case
 						return 1; //le roi peux bouger
@@ -49,6 +50,7 @@ bool blancMove(Board *board, Piece piece, Case caze, Couleur color)
 				return 0;
 
 		}
+
 		else if (echec(board) == 2) //si le roi blanc est en echec et ne peux pas bouger
 		{
 			if (piece.getType() == ROI) //si on veut bouger le roi
@@ -65,7 +67,6 @@ bool blancMove(Board *board, Piece piece, Case caze, Couleur color)
 				else
 					return 0;
 			}
-
 		}
 
 		else if (echec(board) < 1 || echec(board) > 3) //si le roi blanc n'est pas en echec
@@ -81,7 +82,11 @@ bool blancMove(Board *board, Piece piece, Case caze, Couleur color)
 			}
 			return 0;
 		}
+		else
+			return 0;
 	}
+	else
+		return 0;
 }
 
 bool noirMove(Board *board, Piece piece, Case caze, Couleur color)
@@ -103,7 +108,7 @@ bool noirMove(Board *board, Piece piece, Case caze, Couleur color)
 							ennmove = 1;
 
 					}
-					if (ennmove = 1) //si une piece peut aller sur cette case
+					if (ennmove == 1) //si une piece peut aller sur cette case
 						return 0; //le roi peut pas bouger
 					else //si personne ne peux aller sur la case
 						return 1; //le roi peux bouger
@@ -170,7 +175,6 @@ inline bool canMove(Board *board, Piece piece, Case caze, Couleur color)
 	case NOIR:
 		return noirMove(board, piece, caze, color);
 		break;
-
 	}
 }
 
