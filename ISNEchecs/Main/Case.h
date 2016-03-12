@@ -16,6 +16,7 @@ public:
 	bool isEmpty() { return m_empty; }	
 	void setPieceCase(Piece* piece);
 	void delPiece();
+	Case* pcase() { return this; }
 
 	int get_px(){ return m_px; }
 	int get_py(){ return m_py; }

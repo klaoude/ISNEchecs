@@ -215,7 +215,7 @@ inline std::vector<int> getAllPath(Board* board, Piece* piece, Couleur color)
 		if (canMove(board, *piece, board->getCase(possible[i]), color, _echec))
 			ret.push_back(possible[i]);
 	}
-	return possible;
+	return ret;
 }
 
 inline bool isPieceOnPath(Board* board, Piece* pieceA, Piece* pieceB)

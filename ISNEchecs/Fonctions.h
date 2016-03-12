@@ -607,10 +607,12 @@ inline int bm(Board *board)
 				{
 					for (int j = 0; j < aliveNoir.size(); j++)
 					{
+
 						if (isPossible(board, *aliveNoir[j], board->getBoard().at(roiBlanc + depl[i]), board->getMasterColor())) //
 						{
+
 							bm++;
-							board->getBoard().at(roiBlanc).setEmpty(0);
+
 							break;
 						}
 					}

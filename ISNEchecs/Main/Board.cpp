@@ -209,6 +209,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 			std::cout << "deplacement effectuer" << std::endl;
 			std::cout << "echec: " << echec(this) << std::endl;
 			std::cout << "echec mat: " << echecm(this) << std::endl;
+
 			return true;
 		}
 		else {
@@ -246,6 +247,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite 
 			std::cout << "piece mangee" << std::endl;
 			std::cout << "echec: " << echec(this) << std::endl;
+			std::cout << "echec mat: " << echecm(this) << std::endl;
 		}
 
 		if (piece->getColor() == NOIR)
@@ -262,6 +264,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite 
 			std::cout << "piece mangee" << std::endl;
 			std::cout << "echec: " << echec(this) << std::endl;
+			std::cout << "echec mat: " << echecm(this) << std::endl;
 		}		
 		
 		return true;

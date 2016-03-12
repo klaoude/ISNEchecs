@@ -22,7 +22,6 @@ public:
 	std::vector<Case> getBoard(){ return m_board; }
 	Case getCase(int x, int y);
 	Case getCase(int caseID);
-
 	std::vector<Piece*> getAlivePiece() { return _alivePiece; }
 	std::vector<Piece*> getAliveBlanc() { return _aliveBlanc; }
 	std::vector<Piece*> getAliveNoir() { return _aliveNoir; }
