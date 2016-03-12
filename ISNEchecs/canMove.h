@@ -96,17 +96,11 @@ bool blancMove(Board *board, Piece piece, Case caze, Couleur color, int echec)
 
 bool noirMove(Board *board, Piece piece, Case caze, Couleur color, int echec)
 {
-	std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 	std::vector<Piece*> lnr;
 	int echecr = echec;
-	std::cout << "echecr : " << echecr << std::endl;
-	std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
 	if (echecr > 0)
 		lnr = ln(board);
-	std::chrono::high_resolution_clock::time_point t3 = std::chrono::high_resolution_clock::now();
 
-	std::cout << "time of ln() : " << std::chrono::duration_cast<std::chrono::milliseconds>(t3 - t2).count() << " | time of echec() : " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() << std::endl;
-	
 	bool isPos = isPossible(board, piece, caze, color);
 	bool ennmove = 0;
 	bool isOnPath = 0;
