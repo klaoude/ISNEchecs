@@ -629,7 +629,7 @@ inline int bm(Board *board)
 inline int nm(Board *board)
 {
 	int depl[8] = { -9, -8, -7, -1, +1, 7, 8, 9 };
-	int roiNoir = findroinoirboard);
+	int roiNoir = findroinoir(board);
 	auto aliveBlanc = board->getAliveBlanc();
 	int nm = 0;
 
@@ -663,6 +663,28 @@ inline int nm(Board *board)
 			nm++;
 	}
 	return nm;
+}
+
+inline bool echec(Board* board)
+{
+	auto alive = board->getAlivePiece();
+
+	Case roiblanc = board->getBoard().at(findroiblanc(board));
+	Case roinoir = board->getBoard().at(findroinoir(board));
+
+	auto mastercolor = board->getMasterColor();
+
+	for (int i = 0; i < alive.size(); i++)
+	{
+		if (alive[i]->getColor() == BLANC)
+		if (isPossible(board, *alive[i], roinoir, mastercolor))
+			return 2;
+
+		if (alive[i]->getColor() == NOIR)
+		if (isPossible(board, *alive[i], roiblanc, mastercolor))
+			return 1;
+	}
+	return 0;
 }
 	
 inline int echecm(Board *board)
@@ -762,26 +784,4 @@ inline int echecm(Board *board)
 
 
 	
-}
-
-inline bool echec(Board* board)
-{
-	auto alive = board->getAlivePiece();
-
-	Case roiblanc = board->getBoard().at(findroiblanc(board));
-	Case roinoir = board->getBoard().at(findroinoir(board));
-
-	auto mastercolor = board->getMasterColor();
-
-	for (int i = 0; i < alive.size(); i++)
-	{
-		if (alive[i]->getColor() == BLANC)
-			if (isPossible(board, *alive[i], roinoir, mastercolor))
-				return 2;
-
-		if (alive[i]->getColor() == NOIR)
-			if (isPossible(board, *alive[i], roiblanc, mastercolor))
-			return 1;
-	}
-	return 0;
 }
