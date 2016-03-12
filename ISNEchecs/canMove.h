@@ -22,56 +22,59 @@ bool blancMove(Board *board, Piece piece, Case caze, Couleur color, int echec)
 	std::cout << "test" << std::endl;
 
 
-		if (echecr == 1) //si le roi blanc est en echec et peux bouger
+		if (echecr == 1) //si le roi blanc est en echec
 		{
-			if (piece.getType() == ROI) //si on souhaite deplacer le roi
+			if (bm(board) < 8) //if roi can move
 			{
-			if (isPos) //si le roi peut aller sur la case
+				if (piece.getType() == ROI) //si on souhaite deplacer le roi
 				{
-					for (int j = 0; j < board->getAliveNoir().size(); j++)
+					if (isPos) //si le roi peut aller sur la case
 					{
-						if (isPossible(board, *board->getAliveNoir()[j], caze, board->getMasterColor())) //si une piece ennemi peut aller sur cette case
-							ennmove = 1;
+						for (int j = 0; j < board->getAliveNoir().size(); j++)
+						{
+							if (isPossible(board, *board->getAliveNoir()[j], caze, board->getMasterColor())) //si une piece ennemi peut aller sur cette case
+								ennmove = 1;
+						}
+						if (ennmove == 1) //si une piece peut aller sur cette case
+							return 0; //le roi peut pas bouger
+						else //si personne ne peux aller sur la case
+							return 1; //le roi peux bouger
 					}
-					if (ennmove == 1) //si une piece peut aller sur cette case
-						return 0; //le roi peut pas bouger
-					else //si personne ne peux aller sur la case
-						return 1; //le roi peux bouger
 				}
-			}
-			else if (lbr.size() == 1)//si la piece n'est pas un roi et qu'il n'y a qu'une seule piece qui met le roi en echec
-			{
-				for (int i = 0; i < getPathRoi(board, lbr[0]).size(); i++) //si caze est sur le path de la piece qui met en echec
+				else if (lbr.size() == 1)//si la piece n'est pas un roi et qu'il n'y a qu'une seule piece qui met le roi en echec
 				{
-					if (caze.getID() == getPathRoi(board, lbr[0])[i])
-						isOnPath = 1;
+					for (int i = 0; i < getPathRoi(board, lbr[0]).size(); i++) //si caze est sur le path de la piece qui met en echec
+					{
+						if (caze.getID() == getPathRoi(board, lbr[0])[i])
+							isOnPath = 1;
+					}
+					if (isOnPath == 1)
+						return 1;
+					else
+						return 0;
 				}
-				if (isOnPath == 1)
-					return 1;
-				else
+				else //si pas un roi et que plusieurs pieces metteent le roi en echec
 					return 0;
 			}
-			else //si pas un roi et que plusieurs pieces metteent le roi en echec
-				return 0;
 
-		}
-
-		else if (echecr == 2) //si le roi blanc est en echec et ne peux pas bouger
-		{
-			if (piece.getType() == ROI) //si on veut bouger le roi
-				return 0;
-			else
+			else //if roi can't move
 			{
-				for (int i = 0; i < getPathRoi(board, lbr[0]).size(); i++) //si caze est sur le path de la piece qui met en echec
-				{
-					if (caze.getID() == getPathRoi(board, lbr[0])[i])
-						isOnPath = 1;
-				}
-				if (isOnPath == 1)
-					return 1;
-				else
+				if (piece.getType() == ROI) //si on veut bouger le roi
 					return 0;
+				else
+				{
+					for (int i = 0; i < getPathRoi(board, lbr[0]).size(); i++) //si caze est sur le path de la piece qui met en echec
+					{
+						if (caze.getID() == getPathRoi(board, lbr[0])[i])
+							isOnPath = 1;
+					}
+					if (isOnPath == 1)
+						return 1;
+					else
+						return 0;
+				}
 			}
+
 		}
 
 		else if (echecr != 1) //si le roi blanc n'est pas en echec
@@ -112,61 +115,63 @@ bool noirMove(Board *board, Piece piece, Case caze, Couleur color, int echec)
 		pathRoi = getPathRoi(board, lnr[0]);
 	//---------------------
 
-	if (echecr == 4) //si le roi noir est en echec et peux bouger
+	if (echecr == 4) //si le roi noir est en echec
 	{
-		if (piece.getType() == ROI) //si on souhaite deplacer le roi
+		if (nm(board) < 8) //if roi can move
 		{
-			if (isPos) //si le roi peut aller sur la case
+			if (piece.getType() == ROI) //si on souhaite deplacer le roi
 			{
-				for (int j = 0; j < aliveBlanc.size(); j++)
+				if (isPos) //si le roi peut aller sur la case
 				{
+					for (int j = 0; j < aliveBlanc.size(); j++)
+					{
 
-					if (isPossible(board, *aliveBlanc[j], caze, board->getMasterColor())) //si une piece ennemi peut aller sur cette case
-						ennmove = 1;
+						if (isPossible(board, *aliveBlanc[j], caze, board->getMasterColor())) //si une piece ennemi peut aller sur cette case
+							ennmove = 1;
 
+					}
+					if (ennmove == 1) //si une piece peut aller sur cette case
+						return 0; //le roi peut pas bouger
+					else //si personne ne peux aller sur la case
+						return 1; //le roi peux bouger
 				}
-				if (ennmove == 1) //si une piece peut aller sur cette case
-					return 0; //le roi peut pas bouger
-				else //si personne ne peux aller sur la case
-					return 1; //le roi peux bouger
 			}
-		}
-		else if (lnr.size() == 1)//si la piece n'est pas un roi et qu'il n'y a qu'une seule piece qui met le roi en echec
-		{
-			for (int i = 0; i < pathRoi.size(); i++) //si caze est sur le path de la piece qui met en echec
+			else if (lnr.size() == 1)//si la piece n'est pas un roi et qu'il n'y a qu'une seule piece qui met le roi en echec
 			{
-				if (caze.getID() == pathRoi[i])
-					isOnPath = 1;
+				for (int i = 0; i < pathRoi.size(); i++) //si caze est sur le path de la piece qui met en echec
+				{
+					if (caze.getID() == pathRoi[i])
+						isOnPath = 1;
+				}
+				if (isOnPath == 1)
+					return 1;
+				else
+					return 0;
 			}
-			if (isOnPath == 1)
-				return 1;
-			else
-				return 0;
-		}
-		else //si pas un roi et que plusieurs pieces metteent le roi en echec
-			return 0;
-	}
-
-	else if (echecr == 5) //si le roi noir est en echec et ne peux pas bouger
-	{
-		if (piece.getType() == ROI) //si on veut bouger le roi
-			return 0;
-		else
-		{
-			for (int i = 0; i < getPathRoi(board, lnr[0]).size(); i++) //si caze est sur le path de la piece qui met en echec
-			{
-				if (caze.getID() == getPathRoi(board, lnr[0])[i])
-					isOnPath = 1;
-			}
-			if (isOnPath == 1)
-				return 1;
-			else
+			else //si pas un roi et que plusieurs pieces metteent le roi en echec
 				return 0;
 		}
 
+		else //if roi can't move
+		{
+			if (piece.getType() == ROI) //si on veut bouger le roi
+				return 0;
+			else
+			{
+				for (int i = 0; i < getPathRoi(board, lnr[0]).size(); i++) //si caze est sur le path de la piece qui met en echec
+				{
+					if (caze.getID() == getPathRoi(board, lnr[0])[i])
+						isOnPath = 1;
+				}
+				if (isOnPath == 1)
+					return 1;
+				else
+					return 0;
+			}
+		}
 	}
 
-	else if (echecr < 4) //si le roi noir n'est pas en echec
+	else if (echecr < 2) //si le roi noir n'est pas en echec
 	{
 		if (isPos) //si c'est possible d'aller sur cette case 
 		{
