@@ -655,7 +655,7 @@ inline int echec(Board *board)
 						}
 
 						board->getBoard().at(findroiblanc(board)).setEmpty(0);
-						//remette
+
 					}
 				}
 			}				
@@ -706,7 +706,7 @@ inline int echec(Board *board)
 					for (int i = 0; i < getPathRoi(board, lb(board)[0]).size(); i++) 
 					{
 						std::cout << "pathroi: " << getPathRoi(board, lb(board)[0])[i] << std::endl;
-						if (isPossible(board, *board->getAliveBlanc()[j], board->getBoard().at(getPathRoi(board, lb(board)[0])[i]), board->getMasterColor()))
+						if (isPossible(board, *board->getAliveBlanc()[j], board->getBoard().at(getPathRoi(board, lb(board)[0])[i]), board->getMasterColor()) && board->getAliveBlanc()[j]->getType() != ROI)
 							return 1;
 					}
 					
