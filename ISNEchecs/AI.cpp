@@ -1,6 +1,6 @@
 #include "AI.h"
 
-//#include "Fonctions.h"
+#include "Fonctions.h"
 
 AI::AI(Board* board)
 {

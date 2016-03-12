@@ -19,9 +19,9 @@ void debug(std::string debugstring)
 	std::cout << "[DEBUG] " << debugstring << std::endl;
 }
 
-void MainGame::enableSurbrillance(Piece piece, Couleur color)
+void MainGame::enableSurbrillance(Piece piece)
 {
-	auto allPath = getAllPath(&m_board, &piece, color);
+	auto allPath = getAllPath(&m_board, &piece, m_board.getMasterColor());
 	for (int i = 0; i < allPath.size(); i++)
 	{
 		if (m_board.getCase(allPath[i]).getPiece()->getColor() != piece.getColor())
@@ -256,7 +256,7 @@ void MainGame::handleInput()
 							{
 								_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
 								m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
-								enableSurbrillance(*_selectedPiece, _selectedPiece->getColor());
+								enableSurbrillance(*_selectedPiece);
 								_isAPieceSelected = true;
 							}
 						}
@@ -299,7 +299,7 @@ void MainGame::handleInput()
 						{
 							_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
 							m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
-							enableSurbrillance(*_selectedPiece, _selectedPiece->getColor());
+							enableSurbrillance(*_selectedPiece);
 							_isAPieceSelected = true;
 						}
 					}

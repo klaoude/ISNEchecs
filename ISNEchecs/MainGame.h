@@ -25,7 +25,7 @@ private:
 	void draw();
 	void showMenu();
 
-	void enableSurbrillance(Piece piece, Couleur color);
+	void enableSurbrillance(Piece piece);
 	void disableSurbrillance();
 
 	enum GameState { Uninitialized, ShowingMenu, Playing, Exiting, Joining, Debugging };
