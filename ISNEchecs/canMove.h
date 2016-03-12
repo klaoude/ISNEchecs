@@ -121,7 +121,7 @@ bool noirMove(Board *board, Piece piece, Case caze, Couleur color, int echec)
 		pathRoi = getPathRoi(board, lnr[0]);
 	//---------------------
 
-	if (echecr == 4) //si le roi noir est en echec
+	if (echecr == 2) //si le roi noir est en echec
 	{
 		if (nm(board) < 8) //if roi can move
 		{

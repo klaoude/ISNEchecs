@@ -203,6 +203,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite
 			std::cout << "deplacement effectuer" << std::endl;
 			std::cout << "echec: " << echec(this) << std::endl;
+			std::cout << "echec mat: " << echecm(this) << std::endl;
 			Piece* newVal = piece;
 			std::replace(_alivePiece.begin(), _alivePiece.end(), oldval, newVal);
 			std::replace(_aliveNoir.begin(), _aliveNoir.end(), oldval, newVal);
