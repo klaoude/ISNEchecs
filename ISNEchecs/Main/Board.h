@@ -29,14 +29,8 @@ public:
 
 	Couleur getMasterColor() { return _masterColor; }
 
-	void updateAlive();
-
-	void debugNoir() {
-		for each (Piece* piece in _aliveNoir)
-		{
-			std::cout << piece->getID() << std::endl;
-		}
-	}
+	void simuleMove(Piece* piece, Case caze);
+	void undoSimileMove();
 
 private:
 	std::vector<Case> m_board;
@@ -46,4 +40,10 @@ private:
 	std::vector<Piece*> _alivePiece;
 	std::vector<Piece*> _aliveNoir;
 	std::vector<Piece*> _aliveBlanc;
+
+	//SimuleMove
+	int s_oldCaseID;
+	int s_newCaseID;
+	Piece* s_piece;
+	//----------
 };

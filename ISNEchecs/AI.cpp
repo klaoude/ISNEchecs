@@ -1,6 +1,7 @@
 #include "AI.h"
 
 #include "Fonctions.h"
+#include "canMove.h"
 
 AI::AI(Board* board)
 {
@@ -14,28 +15,27 @@ AI::~AI()
 /*
 void AI::play()
 {
-	int num = 0;
-	if (!echec(_board))
+	std::vector<Piece* > allPiece;
+	if (_iaColor == BLANC)
+		allPiece = _board->getAliveBlanc();
+	else if (_iaColor == NOIR)
+		allPiece = _board->getAliveNoir();
+
+	auto canMovePiece = allPiece;
+
+	for (int i = 0; i < allPiece.size(); i++)
 	{
-		for (int i = 0; i < 5; i++)
-		{
-			int numPiece = getNumPiece(_board->getAlivePiece(), _rangPiece[i], _iaColor);
-			if (numPiece == 0)
-				break;
-			else
-			{
-				if (i == 1 || i == 2 || i == 3)
-				{
-					if (numPiece >= 2)
-						num = rand() % numPiece + 1;
-					else
-						num = 1;
-				}				
-			}
-		}
+		if (getAllPath(_board, allPiece[i], _iaColor).size() == 0)
+			canMovePiece.erase(canMovePiece.begin() + i);
 	}
-	else
+
+	for (int i = 0; i < canMovePiece.size(); i++)
 	{
 
 	}
+}
+
+int AI::getSituationPoint(Piece piece, Case caze)
+{
+
 }*/

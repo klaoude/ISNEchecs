@@ -232,8 +232,6 @@ bool Board::movePiece(Piece* piece, Case caze)
 		if (find(&_aliveBlanc, caze.getPiece()) != -1)
 			_aliveBlanc.erase(_aliveBlanc.begin() + find(&_aliveBlanc, caze.getPiece()));
 
-		debugNoir();
-
 		if (piece->getColor() == BLANC)
 		{
 			pblanc.push_back(caze.getPiece()->getType()); //push type in corbeile
@@ -305,11 +303,30 @@ Case Board::getCase(int caseID)
 	return m_board.at(0);
 }
 
-void Board::updateAlive()
+void Board::simuleMove(Piece* piece, Case caze)
 {
-	
-	for (int i = 0; i < 63; i++)
+	if (isPossible(this, *piece, caze, _masterColor))
 	{
-		
+		s_oldCaseID = piece->getID();
+		s_piece = piece;
+		m_board.at(piece->getID()).setEmpty(true); //setempty old
+		m_board.at(piece->getID()).delPiece();  //delpiece old
+		piece->setID(caze.getID()); //new id
+		m_board.at(caze.getID()).setEmpty(0); //setprise
+		m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
+		s_newCaseID = caze.getID();
 	}
+}
+
+void Board::undoSimileMove()
+{
+	m_board.at(s_newCaseID).setEmpty(false); //setempty old
+	m_board.at(s_newCaseID).delPiece();  //delpiece old
+	s_piece->setID(s_oldCaseID); //new id
+	m_board.at(s_oldCaseID).setEmpty(0); //setprise
+	m_board.at(s_oldCaseID).setPieceCase(s_piece); //setpiececase
+
+	s_oldCaseID = 0;
+	s_newCaseID = 0;
+	delete s_piece;
 }

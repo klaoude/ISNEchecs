@@ -10,7 +10,7 @@
 #include "Fonctions.h"
 #include "Global.h"
 
-bool blancMove(Board *board, Piece piece, Case caze, Couleur color, int echec)
+inline bool blancMove(Board *board, Piece piece, Case caze, Couleur color, int echec)
 {
 	std::vector<Piece*> lbr = lb(board);
 	int echecr = echec;
@@ -95,7 +95,7 @@ bool blancMove(Board *board, Piece piece, Case caze, Couleur color, int echec)
 			return 0;
 	}
 
-bool noirMove(Board *board, Piece piece, Case caze, Couleur color, int echec)
+inline bool noirMove(Board *board, Piece piece, Case caze, Couleur color, int echec)
 {
 	std::vector<Piece*> lnr;
 	int echecr = echec;
