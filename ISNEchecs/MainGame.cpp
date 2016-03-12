@@ -11,6 +11,7 @@
 #include "Server/MSClient.h"
 
 #include "Fonctions.h"
+#include "canMove.h"
 
 void debug(std::string debugstring)
 {

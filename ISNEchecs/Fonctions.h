@@ -7,28 +7,6 @@
 #include "Global.h"
 #include "IsPossible.h"
 
-inline std::vector<int> getAllPath(Board* board, Piece* piece, Couleur color)
-{
-	std::vector<int> ret;
-	for (auto i = 0; i < 64; i++)
-	{
-		if (isPossible(board, *piece, board->getCase(i), color))
-			ret.push_back(i);
-	}
-	return ret;
-}
-
-inline bool isPieceOnPath(Board* board, Piece* pieceA, Piece* pieceB)
-{
-	auto path = getAllPath(board, pieceA, pieceA->getColor());
-	for (int i = 0; i < path.size(); i++)
-	{
-		if (board->getCase(path[i]).getPiece() == pieceB)
-			return true;
-	}
-	return false;
-}
-
 inline int getNumPiece(std::vector<Piece*> allPiece, Type type, Couleur color)
 {
 	int ret = 0;
