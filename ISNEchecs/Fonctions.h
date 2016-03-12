@@ -739,21 +739,22 @@ inline int echecm(Board *board)
 				{					
 					for (int i = 0; i < pathRoiBlanc.size(); i++)
 					{
+
 						if (isPossible(board, *aliveBlanc[j], board->getBoard().at(pathRoiBlanc[i]), board->getMasterColor()) && aliveBlanc[j]->getType() != ROI)
 							return 0;
 					}
-					return 1;
 				}
+				return 1;
 			}
 		}
 		else //if roi can move
 		{
 			return 0;
 		}
-
+		return 0;
 	}
 
-	if (echec(board) == 2) //si roi blanc est en echec
+	if (echec(board) == 2) //si roi noir est en echec
 	{
 		if (_nm == 8) //if roi can't move
 	{
@@ -770,8 +771,8 @@ inline int echecm(Board *board)
 						if (isPossible(board, *aliveNoir[j], board->getBoard().at(pathRoiNoir[i]), board->getMasterColor()) && aliveNoir[j]->getType() != ROI)
 							return 0;
 					}
-					return 2;
 				}
+				return 2;
 			}
 		}
 		else //if roi can move
