@@ -133,7 +133,7 @@ bool noirMove(Board *board, Piece piece, Case caze, Couleur color, int echec)
 					if (ennmove == 1) //si une piece peut aller sur cette case
 						return 0; //le roi peut pas bouger
 					else //si personne ne peux aller sur la case
-						return 1; //le roi peux bouger
+						return 2; //le roi peux bouger
 				}
 			}
 			else if (lnr.size() == 1)//si la piece n'est pas un roi et qu'il n'y a qu'une seule piece qui met le roi en echec
@@ -144,7 +144,7 @@ bool noirMove(Board *board, Piece piece, Case caze, Couleur color, int echec)
 						isOnPath = 1;
 				}
 				if (isOnPath == 1)
-					return 1;
+					return 2;
 				else
 					return 0;
 			}
@@ -164,7 +164,7 @@ bool noirMove(Board *board, Piece piece, Case caze, Couleur color, int echec)
 						isOnPath = 1;
 				}
 				if (isOnPath == 1)
-					return 1;
+					return 2;
 				else
 					return 0;
 			}
@@ -179,7 +179,7 @@ bool noirMove(Board *board, Piece piece, Case caze, Couleur color, int echec)
 				return 0;
 			else //NEED ADD SI LE DEPL MET LE ROI EN ECHEC
 			{
-				return 1;
+				return 2;
 			}
 		}
 		return 0;
