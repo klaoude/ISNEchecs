@@ -604,15 +604,15 @@ inline int echec(Board *board)
 	if (ln(board).size() > 0) //si un piece peut manger le roi noir
 		ne++; //alors le roi noir est en echec
 
-
+	int roiBlanc = findroiblanc(board);
 
 	for (int i=0; i < 8; i++) //check if roi blanc peut move
 	{
-		if (findroiblanc(board) + depl[i] < 63 && findroiblanc(board) + depl[i] > 0) //out of board
+		if (roiBlanc + depl[i] < 63 && roiBlanc + depl[i] > 0) //out of board
 		{
-			if (isPossible(board, *board->getBoard().at(findroiblanc(board)).getPiece(), board->getBoard().at(findroiblanc(board) + depl[i]), board->getMasterColor())) //si possible roi aille sur case
+			if (isPossible(board, *board->getBoard().at(roiBlanc).getPiece(), board->getBoard().at(roiBlanc + depl[i]), board->getMasterColor())) //si possible roi aille sur case
 			{
-				if (board->getBoard().at(findroiblanc(board) + depl[i]).getPiece()->getColor() == BLANC) //si il y a un allié sur cette case
+				if (board->getBoard().at(roiBlanc + depl[i]).getPiece()->getColor() == BLANC) //si il y a un allié sur cette case
 				{
 					bm++;
 				}
@@ -621,10 +621,10 @@ inline int echec(Board *board)
 					int aliveNoir = board->getAliveNoir().size();
 					for (int j = 0; j < aliveNoir; j++)
 					{
-						if (isPossible(board, *board->getAliveNoir()[j], board->getBoard().at(findroiblanc(board) + depl[i]), board->getMasterColor())) //
+						if (isPossible(board, *board->getAliveNoir()[j], board->getBoard().at(roiBlanc + depl[i]), board->getMasterColor())) //
 						{
 							bm++;
-							board->getBoard().at(findroiblanc(board)).setEmpty(0);
+							board->getBoard().at(roiBlanc).setEmpty(0);
 							break;
 						}
 					}
@@ -636,13 +636,16 @@ inline int echec(Board *board)
 		else
 			bm++;
 	}
+
+	int roiNoir = findroinoir(board);
+
 	for (int i=0; i < 8; i++) //check if roi noir peut move
 	{
-		if (findroinoir(board) + depl[i] < 63 && findroinoir(board) + depl[i] > 0)
+		if (roiNoir + depl[i] < 63 && roiNoir + depl[i] > 0)
 		{
-			if (isPossible(board, *board->getBoard().at(findroinoir(board)).getPiece(), board->getBoard().at(findroinoir(board) + depl[i]), board->getMasterColor())) //si possible roi aille sur case
+			if (isPossible(board, *board->getBoard().at(roiNoir).getPiece(), board->getBoard().at(roiNoir + depl[i]), board->getMasterColor())) //si possible roi aille sur case
 			{
-				if (board->getBoard().at(findroinoir(board) + depl[i]).getPiece()->getColor() == NOIR)
+				if (board->getBoard().at(roiNoir + depl[i]).getPiece()->getColor() == NOIR)
 				{
 					nm++;
 				}
@@ -652,7 +655,7 @@ inline int echec(Board *board)
 					for (int j = 0; j < aliveBlanc; j++)
 					{
 
-						if (isPossible(board, *board->getAliveBlanc()[j], board->getBoard().at(findroinoir(board) + depl[i]), board->getMasterColor())) //si possible any piece aille sur case
+						if (isPossible(board, *board->getAliveBlanc()[j], board->getBoard().at(roiNoir + depl[i]), board->getMasterColor())) //si possible any piece aille sur case
 						{
 							nm++; //roi a un emplacement bloqué de plus
 							break;
