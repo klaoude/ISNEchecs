@@ -13,19 +13,20 @@ AI::~AI()
 {
 }
 
-std::pair<Piece*, int> returnMax(std::map<std::pair<Piece*, int>, int> map)
+std::vector<std::pair<Piece*, int>> returnMax(std::map<std::pair<Piece*, int>, int> map)
 {
 	int max = 0;
 	auto maxId = map.begin()->first;
+	std::vector<std::pair<Piece*, int>> ret;
 	for (auto i = map.begin(); i != map.end(); i++)
 	{
 		if (i->second > max)
 		{
 			max = i->second;
-			maxId = i->first;
+			ret.push_back(i->first);
 		}
 	}
-	return maxId;
+	return ret;
 }
 
 void AI::play()
@@ -41,7 +42,7 @@ void AI::play()
 
 	for (int i = 0; i < allPiece.size(); i++)
 	{
-		if (getAllPath(_board, allPiece[i], _iaColor).size() == 0)
+		if (getAllPath(_board, allPiece[i], _board->getMasterColor()).size() == 0)
 		{
 			canMovePiece.erase(canMovePiece.begin() + (i-supr));
 			supr++;
@@ -51,7 +52,7 @@ void AI::play()
 	std::map<std::pair<Piece*, int>, int> map;
 	for (int i = 0; i < canMovePiece.size(); i++)
 	{
-		auto allPath = getAllPath(_board, canMovePiece[i], _iaColor);
+		auto allPath = getAllPath(_board, canMovePiece[i], _board->getMasterColor());
 		for (int j = 0; j < allPath.size(); j++)
 		{
 			int situ = getSituationPoint(*canMovePiece[i], _board->getCase(allPath[j]));
@@ -61,8 +62,9 @@ void AI::play()
 		}
 	}
 
-	std::cout << "IA move piece : " << returnMax(map).first->getID() << " to case : " << returnMax(map).second << std::endl;
-	_board->movePiece(returnMax(map).first, _board->getCase(returnMax(map).second));
+	auto possibility = returnMax(map);
+	int id = rand() % possibility.size();
+	_board->movePiece(possibility[id].first, _board->getCase(possibility[id].second));
 }
 
 int AI::getSituationPoint(Piece piece, Case caze)
@@ -81,16 +83,17 @@ int AI::getSituationPoint(Piece piece, Case caze)
 
 	for (int i = 0; i < enemyPiece.size(); i++)
 	{
-		if (canMove(board, *enemyPiece[i], caze, _iaColor, Echec))
+		if (canMove(board, *enemyPiece[i], caze, _board->getMasterColor(), Echec))
 		{
 			point -= getValPiece(&piece);
+			std::cout << "je peux me faire manger ma piece si " << enemyPiece[i]->getID() << " viens sur la case " << caze.getID() << std::endl;
 			break;
 		}			
 	}
 
 	for (int i = 0; i < enemyPiece.size(); i++)
 	{
-		if (canMove(board, piece, board.getCase(enemyPiece[i]->getID()), _iaColor, Echec))
+		if (canMove(board, piece, board.getCase(enemyPiece[i]->getID()), _board->getMasterColor(), Echec))
 		{
 			point += getValPiece(enemyPiece[i]);
 			break;
