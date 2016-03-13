@@ -10,8 +10,7 @@ std::vector<Type> pblanc;
 
 Board::Board()
 {
-	s_pieceA = nullptr;
-	s_pieceB = nullptr;
+	
 }
 
 Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)

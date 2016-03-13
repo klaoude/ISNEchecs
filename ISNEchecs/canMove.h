@@ -19,9 +19,6 @@ inline bool blancMove(Board board, Piece piece, Case caze, Couleur color, int ec
 	bool ennmove = 0;
 	bool isOnPath = 0;
 
-	std::cout << "test" << std::endl;
-
-
 	if (echecr == 1) //si le roi blanc est en echec
 	{
 		if (bm(&board) < 8) //if roi can move

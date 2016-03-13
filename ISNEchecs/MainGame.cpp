@@ -62,7 +62,6 @@ void MainGame::start()
 	if (_gameState != Uninitialized)
 		return;
 
-
 	int choice;
 	std::cout << "You are in debug mode" << std::endl;
 	std::cout << "enter (1) if you want to debug server, (2) for debug board and (3) for debug graphics" << std::endl;
@@ -132,9 +131,10 @@ void MainGame::start()
 	}
 	else if (choice == 2)
 	{
-		Son* test = new Son("Sound/hitmarker.wav");
-		test->setBuffer();
-		test->play();
+		init();
+		initAI();
+		_gameState = VersusIA;
+		gameLoop();
 		system("Pause");
 	}
 	else if (choice == 3)
@@ -153,6 +153,13 @@ void MainGame::start()
 		init();
 		gameLoop();
 	}
+}
+
+void MainGame::initAI()
+{
+	m_board = Board(&_gameObjectManager, NOIR);
+	_ai = AI(&m_board);
+	_isMyTurn = true;
 }
 
 void MainGame::init()
@@ -174,6 +181,15 @@ void MainGame::gameLoop()
 			showMenu();
 			break;
 		case GameState::Debugging:
+			handleInput();
+			draw();
+			break;
+		case GameState::VersusIA:
+			if (!_isMyTurn)
+			{
+				_ai.play();
+				_isMyTurn = true;
+			}
 			handleInput();
 			draw();
 			break;
@@ -244,7 +260,7 @@ void MainGame::handleInput()
 			_window.close();		
 		if (event.type == sf::Event::MouseButtonPressed)
 		{
-			if (!_debugMode)
+			if (_gameState == VersusIA)
 			{
 				if (_isMyTurn)
 				{
@@ -252,11 +268,94 @@ void MainGame::handleInput()
 					{
 						if (!m_board.getCase(event.mouseButton.x, event.mouseButton.y).isEmpty())
 						{
-							if (m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece()->getColor() == _clientColor)
+							if (m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece()->getColor() != _clientColor)
 							{
 								_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
 								m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
-								enableSurbrillance(*_selectedPiece);
+								if (_selectedPiece != new Piece())
+									enableSurbrillance(*_selectedPiece);
+								_isAPieceSelected = true;
+							}
+						}
+					}
+					else
+					{
+						int oldPieceID = _selectedPiece->getID();
+						if (m_board.movePiece(_selectedPiece, m_board.getCase(event.mouseButton.x, event.mouseButton.y)))
+						{
+							_selectedPiece = new Piece();
+							disableSurbrillance();
+							_isAPieceSelected = false;
+							_isMyTurn = false;
+						}
+						else
+						{
+							_selectedPiece = new Piece();
+							disableSurbrillance();
+							_isAPieceSelected = false;
+						}
+					}
+				}
+			}
+			else
+			{
+				if (!_debugMode)
+				{
+					if (_isMyTurn)
+					{
+						if (!_isAPieceSelected)
+						{
+							if (!m_board.getCase(event.mouseButton.x, event.mouseButton.y).isEmpty())
+							{
+								if (m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece()->getColor() == _clientColor)
+								{
+									_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
+									m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
+									enableSurbrillance(*_selectedPiece);
+									_isAPieceSelected = true;
+								}
+							}
+						}
+						else
+						{
+							int oldPieceID = _selectedPiece->getID();
+							if (m_board.movePiece(_selectedPiece, m_board.getCase(event.mouseButton.x, event.mouseButton.y)))
+							{
+								int add = 0;
+								if (_clientColor == BLANC)
+									add = 63;
+								sf::Packet packet;
+								packet << abs(add - oldPieceID);
+								packet << abs(add - m_board.getCase(event.mouseButton.x, event.mouseButton.y).getID());
+								_client.send(packet);
+								m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
+								_isAPieceSelected = false;
+								_isMyTurn = false;
+								debug("is not my turn");
+								_selectedPiece = new Piece();
+								disableSurbrillance();
+							}
+							else
+							{
+								_selectedPiece = new Piece();
+								_isAPieceSelected = false;
+								disableSurbrillance();
+							}
+						}
+					}
+				}
+				else
+				{
+					if (!_isAPieceSelected)
+					{
+						if (!m_board.getCase(event.mouseButton.x, event.mouseButton.y).isEmpty())
+						{
+							if (m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece()->getColor() != _clientColor)
+							{
+								_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
+								m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
+								if (_selectedPiece != new Piece())
+									enableSurbrillance(*_selectedPiece);
 								_isAPieceSelected = true;
 							}
 						}
@@ -267,71 +366,28 @@ void MainGame::handleInput()
 						if (m_board.movePiece(_selectedPiece, m_board.getCase(event.mouseButton.x, event.mouseButton.y)))
 						{
 							int add = 0;
-							if (_clientColor == BLANC)
+							if (m_board.getMasterColor() == BLANC)
 								add = 63;
 							sf::Packet packet;
 							packet << abs(add - oldPieceID);
 							packet << abs(add - m_board.getCase(event.mouseButton.x, event.mouseButton.y).getID());
 							_client.send(packet);
 							m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
-							_isAPieceSelected = false;
-							_isMyTurn = false;
-							debug("is not my turn");
+
 							_selectedPiece = new Piece();
 							disableSurbrillance();
+							_isAPieceSelected = false;
 						}
 						else
 						{
 							_selectedPiece = new Piece();
-							_isAPieceSelected = false;
+
 							disableSurbrillance();
+							_isAPieceSelected = false;
 						}
 					}
 				}
 			}			
-			else
-			{
-				if (!_isAPieceSelected)
-				{
-					if (!m_board.getCase(event.mouseButton.x, event.mouseButton.y).isEmpty())
-					{
-						if (m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece()->getColor() != _clientColor)
-						{
-							_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
-							m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
-							if (_selectedPiece != new Piece())
-								enableSurbrillance(*_selectedPiece);
-							_isAPieceSelected = true;
-						}
-					}
-				}
-				else
-				{
-					int oldPieceID = _selectedPiece->getID();
-					if (m_board.movePiece(_selectedPiece, m_board.getCase(event.mouseButton.x, event.mouseButton.y)))
-					{
-						int add = 0;
-						if (m_board.getMasterColor() == BLANC)
-							add = 63;
-						sf::Packet packet;
-						packet << abs(add - oldPieceID);
-						packet << abs(add - m_board.getCase(event.mouseButton.x, event.mouseButton.y).getID());
-						_client.send(packet);
-						m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
-						
-						_selectedPiece = new Piece();
-						disableSurbrillance();
-						_isAPieceSelected = false;
-					}
-					else
-					{
-						_selectedPiece = new Piece();
-
-						disableSurbrillance();
-						_isAPieceSelected = false;
-					}
-				}
-			}
 		}
 	}
 }

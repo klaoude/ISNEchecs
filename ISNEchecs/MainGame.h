@@ -7,6 +7,7 @@
 #include "Main/Board.h"
 
 #include "Server\Client.h"
+#include "AI.h"
 
 class MainGame
 {
@@ -18,6 +19,7 @@ public:
 
 private:
 	void init();
+	void initAI();
 	void gameLoop();
 
 	void serverManager();
@@ -28,7 +30,7 @@ private:
 	void enableSurbrillance(Piece piece);
 	void disableSurbrillance();
 
-	enum GameState { Uninitialized, ShowingMenu, Playing, Exiting, Joining, Debugging };
+	enum GameState { Uninitialized, ShowingMenu, Playing, Exiting, Joining, Debugging, VersusIA };
 	static GameState _gameState;
 
 	static sf::RenderWindow _window;
@@ -53,5 +55,7 @@ private:
 	std::string _ipaddress;
 
 	std::vector<std::string> _surbrillance;
+
+	AI _ai;
 };
 

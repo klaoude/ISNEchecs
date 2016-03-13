@@ -7,6 +7,7 @@
 class AI
 {
 public:
+	AI() {}
 	AI(Board* board);
 	~AI();
 
