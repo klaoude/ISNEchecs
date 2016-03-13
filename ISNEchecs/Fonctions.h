@@ -607,14 +607,16 @@ inline int bm(Board *board)
 				{
 					for (int j = 0; j < aliveNoir.size(); j++)
 					{
-
+						board->simuleMove(board->getBoard().at(roiBlanc).getPiece(), board->getBoard().at(roiBlanc + depl[i]));
 						if (isPossible(board, *aliveNoir[j], board->getBoard().at(roiBlanc + depl[i]), board->getMasterColor())) //
 						{
 
 							bm++;
-
+							board->undoSimileMove();
 							break;
 						}
+						board->undoSimileMove();
+
 					}
 				}
 			}				
@@ -649,12 +651,14 @@ inline int nm(Board *board)
 				{
 					for (int j = 0; j < aliveBlanc.size(); j++)
 					{
-
+						board->simuleMove(board->getBoard().at(roiNoir).getPiece(), board->getBoard().at(roiNoir + depl[i]));
 						if (isPossible(board, *aliveBlanc[j], board->getBoard().at(roiNoir + depl[i]), board->getMasterColor())) //si possible any piece aille sur case
 						{
+							board->undoSimileMove();
 							nm++; //roi a un emplacement bloqué de plus
 							break;
 						}
+						board->undoSimileMove();
 					}
 				}
 			}			

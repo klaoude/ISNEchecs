@@ -15,7 +15,7 @@ inline bool blancMove(Board *board, Piece piece, Case caze, Couleur color, int e
 	std::vector<Piece*> lbr = lb(board);
 	int echecr = echec;
 	bool isPos = isPossible(board, piece, caze, color);
-
+	int roiBlanc = findroiblanc(board);
 	bool ennmove = 0;
 	bool isOnPath = 0;
 
@@ -33,7 +33,11 @@ inline bool blancMove(Board *board, Piece piece, Case caze, Couleur color, int e
 						for (int j = 0; j < board->getAliveNoir().size(); j++)
 						{
 							if (isPossible(board, *board->getAliveNoir()[j], caze, board->getMasterColor())) //si une piece ennemi peut aller sur cette case
+							{
 								ennmove = 1;
+								break;
+							}
+
 						}
 						if (ennmove == 1) //si une piece peut aller sur cette case
 							return 0; //le roi peut pas bouger
@@ -84,9 +88,24 @@ inline bool blancMove(Board *board, Piece piece, Case caze, Couleur color, int e
 			{
 				if (caze.getPiece()->getColor() == BLANC) //s'il y'a un allié sur la case
 					return 0;
-				else //NEED ADD SI LE DEPL MET LE ROI EN ECHEC
+				else //SI LE DEPL MET LE ROI EN ECHEC
 				{
-					return 1;
+					for (int j = 0; j < board->getAliveNoir().size(); j++)
+					{
+						board->simuleMove(&piece, caze);
+						if (isPossible(board, *board->getAliveNoir()[j], board->getBoard().at(roiBlanc), board->getMasterColor())) //si une piece ennemi peut aller sur le roi
+						{
+							ennmove = 1;
+							board->undoSimileMove();
+							break;
+						}
+						board->undoSimileMove();
+
+					}
+					if (ennmove == 1) //si une piece peut aller sur cette case
+						return 0; //le roi peut pas bouger
+					else //si personne ne peux aller sur la case
+						return 1; //le roi peux bouger
 				}
 			}
 			return 0;
@@ -145,7 +164,7 @@ inline bool noirMove(Board *board, Piece piece, Case caze, Couleur color, int ec
 						isOnPath = 1;
 				}
 				if (isOnPath == 1)
-					return 2;
+					return 1;
 				else
 					return 0;
 			}
@@ -165,7 +184,7 @@ inline bool noirMove(Board *board, Piece piece, Case caze, Couleur color, int ec
 						isOnPath = 1;
 				}
 				if (isOnPath == 1)
-					return 2;
+					return 1;
 				else
 					return 0;
 			}
@@ -180,7 +199,19 @@ inline bool noirMove(Board *board, Piece piece, Case caze, Couleur color, int ec
 				return 0;
 			else //NEED ADD SI LE DEPL MET LE ROI EN ECHEC
 			{
-				return 2;
+				for (int j = 0; j < board->getAliveNoir().size(); j++)
+				{
+					if (isPossible(board, *board->getAliveNoir()[j], caze, board->getMasterColor())) //si une piece ennemi peut aller sur cette case
+					{
+						ennmove = 1;
+						break;
+					}
+
+				}
+				if (ennmove == 1) //si une piece peut aller sur cette case
+					return 0; //le roi peut pas bouger
+				else //si personne ne peux aller sur la case
+					return 1; //le roi peux bouger
 			}
 		}
 		return 0;

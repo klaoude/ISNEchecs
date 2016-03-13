@@ -209,7 +209,8 @@ bool Board::movePiece(Piece* piece, Case caze)
 			std::replace(_aliveBlanc.begin(), _aliveBlanc.end(), oldval, newVal);
 			std::cout << "deplacement effectuer" << std::endl;
 			std::cout << "echec: " << echec(this) << std::endl;
-			std::cout << "echec mat: " << echecm(this) << std::endl;
+			if (echec(this) > 0)
+				std::cout << "echec mat: " << echecm(this) << std::endl;
 
 			return true;
 		}
@@ -248,7 +249,8 @@ bool Board::movePiece(Piece* piece, Case caze)
 			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite 
 			std::cout << "piece mangee" << std::endl;
 			std::cout << "echec: " << echec(this) << std::endl;
-			std::cout << "echec mat: " << echecm(this) << std::endl;
+			if (echec(this) > 0)
+				std::cout << "echec mat: " << echecm(this) << std::endl;
 		}
 
 		if (piece->getColor() == NOIR)
@@ -265,7 +267,8 @@ bool Board::movePiece(Piece* piece, Case caze)
 			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite 
 			std::cout << "piece mangee" << std::endl;
 			std::cout << "echec: " << echec(this) << std::endl;
-			std::cout << "echec mat: " << echecm(this) << std::endl;
+			if (echec(this) > 1)
+				std::cout << "echec mat: " << echecm(this) << std::endl;
 		}		
 		
 		return true;
@@ -315,6 +318,8 @@ void Board::simuleMove(Piece* piece, Case caze)
 
 	if (!caze.isEmpty())
 		s_pieceB = caze.getPiece();
+	else
+		s_pieceB = nullptr;
 
 	m_board.at(piece->getID()).setEmpty(true); //setempty old
 	m_board.at(piece->getID()).delPiece();  //delpiece old
@@ -333,6 +338,7 @@ void Board::undoSimileMove()
 
 	if (s_pieceB != nullptr)
 	{
+		s_pieceB->setID(s_newCaseID);
 		m_board.at(s_newCaseID).setEmpty(false);
 		m_board.at(s_newCaseID).setPieceCase(s_pieceB);
 	}

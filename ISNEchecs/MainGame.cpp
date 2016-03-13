@@ -299,7 +299,8 @@ void MainGame::handleInput()
 						{
 							_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
 							m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
-							enableSurbrillance(*_selectedPiece);
+							if (_selectedPiece != new Piece())
+								enableSurbrillance(*_selectedPiece);
 							_isAPieceSelected = true;
 						}
 					}
@@ -317,15 +318,17 @@ void MainGame::handleInput()
 						packet << abs(add - m_board.getCase(event.mouseButton.x, event.mouseButton.y).getID());
 						_client.send(packet);
 						m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
-						_isAPieceSelected = false;
+						
 						_selectedPiece = new Piece();
 						disableSurbrillance();
+						_isAPieceSelected = false;
 					}
 					else
 					{
 						_selectedPiece = new Piece();
-						_isAPieceSelected = false;
+
 						disableSurbrillance();
+						_isAPieceSelected = false;
 					}
 				}
 			}
