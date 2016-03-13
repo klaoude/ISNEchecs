@@ -54,7 +54,7 @@ int AI::getSituationPoint(Piece piece, Case caze)
 
 	for (int i = 0; i < enemyPiece.size(); i++)
 	{
-		if (canMove(_board, *enemyPiece[i], caze, _iaColor, Echec))
+		if (canMove(*_board, *enemyPiece[i], caze, _iaColor, Echec))
 		{
 			point -= getValPiece(&piece);
 			break;
@@ -63,7 +63,7 @@ int AI::getSituationPoint(Piece piece, Case caze)
 
 	for (int i = 0; i < enemyPiece.size(); i++)
 	{
-		if (canMove(_board, piece, _board->getCase(enemyPiece[i]->getID()), _iaColor, Echec))
+		if (canMove(*_board, piece, _board->getCase(enemyPiece[i]->getID()), _iaColor, Echec))
 		{
 			point += getValPiece(enemyPiece[i]);
 			break;
