@@ -180,9 +180,9 @@ inline bool noirMove(Board board, Piece piece, Case caze, Couleur color, int ech
 				return 0;
 			else
 			{
-				for (int i = 0; i < getPathRoi(&board, lnr[0]).size(); i++) //si caze est sur le path de la piece qui met en echec
+				for (int i = 0; i < pathRoi.size(); i++) //si caze est sur le path de la piece qui met en echec
 				{
-					if (caze.getID() == getPathRoi(&board, lnr[0])[i])
+					if (caze.getID() == pathRoi[i])
 						isOnPath = 1;
 				}
 				if (isOnPath == 1)
@@ -201,12 +201,12 @@ inline bool noirMove(Board board, Piece piece, Case caze, Couleur color, int ech
 				return 0;
 			else //NEED ADD SI LE DEPL MET LE ROI EN ECHEC
 			{
-					board.simuleMove(&piece, caze);
-					if (echec(&board) == 2) //si une piece ennemi peut aller sur cette case
-					{
-						ennmove = 1;
-					}
-					board.undoSimileMove();
+				board.simuleMove(&piece, caze);
+				if (echec(&board) == 2) //si une piece ennemi peut aller sur cette case
+				{
+					ennmove = 1;
+				}
+				board.undoSimileMove();
 
 				if (ennmove == 1) //si une piece peut aller sur cette case
 					return 0; //le roi peut pas bouger
@@ -235,7 +235,6 @@ inline bool canMove(Board board, Piece piece, Case caze, Couleur color, int eche
 
 inline std::vector<int> getAllPath(Board* board, Piece* piece, Couleur color)
 {
-	std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 	std::vector<int> possible;
 	std::vector<int> ret;
 	int _echec = echec(board);
@@ -249,8 +248,6 @@ inline std::vector<int> getAllPath(Board* board, Piece* piece, Couleur color)
 		if (canMove(*board, *piece, board->getCase(possible[i]), color, _echec))
 			ret.push_back(possible[i]);
 	}
-	std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
-	std::cout << "time : " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1).count() << std::endl;
 	return ret;
 }
 
