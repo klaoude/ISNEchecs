@@ -101,6 +101,7 @@
     <ClCompile Include="Server\JSONValue.cpp" />
     <ClCompile Include="Server\MSClient.cpp" />
     <ClCompile Include="Server\Server.cpp" />
+    <ClCompile Include="Son.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AI.h" />
@@ -122,6 +123,7 @@
     <ClInclude Include="Server\JSONValue.h" />
     <ClInclude Include="Server\MSClient.h" />
     <ClInclude Include="Server\Server.h" />
+    <ClInclude Include="Son.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Server\account.json" />
