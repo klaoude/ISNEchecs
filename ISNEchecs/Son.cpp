@@ -10,5 +10,6 @@ Son::Son(std::string path)
 
 void Son::play()
 {
+	std::cout << "caca" << std::endl;
 	_sound.play();
 }

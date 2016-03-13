@@ -6,6 +6,7 @@
 class Son
 {
 public:
+	Son() {}
 	Son(std::string path);
 	
 	void play();

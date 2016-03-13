@@ -8,6 +8,7 @@
 #include "../Main/Piece.h"
 #include "../Main/PieceInfo.h"
 #include <SFML\Audio.hpp>
+#include "../Son.h"
 
 class Board
 {
@@ -18,6 +19,7 @@ public:
 
 	void setPiece(Piece* piece); 
 	void delPiece(Piece piece);
+
 
 	bool movePiece(Piece* piece, Case caze);
 	std::vector<Case> getBoard(){ return m_board; }
@@ -36,7 +38,8 @@ private:
 	std::vector<Case> m_board;
 	GameObjectManager* _gom;
 	Couleur _masterColor;
-	
+	Son* _hitmarker;
+
 	std::vector<Piece*> _alivePiece;
 	std::vector<Piece*> _aliveNoir;
 	std::vector<Piece*> _aliveBlanc;

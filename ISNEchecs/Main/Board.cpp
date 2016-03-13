@@ -16,6 +16,9 @@ Board::Board()
 
 Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)
 {
+	_hitmarker =new Son("Sound/hitmarker.wav");
+	s_pieceA = nullptr;
+	s_pieceB = nullptr;
 	_masterColor = mc;
 	int x=0;
 	int y=0;
@@ -99,11 +102,7 @@ void Board::setPiece(Piece* piece)
 
 bool Board::movePiece(Piece* piece, Case caze)
 {
-	sf::SoundBuffer hitmarkerbuff;
-	hitmarkerbuff.loadFromFile("Sound/hitmarker.wav");
-	sf::Sound hitmarker;
-	hitmarker.setBuffer(hitmarkerbuff);
-	
+
 	Piece none(0, NONEt, NONEc, "");
 	if (caze.isEmpty()) //Si la case est libre
 	{
@@ -201,6 +200,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 
 		if (isPossible(this, *piece, caze, _masterColor)) //deplacement
 		{
+			_hitmarker->play();
 			Piece* oldval = piece;
 			m_board.at(piece->getID()).setEmpty(true); //setempty old
 			m_board.at(piece->getID()).delPiece();  //delpiece old
@@ -209,6 +209,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 			m_board.at(caze.getID()).setEmpty(0); //setprise
 			m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
 			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite
+			
 
 			Piece* newVal = piece;
 			std::replace(_alivePiece.begin(), _alivePiece.end(), oldval, newVal);
@@ -219,7 +220,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 			if (echec(this) > 0)
 				std::cout << "echec mat: " << echecm(this) << std::endl;
 
-			hitmarker.play();
+			
 			return true;
 		}
 		else {
