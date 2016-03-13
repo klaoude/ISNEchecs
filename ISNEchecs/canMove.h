@@ -10,10 +10,10 @@
 #include "Fonctions.h"
 #include "Global.h"
 
-inline bool blancMove(Board *board, Piece piece, Case caze, Couleur color, int echec)
+inline bool blancMove(Board *board, Piece piece, Case caze, Couleur color, int echeck)
 {
 	std::vector<Piece*> lbr = lb(board);
-	int echecr = echec;
+	int echecr = echeck;
 	bool isPos = isPossible(board, piece, caze, color);
 	int roiBlanc = findroiblanc(board);
 	bool ennmove = 0;
@@ -92,18 +92,13 @@ inline bool blancMove(Board *board, Piece piece, Case caze, Couleur color, int e
 				return 0;
 			else //SI LE DEPL MET LE ROI EN ECHEC
 			{
-				for (int j = 0; j < board->getAliveNoir().size(); j++)
+				board->simuleMove(&piece, caze);
+				if (echec(board) == 1) //si une piece ennemi peut aller sur le roi
 				{
-					board->simuleMove(&piece, caze);
-					if (isPossible(board, *board->getAliveNoir()[j], board->getBoard().at(roiBlanc), board->getMasterColor())) //si une piece ennemi peut aller sur le roi
-					{
-						ennmove = 1;
-						board->undoSimileMove();
-						break;
-					}
-					board->undoSimileMove();
-
+					ennmove = 1;
 				}
+				board->undoSimileMove();
+
 				if (ennmove == 1) //si une piece peut aller sur cette case
 					return 0; //le roi peut pas bouger
 				else //si personne ne peux aller sur la case
@@ -116,10 +111,10 @@ inline bool blancMove(Board *board, Piece piece, Case caze, Couleur color, int e
 		return 0;
 }
 
-inline bool noirMove(Board *board, Piece piece, Case caze, Couleur color, int echec)
+inline bool noirMove(Board *board, Piece piece, Case caze, Couleur color, int echeck)
 {
 	std::vector<Piece*> lnr;
-	int echecr = echec;
+	int echecr = echeck;
 	if (echecr > 0)
 		lnr = ln(board);
 	int roiNoir = findroinoir(board);
@@ -206,18 +201,13 @@ inline bool noirMove(Board *board, Piece piece, Case caze, Couleur color, int ec
 				return 0;
 			else //NEED ADD SI LE DEPL MET LE ROI EN ECHEC
 			{
-				for (int j = 0; j < board->getAliveBlanc().size(); j++)
-				{
 					board->simuleMove(&piece, caze);
-					if (isPossible(board, *board->getAliveBlanc()[j], board->getBoard().at(roiNoir), board->getMasterColor())) //si une piece ennemi peut aller sur cette case
+					if (echec(board) == 2) //si une piece ennemi peut aller sur cette case
 					{
-						board->undoSimileMove();
 						ennmove = 1;
-						break;
 					}
 					board->undoSimileMove();
 
-				}
 				if (ennmove == 1) //si une piece peut aller sur cette case
 					return 0; //le roi peut pas bouger
 				else //si personne ne peux aller sur la case
