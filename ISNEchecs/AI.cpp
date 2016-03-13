@@ -12,7 +12,7 @@ AI::~AI()
 {
 }
 
-/*
+
 void AI::play()
 {
 	std::vector<Piece* > allPiece;
@@ -31,11 +31,16 @@ void AI::play()
 
 	for (int i = 0; i < canMovePiece.size(); i++)
 	{
-
+		auto allPath = getAllPath(_board, canMovePiece[i], _iaColor);
+		for (int j = 0; j < allPath.size(); i++)
+		{
+			std::cout << getSituationPoint(*canMovePiece[i], _board->getCase(allPath[j])) << std::endl;
+		}
 	}
 }
 
 int AI::getSituationPoint(Piece piece, Case caze)
 {
-
-}*/
+	_board->simuleMove(&piece, caze);
+	return 0;
+}

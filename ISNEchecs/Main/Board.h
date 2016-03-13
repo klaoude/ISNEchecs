@@ -43,6 +43,7 @@ private:
 	//SimuleMove
 	int s_oldCaseID;
 	int s_newCaseID;
-	Piece* s_piece;
+	Piece* s_pieceA;
+	Piece* s_pieceB;
 	//----------
 };

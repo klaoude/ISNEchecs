@@ -9,7 +9,8 @@ std::vector<Type> pblanc;
 
 Board::Board()
 {
-
+	s_pieceA = nullptr;
+	s_pieceB = nullptr;
 }
 
 Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)
@@ -308,28 +309,36 @@ Case Board::getCase(int caseID)
 
 void Board::simuleMove(Piece* piece, Case caze)
 {
-	if (isPossible(this, *piece, caze, _masterColor))
-	{
-		s_oldCaseID = piece->getID();
-		s_piece = piece;
-		m_board.at(piece->getID()).setEmpty(true); //setempty old
-		m_board.at(piece->getID()).delPiece();  //delpiece old
-		piece->setID(caze.getID()); //new id
-		m_board.at(caze.getID()).setEmpty(0); //setprise
-		m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
-		s_newCaseID = caze.getID();
-	}
+	s_oldCaseID = piece->getID();
+	s_pieceA = piece;
+	s_newCaseID = caze.getID();
+
+	if (!caze.isEmpty())
+		s_pieceB = caze.getPiece();
+
+	m_board.at(piece->getID()).setEmpty(true); //setempty old
+	m_board.at(piece->getID()).delPiece();  //delpiece old
+	piece->setID(caze.getID()); //new id
+	m_board.at(caze.getID()).setEmpty(0); //setprise
+	m_board.at(caze.getID()).setPieceCase(piece); //setpiececase	
 }
 
 void Board::undoSimileMove()
 {
-	m_board.at(s_newCaseID).setEmpty(false); //setempty old
+	m_board.at(s_newCaseID).setEmpty(true); //setempty old
 	m_board.at(s_newCaseID).delPiece();  //delpiece old
-	s_piece->setID(s_oldCaseID); //new id
+	s_pieceA->setID(s_oldCaseID); //new id
 	m_board.at(s_oldCaseID).setEmpty(0); //setprise
-	m_board.at(s_oldCaseID).setPieceCase(s_piece); //setpiececase
+	m_board.at(s_oldCaseID).setPieceCase(s_pieceA); //setpiececase
+
+	if (s_pieceB != nullptr)
+	{
+		m_board.at(s_newCaseID).setEmpty(false);
+		m_board.at(s_newCaseID).setPieceCase(s_pieceB);
+	}
 
 	s_oldCaseID = 0;
 	s_newCaseID = 0;
-	delete s_piece;
+	s_pieceA = nullptr;
+	s_pieceB = nullptr;
 }

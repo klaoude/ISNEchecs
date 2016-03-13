@@ -237,7 +237,7 @@ void MainGame::serverManager()
 void MainGame::handleInput()
 {
 	sf::Event event;
-	
+
 	while (_window.pollEvent(event))
 	{
 		if (event.type == sf::Event::EventType::Closed)
