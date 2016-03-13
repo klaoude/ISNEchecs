@@ -7,6 +7,7 @@
 #include "../Main/Case.h"
 #include "../Main/Piece.h"
 #include "../Main/PieceInfo.h"
+#include <SFML\Audio.hpp>
 
 class Board
 {

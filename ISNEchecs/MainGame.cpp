@@ -61,6 +61,7 @@ void MainGame::start()
 	if (_gameState != Uninitialized)
 		return;
 
+
 	int choice;
 	std::cout << "You are in debug mode" << std::endl;
 	std::cout << "enter (1) if you want to debug server, (2) for debug board and (3) for debug graphics" << std::endl;
@@ -130,11 +131,8 @@ void MainGame::start()
 	}
 	else if (choice == 2)
 	{
-		std::cout << "Enter Case : ";
-		std::cin >> choice;
-		Board board(&_gameObjectManager, Couleur::BLANC);
-		//board.getTyCo(choice);
-		//board.getCase(choice).getPiece().move(&board, ID)
+
+		system("Pause");
 
 	}
 	else if (choice == 3)

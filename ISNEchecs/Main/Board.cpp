@@ -4,6 +4,7 @@
 #include "../IsPossible.h"
 #include "../Main/CaseID.h"
 
+
 std::vector<Type> pnoir;
 std::vector<Type> pblanc;
 
@@ -98,6 +99,11 @@ void Board::setPiece(Piece* piece)
 
 bool Board::movePiece(Piece* piece, Case caze)
 {
+	sf::SoundBuffer hitmarkerbuff;
+	hitmarkerbuff.loadFromFile("Sound/hitmarker.wav");
+	sf::Sound hitmarker;
+	hitmarker.setBuffer(hitmarkerbuff);
+	
 	Piece none(0, NONEt, NONEc, "");
 	if (caze.isEmpty()) //Si la case est libre
 	{
@@ -191,8 +197,9 @@ bool Board::movePiece(Piece* piece, Case caze)
 				}
 			}
 					
-		}
-		if (isPossible(this, *piece, caze, _masterColor))
+		} //FIN ROCK
+
+		if (isPossible(this, *piece, caze, _masterColor)) //deplacement
 		{
 			Piece* oldval = piece;
 			m_board.at(piece->getID()).setEmpty(true); //setempty old
@@ -212,6 +219,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 			if (echec(this) > 0)
 				std::cout << "echec mat: " << echecm(this) << std::endl;
 
+			hitmarker.play();
 			return true;
 		}
 		else {
@@ -221,7 +229,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 			
 	}
 
-	if (m_board.at(caze.getID()).getPiece()->getColor() == piece->getColor())
+	if (m_board.at(caze.getID()).getPiece()->getColor() == piece->getColor()) //meme color
 	{
 		std::cout << "meme color" << std::endl;
 		return false;
@@ -235,7 +243,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 		if (find(&_aliveBlanc, caze.getPiece()) != -1)
 			_aliveBlanc.erase(_aliveBlanc.begin() + find(&_aliveBlanc, caze.getPiece()));
 
-		if (piece->getColor() == BLANC)
+		if (piece->getColor() == BLANC) //piece noire mangée
 		{
 			pblanc.push_back(caze.getPiece()->getType()); //push type in corbeile
 			_gom->remove(caze.getPiece()->getTextureID()); //del sprite
@@ -253,7 +261,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 				std::cout << "echec mat: " << echecm(this) << std::endl;
 		}
 
-		if (piece->getColor() == NOIR)
+		if (piece->getColor() == NOIR) //piece blanche mangée
 		{
 			_gom->remove(caze.getPiece()->getTextureID()); //del sprite
 			pnoir.push_back(caze.getPiece()->getType()); //push type in corbeille
