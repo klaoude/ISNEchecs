@@ -103,6 +103,7 @@ void Board::setPiece(Piece* piece)
 
 bool Board::movePiece(Piece* piece, Case caze)
 {
+	bool rock = true;
 
 	Piece none(0, NONEt, NONEc, "");
 	if (caze.isEmpty()) //Si la case est libre
@@ -157,7 +158,12 @@ bool Board::movePiece(Piece* piece, Case caze)
 						}
 					}
 					else
+					{
 						std::cout << "can't move, roi en echec" << std::endl;
+						rock = false;
+
+					}
+
 				}
 
 				else if (piece->getColor() == NOIR)
@@ -206,7 +212,11 @@ bool Board::movePiece(Piece* piece, Case caze)
 						}
 					}
 					else
+					{
 						std::cout << "can't move, roi en echec" << std::endl;
+						rock = false;
+
+					}
 				}
 			}
 
@@ -258,7 +268,11 @@ bool Board::movePiece(Piece* piece, Case caze)
 						}
 					}
 					else
+					{
 						std::cout << "can't move, roi en echec" << std::endl;
+						rock = false;
+
+					}
 				}
 				else if (piece->getColor() == NOIR)
 				{
@@ -306,13 +320,17 @@ bool Board::movePiece(Piece* piece, Case caze)
 						}
 					}
 					else
+					{
 						std::cout << "can't move, roi en echec" << std::endl;
+						rock = false;
+
+					}
 				}
 			}
 					
 		} //FIN ROCK
 
-		if (isPossible(this, *piece, caze, _masterColor)) //deplacement
+		if (isPossible(this, *piece, caze, _masterColor) && rock == true) //deplacement
 		{
 			//_hitmarker->play();
 			Piece* oldval = piece;
