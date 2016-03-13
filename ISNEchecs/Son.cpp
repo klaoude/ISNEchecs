@@ -3,9 +3,12 @@
 
 Son::Son(std::string path)
 {
-	sf::SoundBuffer buffer;
-	buffer.loadFromFile(path);
-	_sound.setBuffer(buffer);
+	_buffer.loadFromFile(path);
+}
+
+void Son::setBuffer()
+{
+	_sound.setBuffer(_buffer);
 }
 
 void Son::play()

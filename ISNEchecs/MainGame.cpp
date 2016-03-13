@@ -13,6 +13,7 @@
 
 #include "Fonctions.h"
 #include "canMove.h"
+#include "Son.h"
 
 void debug(std::string debugstring)
 {
@@ -131,9 +132,10 @@ void MainGame::start()
 	}
 	else if (choice == 2)
 	{
-
+		Son* test = new Son("Sound/hitmarker.wav");
+		test->setBuffer();
+		test->play();
 		system("Pause");
-
 	}
 	else if (choice == 3)
 	{

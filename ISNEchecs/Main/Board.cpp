@@ -16,7 +16,8 @@ Board::Board()
 
 Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)
 {
-	_hitmarker =new Son("Sound/hitmarker.wav");
+	_hitmarker = new Son("Sound/hitmarker.wav");
+	_hitmarker->setBuffer();
 	s_pieceA = nullptr;
 	s_pieceB = nullptr;
 	_masterColor = mc;
@@ -209,7 +210,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 			m_board.at(caze.getID()).setEmpty(0); //setprise
 			m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
 			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite
-			
+
 
 			Piece* newVal = piece;
 			std::replace(_alivePiece.begin(), _alivePiece.end(), oldval, newVal);
