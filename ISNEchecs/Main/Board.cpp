@@ -10,7 +10,8 @@ std::vector<Type> pblanc;
 
 Board::Board()
 {
-	
+	s_pieceA = nullptr;
+	s_pieceB = nullptr;
 }
 
 Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)
@@ -200,7 +201,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 
 		if (isPossible(this, *piece, caze, _masterColor)) //deplacement
 		{
-			_hitmarker->play();
+			//_hitmarker->play();
 			Piece* oldval = piece;
 			m_board.at(piece->getID()).setEmpty(true); //setempty old
 			m_board.at(piece->getID()).delPiece();  //delpiece old
@@ -260,6 +261,8 @@ bool Board::movePiece(Piece* piece, Case caze)
 			std::cout << "echec: " << echec(this) << std::endl;
 			if (echec(this) > 0)
 				std::cout << "echec mat: " << echecm(this) << std::endl;
+
+
 		}
 
 		if (piece->getColor() == NOIR) //piece blanche mangée
