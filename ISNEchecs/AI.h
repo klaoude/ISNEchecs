@@ -14,7 +14,7 @@ public:
 	void play();
 
 private:
-	int getSituationPoint(Piece piece, Case caze);
+	int getSituationPoint(Piece piece, Case caze, std::vector<Piece* > allPiece);
 	bool canTake(Piece piece);
 	Piece getMinVal(std::vector<Piece> vec);
 
