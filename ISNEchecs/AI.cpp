@@ -41,6 +41,41 @@ void AI::play()
 
 int AI::getSituationPoint(Piece piece, Case caze)
 {
+	int point = 0;
 	_board->simuleMove(&piece, caze);
-	return 0;
+
+	std::vector<Piece*> enemyPiece;
+	if (_iaColor == BLANC)
+		enemyPiece = _board->getAliveNoir();
+	else
+		enemyPiece = _board->getAliveBlanc();
+
+	int Echec = echec(_board);
+
+	for (int i = 0; i < enemyPiece.size(); i++)
+	{
+		if (canMove(_board, *enemyPiece[i], caze, _iaColor, Echec))
+		{
+			point -= getValPiece(&piece);
+			break;
+		}			
+	}
+
+	for (int i = 0; i < enemyPiece.size(); i++)
+	{
+		if (canMove(_board, piece, _board->getCase(enemyPiece[i]->getID()), _iaColor, Echec))
+		{
+			point += getValPiece(enemyPiece[i]);
+			break;
+		}
+	}
+
+	if (_iaColor == BLANC && Echec == 2)
+		point += 4;
+	if (_iaColor == NOIR && Echec == 1)
+		point += 4;
+
+	if (Echec)
+
+	return point;
 }
