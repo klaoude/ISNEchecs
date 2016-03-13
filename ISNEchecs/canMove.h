@@ -46,7 +46,7 @@ inline bool blancMove(Board board, Piece piece, Case caze, Couleur color, int ec
 			}
 			else if (lbr.size() == 1)//si la piece n'est pas un roi et qu'il n'y a qu'une seule piece qui met le roi en echec
 			{
-
+				std::cout << "path size:" << getPathRoi(&board, lbr[0]).size() << std::endl;
 				for (int i = 0; i < getPathRoi(&board, lbr[0]).size(); i++) //si caze est sur le path de la piece qui met en echec
 				{
 					if (caze.getID() == getPathRoi(&board, lbr[0])[i])

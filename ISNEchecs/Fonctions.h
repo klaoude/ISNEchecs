@@ -407,9 +407,13 @@ inline std::vector<int> getPathRoi(Board* board, Piece* piece)
 				else if (findroiblanc(board) == piece->getID() - i * 8)
 					h = -i;
 				else if (floor(findroiblanc(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8)
-					g = -i;
+					for (int j = 0; j < 8; j++)
+						if (findroiblanc(board) == piece->getID() - i)
+							g = -i;
 				else if (ceil(findroiblanc(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8)
-					d = i;
+					for (int j = 0; j < 8; j++)
+						if (findroiblanc(board) == piece->getID() - i)
+							d = i;
 			}
 
 			if (b > 0)
@@ -466,9 +470,14 @@ inline std::vector<int> getPathRoi(Board* board, Piece* piece)
 				else if (findroiblanc(board) == piece->getID() - i * 8)
 					h = -i;
 				else if (floor(findroiblanc(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8)
-					g = -i;
+					for (int j = 0; j < 8; j++)
+						if (findroiblanc(board) == piece->getID() - i )
+							g = -i;
+					
 				else if (ceil(findroiblanc(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8)
-					d = i;
+					for (int j = 0; j < 8; j++)
+						if (findroiblanc(board) == piece->getID() - i)
+							d = i;
 				else if (findroiblanc(board) == piece->getID() + i * 9)
 					bd = i;
 				else if (findroiblanc(board) == piece->getID() - i * 9)
