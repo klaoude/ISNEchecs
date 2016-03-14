@@ -12,12 +12,24 @@
 
 inline bool blancMove(Board board, Piece piece, Case caze, Couleur color, int echeck)
 {
-	std::vector<Piece*> lbr = lb(&board);
+	std::vector<Piece*> lbr;
 	int echecr = echeck;
+	if (echecr > 0)
+		lbr = lb(&board);
 	bool isPos = isPossible(&board, piece, caze, color);
 	int roiBlanc = findroiblanc(&board);
 	bool ennmove = 0;
 	bool isOnPath = 0;
+
+	//Variable Optimisation
+	std::vector<Piece*> aliveNoir;
+	if (echecr == 1 && isPos && piece.getType() == ROI)
+		aliveNoir = board.getAliveNoir();
+
+	std::vector<int> pathRoi;
+	if (echecr == 1 && lbr.size() == 1 && piece.getType() != ROI)
+		pathRoi = getPathRoi(&board, lbr[0]);
+	//---------------------
 
 	if (echecr == 1) //si le roi blanc est en echec
 	{
@@ -27,10 +39,10 @@ inline bool blancMove(Board board, Piece piece, Case caze, Couleur color, int ec
 			{
 				if (isPos) //si le roi peut aller sur la case
 				{
-					for (int j = 0; j < board.getAliveNoir().size(); j++)
+					for (int j = 0; j < aliveNoir.size(); j++)
 					{
 						board.simuleMove(board.getBoard().at(roiBlanc).getPiece(), caze);
-						if (isPossible(&board, *board.getAliveNoir()[j], caze, board.getMasterColor())) //si une piece ennemi peut aller sur cette case
+						if (isPossible(&board, *aliveNoir[j], caze, board.getMasterColor())) //si une piece ennemi peut aller sur cette case
 						{
 							board.undoSimileMove();
 							ennmove = 1;
@@ -46,10 +58,10 @@ inline bool blancMove(Board board, Piece piece, Case caze, Couleur color, int ec
 			}
 			else if (lbr.size() == 1)//si la piece n'est pas un roi et qu'il n'y a qu'une seule piece qui met le roi en echec
 			{
-				std::cout << "path size:" << getPathRoi(&board, lbr[0]).size() << std::endl;
-				for (int i = 0; i < getPathRoi(&board, lbr[0]).size(); i++) //si caze est sur le path de la piece qui met en echec
+				std::cout << "path size:" << pathRoi.size() << std::endl;
+				for (int i = 0; i < pathRoi.size(); i++) //si caze est sur le path de la piece qui met en echec
 				{
-					if (caze.getID() == getPathRoi(&board, lbr[0])[i])
+					if (caze.getID() == pathRoi[i])
 						isOnPath = 1;
 				}
 				if (isOnPath == 1)
@@ -67,9 +79,9 @@ inline bool blancMove(Board board, Piece piece, Case caze, Couleur color, int ec
 				return 0;
 			else
 			{
-				for (int i = 0; i < getPathRoi(&board, lbr[0]).size(); i++) //si caze est sur le path de la piece qui met en echec
+				for (int i = 0; i < pathRoi.size(); i++) //si caze est sur le path de la piece qui met en echec
 				{
-					if (caze.getID() == getPathRoi(&board, lbr[0])[i])
+					if (caze.getID() == pathRoi[i])
 						isOnPath = 1;
 				}
 				if (isOnPath == 1)
@@ -121,11 +133,11 @@ inline bool noirMove(Board board, Piece piece, Case caze, Couleur color, int ech
 
 	//Variable Optimisation
 	std::vector<Piece*> aliveBlanc;
-	if ((echecr == 4) && isPos && piece.getType() == ROI)
+	if (echecr == 2 && isPos && piece.getType() == ROI)
 		aliveBlanc = board.getAliveBlanc();
 
 	std::vector<int> pathRoi;
-	if ((echecr == 4 || echecr == 5) && lnr.size() == 1 && piece.getType() != ROI)
+	if (echecr == 2 && lnr.size() == 1 && piece.getType() != ROI)
 		pathRoi = getPathRoi(&board, lnr[0]);
 	//---------------------
 
