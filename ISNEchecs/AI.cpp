@@ -11,6 +11,7 @@ AI::AI(Board* board)
 
 AI::~AI()
 {
+
 }
 
 std::vector<std::pair<Piece*, int>> returnMax(std::map<std::pair<Piece*, int>, int> map)
@@ -29,6 +30,22 @@ std::vector<std::pair<Piece*, int>> returnMax(std::map<std::pair<Piece*, int>, i
 	return ret;
 }
 
+Piece* returnMax(std::map<Piece*, int> map)
+{
+	int max = -101;
+	auto maxId = map.begin()->first;
+	Piece* ret;
+	for (auto i = map.begin(); i != map.end(); i++)
+	{
+		if (i->second >= max)
+		{
+			max = i->second;
+			ret = i->first;
+		}
+	}
+	return ret;
+}
+
 void AI::play()
 {
 	std::vector<Piece* > allPiece;
@@ -36,6 +53,12 @@ void AI::play()
 		allPiece = _board->getAliveBlanc();
 	else if (_iaColor == NOIR)
 		allPiece = _board->getAliveNoir();
+
+	std::vector<Piece*> enemyPiece;
+	if (_iaColor == BLANC)
+		enemyPiece = _board->getAliveNoir();
+	else
+		enemyPiece = _board->getAliveBlanc();
 
 	auto canMovePiece = allPiece;
 	int supr = 0;
@@ -49,23 +72,58 @@ void AI::play()
 		}			
 	}
 
-	std::map<std::pair<Piece*, int>, int> map;
-	for (int i = 0; i < canMovePiece.size(); i++)
+	std::map<Piece*, int> pieceAttacked;
+
+	for (int i = 0; i < enemyPiece.size(); i++)
 	{
-		auto allPath = getAllPath(_board, canMovePiece[i], _board->getMasterColor());
-		for (int j = 0; j < allPath.size(); j++)
+		for (int j = 0; j < allPiece.size(); j++)
 		{
-			int situ = getSituationPoint(*canMovePiece[i], _board->getCase(allPath[j]), allPiece);
-			std::cout << situ << std::endl;
-			std::pair<Piece*, int> tmpPair = std::make_pair(canMovePiece[i], allPath[j]);
-			map.emplace(std::pair<std::pair<Piece*, int>, int>(tmpPair, situ));
+			if (canMove(*_board, *enemyPiece[i], _board->getCase(allPiece[j]->getID()), _board->getMasterColor(), 0))
+			{
+				pieceAttacked.insert(std::pair<Piece*, int>(allPiece[j], getValPiece(allPiece[j])));
+			}
 		}
 	}
 
-	auto possibility = returnMax(map);
-	int id;
-	id = rand() % possibility.size();
-	_board->movePiece(possibility[id].first, _board->getCase(possibility[id].second));
+	if (pieceAttacked.size() == 0)
+	{
+		std::map<std::pair<Piece*, int>, int> map;
+		for (int i = 0; i < canMovePiece.size(); i++)
+		{
+			auto allPath = getAllPath(_board, canMovePiece[i], _board->getMasterColor());
+			for (int j = 0; j < allPath.size(); j++)
+			{
+				int situ = getSituationPoint(*canMovePiece[i], _board->getCase(allPath[j]), allPiece);
+				std::cout << situ << std::endl;
+				std::pair<Piece*, int> tmpPair = std::make_pair(canMovePiece[i], allPath[j]);
+				map.emplace(std::pair<std::pair<Piece*, int>, int>(tmpPair, situ));
+			}
+		}
+
+		auto possibility = returnMax(map);
+		int id;
+		id = rand() % possibility.size();
+		_board->movePiece(possibility[id].first, _board->getCase(possibility[id].second));
+	}
+	else
+	{
+		Piece* piece = returnMax(pieceAttacked);
+		int val = getValPiece(piece);
+		auto move = getAllPath(_board, piece, _board->getMasterColor());
+		std::map<std::pair<Piece*, int>, int> map;
+
+		for each(int var in move)
+		{
+			int situ = getSituationPoint(*piece, _board->getCase(var), allPiece);
+			std::pair<Piece*, int> tmpPair = std::make_pair(piece, var);
+			map.emplace(std::pair<std::pair<Piece*, int>, int>(tmpPair, situ));
+		}
+
+		auto possibility = returnMax(map);
+		int id;
+		id = rand() % possibility.size();
+		_board->movePiece(possibility[id].first, _board->getCase(possibility[id].second));
+	}	
 }
 
 int AI::getSituationPoint(Piece piece, Case caze, std::vector<Piece* > allPiece)
