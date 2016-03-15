@@ -15,6 +15,23 @@
 #include "canMove.h"
 #include "Son.h"
 
+void thread_allPath(Board board, std::map<Piece*, std::vector<int>>* vec, Couleur color, bool* stop)
+{
+	std::vector<Piece*> allPiece;
+	if (color == BLANC)
+		allPiece = board.getAliveBlanc();
+	else if (color == NOIR)
+		allPiece = board.getAliveNoir();
+
+	for each(Piece* piece in allPiece)
+	{		
+		if (*stop == true)
+			break;
+		vec->insert(std::pair<Piece*, std::vector<int>>(piece, getAllPath(&board, piece, color)));
+		std::cout << piece->getID() << " path precalculate !" << std::endl;
+	}
+}
+
 void debug(std::string debugstring)
 {
 	std::cout << "[DEBUG] " << debugstring << std::endl;
@@ -35,6 +52,23 @@ void MainGame::enableSurbrillance(Piece piece)
 			_surbrillance.push_back("Surbrillance" + std::to_string(i));
 			std::cout << "add surbrillance : " << i << std::endl;
 		}		
+	}
+}
+
+void MainGame::enableSurbrillance(Piece piece, std::vector<int> path)
+{
+	for (int i = 0; i < path.size(); i++)
+	{
+		if (m_board.getCase(path[i]).getPiece()->getColor() != piece.getColor())
+		{
+			GameObject* go = new GameObject("Sprites/surbrillance.png");
+			go->setPosition(m_board.getCase(path[i]).getPos());
+			go->setColor(sf::Color(255, 255, 255, 100));
+			setScale(go, 2);
+			_gameObjectManager.addSurbrillance("Surbrillance" + std::to_string(i), go);
+			_surbrillance.push_back("Surbrillance" + std::to_string(i));
+			std::cout << "add surbrillance : " << i << std::endl;
+		}
 	}
 }
 
@@ -59,6 +93,8 @@ MainGame::~MainGame()
 
 void MainGame::start()
 {
+	_stop = false;
+
 	if (_gameState != Uninitialized)
 		return;
 
@@ -160,6 +196,7 @@ void MainGame::initAI()
 	m_board = Board(&_gameObjectManager, NOIR);
 	_ai = AI(&m_board);
 	_isMyTurn = true;
+	_thread = std::thread(thread_allPath, m_board, &_allPath, NOIR, &_stop);
 }
 
 void MainGame::init()
@@ -168,7 +205,7 @@ void MainGame::init()
 	_gameState = GameState::ShowingMenu;
 	_window.create(sf::VideoMode(SCREEN_HEIGHT, SCREEN_WIDTH), "Chess");
 	_isAPieceSelected = false;
-	_debugMode = false;
+	_debugMode = false;	
 }
 
 void MainGame::gameLoop()
@@ -187,7 +224,8 @@ void MainGame::gameLoop()
 		case GameState::VersusIA:
 			if (!_isMyTurn)
 			{
-				_ai.play();
+				
+				//_ai.play();
 				_isMyTurn = true;
 			}
 			handleInput();
@@ -268,18 +306,30 @@ void MainGame::handleInput()
 					{
 						if (!m_board.getCase(event.mouseButton.x, event.mouseButton.y).isEmpty())
 						{
+							std::vector<int> path;
+							try {
+								path = _allPath.at(m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece());
+							}
+							catch (const std::exception& e){}
 							if (m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece()->getColor() != _clientColor)
 							{
 								_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
 								m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
 								if (_selectedPiece != new Piece())
-									enableSurbrillance(*_selectedPiece);
+								{
+									if (path.size() == 0)
+										enableSurbrillance(*_selectedPiece);
+									else
+										enableSurbrillance(*_selectedPiece, path);
+								}
+								
 								_isAPieceSelected = true;
 							}
 						}
 					}
 					else
 					{
+						_stop = true;
 						int oldPieceID = _selectedPiece->getID();
 						if (m_board.movePiece(_selectedPiece, m_board.getCase(event.mouseButton.x, event.mouseButton.y)))
 						{
@@ -287,6 +337,10 @@ void MainGame::handleInput()
 							disableSurbrillance();
 							_isAPieceSelected = false;
 							_isMyTurn = false;
+							_thread.join();
+							_stop = false;
+							_allPath.clear();
+							_thread = std::thread(thread_allPath, m_board, &_allPath, NOIR, &_stop);
 						}
 						else
 						{

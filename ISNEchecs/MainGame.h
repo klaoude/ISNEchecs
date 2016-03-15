@@ -1,4 +1,6 @@
 #pragma once
+#include <thread>
+
 #include <SFML\Graphics.hpp>
 
 #include "Graphics/GameObjectManager.h"
@@ -28,7 +30,8 @@ private:
 	void showMenu();
 
 	void enableSurbrillance(Piece piece);
-	void disableSurbrillance();
+	void enableSurbrillance(Piece piece, std::vector<int> path);
+	void disableSurbrillance();	
 
 	enum GameState { Uninitialized, ShowingMenu, Playing, Exiting, Joining, Debugging, VersusIA };
 	static GameState _gameState;
@@ -57,5 +60,9 @@ private:
 	std::vector<std::string> _surbrillance;
 
 	AI _ai;
+
+	std::thread _thread;
+	std::map<Piece*, std::vector<int>> _allPath;
+	bool _stop;
 };
 
