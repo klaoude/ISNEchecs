@@ -14,6 +14,30 @@ AI::~AI()
 
 }
 
+std::vector<int> AI::canEat(std::vector<Piece*> allPiece)
+{
+	std::map<Piece*, Piece*> ret;
+	for (int i = 0; i < allPiece.size(); i++)
+	{
+		auto allPath = getAllPath(_board, allPiece[i], _board->getMasterColor());
+		for (int j = 0; j < allPath.size(); j++)
+			if (_board->getCase(allPath[j]).getPiece()->getColor() != _iaColor && _board->getCase(allPath[j]).getPiece()->getColor() != NONEc)
+				if (canMove(*_board, *allPiece[i], _board->getCase(allPath[j]), _board->getMasterColor(), 0))
+					ret.insert(std::pair<Piece*, Piece*>(allPiece[i], _board->getCase(allPath[j]).getPiece()));
+	}
+	return ret;
+}
+
+bool AI::enemyCanEatMe(std::vector<Piece*> enemiPiece, int caseid)
+{
+	for each(Piece* piece in enemiPiece)
+	{
+		if (canMove(*_board, *piece, _board->getCase(caseid), _board->getMasterColor(), 0))
+			return true;
+	}
+	return false;
+}
+
 std::vector<std::pair<Piece*, int>> returnMax(std::map<std::pair<Piece*, int>, int> map)
 {
 	int max = -101;
@@ -59,6 +83,9 @@ int returnMax(std::vector<int> vec)
 
 void AI::play()
 {
+	std::map<std::pair<Piece*, int>, int> mapPoint;
+
+	//init vars
 	std::vector<Piece* > allPiece;
 	if (_iaColor == BLANC)
 		allPiece = _board->getAliveBlanc();
@@ -70,10 +97,11 @@ void AI::play()
 		enemyPiece = _board->getAliveNoir();
 	else
 		enemyPiece = _board->getAliveBlanc();
+	//---------
 
+	//set canMovePiece for opti
 	auto canMovePiece = allPiece;
 	int supr = 0;
-
 	for (int i = 0; i < allPiece.size(); i++)
 	{
 		if (getAllPath(_board, allPiece[i], _board->getMasterColor()).size() == 0)
@@ -82,9 +110,10 @@ void AI::play()
 			supr++;
 		}			
 	}
+	//-------------------------
 
+	//regarde si une de nos piece sont attaqué
 	std::map<Piece*, int> pieceAttacked;
-
 	for (int i = 0; i < enemyPiece.size(); i++)
 	{
 		for (int j = 0; j < allPiece.size(); j++)
@@ -95,8 +124,24 @@ void AI::play()
 			}
 		}
 	}
+	//----------------------------------------
 
-	if (pieceAttacked.size() == 0)
+	//regarde si on peux manger une piece
+	auto eatPiece = canEat(allPiece);
+	//-----------------------------------
+
+	//regarde si, si on mange une piece, on se fais remangé est si on perd au change
+	for each (Piece* piece in enemyPiece)
+	{
+		auto allPath = getAllPath(_board, piece, _board->getMasterColor());
+		for each(int path in allPath)
+		{
+			
+		}
+	}
+	//------------------------------------------------------------------------------
+
+	if (pieceAttacked.size() == 0) //si une de nos piece est attaqué
 	{
 		std::map<std::pair<Piece*, int>, int> map;
 		for (int i = 0; i < canMovePiece.size(); i++)
@@ -146,17 +191,18 @@ void AI::play()
 		id = rand() % possibility.size();
 		_board->movePiece(possibility[id].first, _board->getCase(possibility[id].second));
 	}
-	else
+	else //si aucune de nos piece est attaqué
 	{
 		std::cout << "else statement" << std::endl;
 		Piece* piece = returnMax(pieceAttacked);
 		int val = getValPiece(piece);
 		auto move = getAllPath(_board, piece, _board->getMasterColor());
 		std::map<std::pair<Piece*, int>, int> map;
+		int situ;
 
 		for each(int var in move)
 		{
-			int situ = getSituationPoint(*piece, _board->getCase(var), allPiece);
+			situ = getSituationPoint(*piece, _board->getCase(var), allPiece);
 			std::pair<Piece*, int> tmpPair = std::make_pair(piece, var);
 			map.emplace(std::pair<std::pair<Piece*, int>, int>(tmpPair, situ));
 		}
@@ -165,6 +211,7 @@ void AI::play()
 		int id;
 		id = rand() % possibility.size();
 		_board->movePiece(possibility[id].first, _board->getCase(possibility[id].second));
+		std::cout << situ << std::endl;
 	}	
 }
 
@@ -200,15 +247,14 @@ int AI::getSituationPoint(Piece piece, Case caze, std::vector<Piece* > allPiece)
 			board.getCase(caze.getID()).getPiece()->setColor(BLANC);
 			if (!canretake)
 			{
-				point -= 2*getValPiece(&piece) - 1;
+				point -= 2*getValPiece(&piece) + 1;
 				std::cout << " cependant je me fais niquer" << std::endl;
 			}
 			else
 			{
-				point -= getValPiece(&piece);
+				//point -= getValPiece(&piece);
 				std::cout << std::endl;
-			}
-				
+			}				
 		}
 	}
 
