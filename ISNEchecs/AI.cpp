@@ -46,6 +46,17 @@ Piece* returnMax(std::map<Piece*, int> map)
 	return ret;
 }
 
+int returnMax(std::vector<int> vec)
+{
+	int max = -101;
+	for (int i = 0; i < vec.size(); i++)
+	{
+		if (vec[i] > max)
+			max = vec[i];
+	}
+	return max;
+}
+
 void AI::play()
 {
 	std::vector<Piece* > allPiece;
@@ -93,7 +104,37 @@ void AI::play()
 			auto allPath = getAllPath(_board, canMovePiece[i], _board->getMasterColor());
 			for (int j = 0; j < allPath.size(); j++)
 			{
-				int situ = getSituationPoint(*canMovePiece[i], _board->getCase(allPath[j]), allPiece);
+				int situ;
+				if (canMovePiece[i]->getColor() != _board->getCase(allPath[j]).getPiece()->getColor() && _board->getCase(allPath[j]).getPiece()->getColor() != NONEc)
+				{
+					situ = getValPiece(_board->getCase(allPath[j]).getPiece()) * 2;
+					_board->simuleMove(canMovePiece[i], _board->getCase(allPath[j]));
+
+					std::vector<Piece*> enemyPiece;
+					if (_iaColor == BLANC)
+						enemyPiece = _board->getAliveNoir();
+					else
+						enemyPiece = _board->getAliveBlanc();
+
+					int Echec = echec(_board);
+
+					std::vector<int> vec;
+
+					for each(Piece* piece in enemyPiece)
+					{
+						if (canMove(*_board, *piece, _board->getCase(canMovePiece[i]->getID()), _board->getMasterColor(), Echec))
+							vec.push_back(getValPiece(piece));
+					}
+
+					_board->undoSimileMove();
+
+					situ += (-2) * returnMax(vec);
+				}
+				else
+				{
+					situ = getSituationPoint(*canMovePiece[i], _board->getCase(allPath[j]), allPiece);
+				}
+				
 				std::cout << situ << std::endl;
 				std::pair<Piece*, int> tmpPair = std::make_pair(canMovePiece[i], allPath[j]);
 				map.emplace(std::pair<std::pair<Piece*, int>, int>(tmpPair, situ));
