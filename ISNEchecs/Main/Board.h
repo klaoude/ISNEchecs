@@ -21,7 +21,7 @@ public:
 	void delPiece(Piece piece);
 
 	void movePieceTo(Piece* piece, Case caze, Couleur color);
-	void mangepiece(Piece* piece, Case caze);
+	void mangePiece(Piece* piece, Case caze);
 	void rock(Piece* piece, Case caze, std::string sens, Couleur color);
 
 	bool movePiece(Piece* piece, Case caze);

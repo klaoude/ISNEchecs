@@ -262,7 +262,7 @@ inline bool Roi(Board *board, Piece piece, Case caze, Couleur color)
 				board->getBoard().at(piece.getID() - 2).isEmpty() &&
 				board->getBoard().at(piece.getID() - 3).isEmpty() && 
 				!board->getBoard().at(piece.getID() - 4).getPiece()->getHasMoved() &&
-				board->getBoard().at(piece.getID() + 4).getPiece()->getType() == TOUR) //si cases sont libres et les tour/roi hasn't moved
+				board->getBoard().at(piece.getID() - 4).getPiece()->getType() == TOUR) //si cases sont libres et les tour/roi hasn't moved
 				return 1;
 			else
 				return 0;
@@ -275,7 +275,7 @@ inline bool Roi(Board *board, Piece piece, Case caze, Couleur color)
 			if (board->getBoard().at(piece.getID() + 1).isEmpty() &&
 				board->getBoard().at(piece.getID() + 2).isEmpty() &&
 				!board->getBoard().at(piece.getID() + 3).getPiece()->getHasMoved() &&
-				board->getBoard().at(piece.getID() + 4).getPiece()->getType() == TOUR) //si cases sont libres et les tour/roi hasn't moved
+				board->getBoard().at(piece.getID() + 3).getPiece()->getType() == TOUR) //si cases sont libres et les tour/roi hasn't moved
 				return 1;
 			else
 				return 0;
