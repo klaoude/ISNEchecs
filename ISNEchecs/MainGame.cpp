@@ -14,6 +14,7 @@
 #include "Fonctions.h"
 #include "canMove.h"
 #include "Son.h"
+#include "MenuKillian.h"
 
 void debug(std::string debugstring)
 {
@@ -139,14 +140,23 @@ void MainGame::start()
 	}
 	else if (choice == 3)
 	{
-		sf::Texture texture;
-		texture.loadFromFile("Sprites/White_Queen.png");
-
-		_sprite.setTexture(texture);
-		_sprite.scale(2, 2);
-
 		init();
-		gameLoop();
+		MenuKillian menu;
+		menu.init(_window);
+
+		while (_window.isOpen())
+		{
+			sf::Event event;
+
+			while (_window.pollEvent(event))
+			{
+				if (event.type == sf::Event::MouseButtonPressed)
+				{
+					menu.recevoir_coord(event.mouseButton.x, event.mouseButton.y);
+				}
+			}
+		}
+		system("Pause");
 	}
 	else
 	{

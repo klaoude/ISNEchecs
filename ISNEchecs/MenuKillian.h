@@ -1,10 +1,12 @@
 #pragma once
 
+#include <iostream>
 #include <SFML\Graphics.hpp>
 
 struct Point
 {
 public:
+	Point() {}
 	Point(int x, int y){ _x = x; _y = y; }
 	
 	void set(int x, int y){ _x = x; _y = y; }
@@ -18,8 +20,10 @@ private:
 struct Button
 {
 public:
+
+	Button(){}
 	Button(Point upleft, Point upright, Point downleft, Point downright);
-	
+	bool _Buttonclicked;
 	void go_debug();
 		
 private:
@@ -32,22 +36,14 @@ private:
 class MenuKillian
 {
 public:
-	MenuKillian(int xclique, int yclique);
-	void init();
-	void recevoir_coord();
+	MenuKillian();
+	void init(sf::RenderWindow& window);
+	void recevoir_coord(int x, int y);
 
-
-private:
-	
+private:	
 	int _xclique;
 	int _yclique;
-
 };
-MenuKillian::MenuKillian(int xclique, int yclique)
-{
-	_xclique = xclique;
-	_yclique = yclique;
-}
 
 Button::Button(Point upleft, Point upright, Point downleft, Point downright)
 {
@@ -56,17 +52,5 @@ Button::Button(Point upleft, Point upright, Point downleft, Point downright)
 	_downleft=downleft;
 	_downright=downright;
 }
-void MenuKillian::init()
-{
-
-}
-
-void MenuKillian::recevoir_coord()
-{
-
-}
-
-int main()
-{
-
-}
+boolButton::_Buttonclicked
+if (xclique)
