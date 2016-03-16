@@ -102,7 +102,8 @@ inline bool blancMove(Board board, Piece piece, Case caze, Couleur color, int ec
 			else //SI LE DEPL MET LE ROI EN ECHEC
 			{
 				board.simuleMove(&piece, caze);
-				if (echec(&board) == 1) //si une piece ennemi peut aller sur le roi
+				
+				if (lb(&board, board.getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
 				{
 					ennmove = 1;
 				}
@@ -208,14 +209,15 @@ inline bool noirMove(Board board, Piece piece, Case caze, Couleur color, int ech
 		{
 			if (caze.getPiece()->getColor() == NOIR) //s'il y'a un allié sur la case
 				return 0;
-			else //NEED ADD SI LE DEPL MET LE ROI EN ECHEC
+			else // SI LE DEPL MET LE ROI EN ECHEC
 			{
 				board.simuleMove(&piece, caze);
-				if (echec(&board) == 2) //si une piece ennemi peut aller sur cette case
+				std::cout << "roinoir: " << piece.getID() << std::endl;
+				if (ln(&board, board.getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
 				{
 					ennmove = 1;
 				}
-				board.undoSimileMove();
+				board.undoSimileMove(); //si une piece ennemi peut aller sur cette case
 
 				if (ennmove == 1) //si une piece peut aller sur cette case
 					return 0; //le roi peut pas bouger

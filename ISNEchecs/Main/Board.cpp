@@ -10,7 +10,7 @@ std::vector<Type> pblanc;
 
 Board::Board()
 {
-	s_pieceA = nullptr;
+	s_pieceA = Piece();
 	s_pieceB = nullptr;
 }
 
@@ -18,7 +18,7 @@ Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)
 {
 	_hitmarker = new Son("Sound/hitmarker.wav");
 	_hitmarker->setBuffer();
-	s_pieceA = nullptr;
+	s_pieceA = Piece();
 	s_pieceB = nullptr;
 	_masterColor = mc;
 	int x=0;
@@ -382,7 +382,7 @@ Case Board::getCase(int caseID)
 void Board::simuleMove(Piece* piece, Case caze)
 {
 	s_oldCaseID = piece->getID();
-	s_pieceA = piece;
+	s_pieceA = *piece;
 	s_newCaseID = caze.getID();
 
 	if (!caze.isEmpty())
@@ -394,16 +394,21 @@ void Board::simuleMove(Piece* piece, Case caze)
 	m_board.at(piece->getID()).delPiece();  //delpiece old
 	piece->setID(caze.getID()); //new id
 	m_board.at(caze.getID()).setEmpty(0); //setprise
-	m_board.at(caze.getID()).setPieceCase(piece); //setpiececase	
+	m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
+
+	std::replace(_alivePiece.begin(), _alivePiece.end(), &s_pieceA, piece);
+	std::replace(_aliveNoir.begin(), _aliveNoir.end(), &s_pieceA, piece);
+	std::replace(_aliveBlanc.begin(), _aliveBlanc.end(), &s_pieceA, piece);
 }
 
 void Board::undoSimileMove()
 {
+	auto piece = m_board.at(s_newCaseID).getPiece();
 	m_board.at(s_newCaseID).setEmpty(true); //setempty old
 	m_board.at(s_newCaseID).delPiece();  //delpiece old
-	s_pieceA->setID(s_oldCaseID); //new id
+	s_pieceA.setID(s_oldCaseID); //new id
 	m_board.at(s_oldCaseID).setEmpty(0); //setprise
-	m_board.at(s_oldCaseID).setPieceCase(s_pieceA); //setpiececase
+	m_board.at(s_oldCaseID).setPieceCase(&s_pieceA); //setpiececase
 
 	if (s_pieceB != nullptr)
 	{
@@ -412,8 +417,12 @@ void Board::undoSimileMove()
 		m_board.at(s_newCaseID).setPieceCase(s_pieceB);
 	}
 
+	std::replace(_alivePiece.begin(), _alivePiece.end(), piece, &s_pieceA);
+	std::replace(_aliveNoir.begin(), _aliveNoir.end(), piece, &s_pieceA);
+	std::replace(_aliveBlanc.begin(), _aliveBlanc.end(), piece, &s_pieceA);
+
 	s_oldCaseID = 0;
 	s_newCaseID = 0;
-	s_pieceA = nullptr;
+	s_pieceA = Piece();
 	s_pieceB = nullptr;
 }
