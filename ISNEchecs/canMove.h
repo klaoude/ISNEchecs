@@ -211,8 +211,7 @@ inline bool noirMove(Board board, Piece piece, Case caze, Couleur color, int ech
 				return 0;
 			else // SI LE DEPL MET LE ROI EN ECHEC
 			{
-				Board* bobo = &board;
-				bobo->simuleMove(&piece, caze);
+				board.simuleMove(&piece, caze);
 				std::cout << "roinoir: " << piece.getID() << std::endl;
 				if (ln(&board, board.getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
 				{
