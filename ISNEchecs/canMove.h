@@ -125,7 +125,7 @@ inline bool noirMove(Board board, Piece piece, Case caze, Couleur color, int ech
 	std::vector<Piece*> lnr;
 	int echecr = echeck;
 	if (echecr > 0)
-		lnr = ln(&board);
+		lnr = ln(&board, color);
 	int roiNoir = findroinoir(&board);
 	bool isPos = isPossible(&board, piece, caze, color);
 	bool ennmove = 0;
