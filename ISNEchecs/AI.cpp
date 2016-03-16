@@ -107,6 +107,7 @@ void AI::play()
 	}
 	else
 	{
+		std::cout << "else statement" << std::endl;
 		Piece* piece = returnMax(pieceAttacked);
 		int val = getValPiece(piece);
 		auto move = getAllPath(_board, piece, _board->getMasterColor());
