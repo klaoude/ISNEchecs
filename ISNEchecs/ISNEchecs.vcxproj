@@ -96,6 +96,7 @@
     <ClCompile Include="Main\Board.cpp" />
     <ClCompile Include="Main\Case.cpp" />
     <ClCompile Include="Main\Piece.cpp" />
+    <ClCompile Include="MenuKillian.cpp" />
     <ClCompile Include="Server\Client.cpp" />
     <ClCompile Include="Server\JSON.cpp" />
     <ClCompile Include="Server\JSONValue.cpp" />
@@ -118,6 +119,7 @@
     <ClInclude Include="Main\CaseID.h" />
     <ClInclude Include="Main\Piece.h" />
     <ClInclude Include="Main\PieceInfo.h" />
+    <ClInclude Include="MenuKillian.h" />
     <ClInclude Include="Server\Client.h" />
     <ClInclude Include="Server\JSON.h" />
     <ClInclude Include="Server\JSONValue.h" />
