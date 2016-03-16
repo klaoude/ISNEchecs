@@ -15,7 +15,7 @@ inline bool blancMove(Board board, Piece piece, Case caze, Couleur color, int ec
 	std::vector<Piece*> lbr;
 	int echecr = echeck;
 	if (echecr > 0)
-		lbr = lb(&board);
+		lbr = lb(&board, color);
 	bool isPos = isPossible(&board, piece, caze, color);
 	int roiBlanc = findroiblanc(&board);
 	bool ennmove = 0;
