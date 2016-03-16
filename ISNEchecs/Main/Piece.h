@@ -22,7 +22,6 @@ public:
 	void setColor(Couleur couleur) { m_color = couleur; }	
 	void setID(int ID) { m_ID = ID; }
 	void setHasMoved(bool hasMoved) { m_hasMoved = hasMoved; }
-
 	void draw(sf::RenderWindow& window);
 
 	void del();
