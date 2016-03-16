@@ -203,7 +203,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 					}
 				}
 			}
-					
+
 		} //FIN ROCK
 
 		if (canMove(*this, *piece, caze, _masterColor, echec(this)) &&
@@ -216,7 +216,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 			std::cout << "deplacement impossible" << std::endl;
 			return false;
 		}
-			
+
 	}
 
 	if (m_board.at(caze.getID()).getPiece()->getColor() == piece->getColor()) //meme color
@@ -253,16 +253,16 @@ bool Board::movePiece(Piece* piece, Case caze)
 			std::cout << "echec: " << echec(this) << std::endl;
 			if (echec(this) > 1)
 				std::cout << "echec mat: " << echecm(this) << std::endl;
-		}		
-		
+		}
+
 		return true;
-	} 
-	else 
+	}
+	else
 	{
 		std::cout << "deplacment impossible" << std::endl;
 		return false;
 	}
-		
+
 }
 
 
@@ -287,6 +287,49 @@ void Board::movePieceTo(Piece* piece, Case caze, Couleur color)
 	std::cout << "echec: " << echec(this) << std::endl;
 	if (echec(this) > 0)
 		std::cout << "echec mat: " << echecm(this) << std::endl;
+
+	if (_masterColor == NOIR)
+	{
+		if (piece->getColor() == BLANC && piece->getType() == PION && piece->getID() >= 56 && piece->getID() < 64)
+		{
+			std::string type;
+			std::cin >> type;
+
+			Type typef = strToType(type);
+			piece->setType(typef);
+			//add sprite
+		}
+		else if (piece->getColor() == NOIR && piece->getType() == PION && piece->getID() >= 0 && piece->getID() < 8)
+		{
+			std::string type;
+			std::cin >> type;
+
+			Type typef = strToType(type);
+			piece->setType(typef);
+			//add sprite
+		}
+	}
+	else if (_masterColor == BLANC)
+	{
+		if (piece->getColor() == BLANC && piece->getType() == PION && piece->getID() >= 0 && piece->getID() < 8)
+		{
+			std::string type;
+			std::cin >> type;
+
+			Type typef = strToType(type);
+			piece->setType(typef);
+			//add sprite
+		}
+		else if (piece->getColor() == NOIR && piece->getType() == PION && piece->getID() >= 56 && piece->getID() < 64)
+		{
+			std::string type;
+			std::cin >> type;
+
+			Type typef = strToType(type);
+			piece->setType(typef);
+			//add sprite
+		}
+	}
 }
 
 void Board::mangePiece(Piece* piece, Case caze)

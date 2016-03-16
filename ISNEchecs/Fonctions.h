@@ -1117,3 +1117,22 @@ inline int echecm(Board *board)
 
 	
 }
+
+inline Type strToType(std::string type)
+{
+	Type typef;
+	if (type == "pion")
+		typef = PION;
+	else if (type == "cavalier")
+		typef = CAVALIER;
+	else if (type == "tour")
+		typef = TOUR;
+	else if (type == "reine")
+		typef = REINE;
+	else if (type == "fou")
+		typef = FOU;
+	else if (type == "roi")
+		typef = ROI;
+
+	return typef;
+}
