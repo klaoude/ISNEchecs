@@ -8,6 +8,48 @@
 std::vector<Type> pnoir;
 std::vector<Type> pblanc;
 
+void _setTexture(GameObjectManager* _gom, Piece* piece)
+{
+	Type typef = piece->getType();
+	switch (piece->getColor())
+	{
+	case BLANC:
+		switch (typef)
+		{
+		case CAVALIER:
+			_gom->get(piece->getTextureID())->setTexture("Sprites/White_Knight.png");
+			break;
+		case TOUR:
+			_gom->get(piece->getTextureID())->setTexture("Sprites/White_Rook.png");
+			break;
+		case FOU:
+			_gom->get(piece->getTextureID())->setTexture("Sprites/White_Bishop.png");
+			break;
+		case REINE:
+			_gom->get(piece->getTextureID())->setTexture("Sprites/White_Queen.png");
+			break;
+		}
+		break;
+	case NOIR:
+		switch (typef)
+		{
+		case CAVALIER:
+			_gom->get(piece->getTextureID())->setTexture("Sprites/Black_Knight.png");
+			break;
+		case TOUR:
+			_gom->get(piece->getTextureID())->setTexture("Sprites/Black_Rook.png");
+			break;
+		case FOU:
+			_gom->get(piece->getTextureID())->setTexture("Sprites/Black_Bishop.png");
+			break;
+		case REINE:
+			_gom->get(piece->getTextureID())->setTexture("Sprites/Black_Queen.png");
+			break;
+		}
+		break;
+	}
+}
+
 Board::Board()
 {
 	s_pieceA = nullptr;
@@ -84,10 +126,6 @@ Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)
 			_alivePiece.push_back(m_board.at(i).getPiece());
 		}
 	}
-	for each (Piece* piece in _aliveNoir)
-	{
-		std::cout << piece->getID() << std::endl;
-	}
 }
 
 Board::~Board()
@@ -103,7 +141,6 @@ void Board::setPiece(Piece* piece)
 
 bool Board::movePiece(Piece* piece, Case caze)
 {
-
 	Piece none(0, NONEt, NONEc, "");
 	if (caze.isEmpty()) //Si la case est libre
 	{
@@ -297,7 +334,7 @@ void Board::movePieceTo(Piece* piece, Case caze, Couleur color)
 
 			Type typef = strToType(type);
 			piece->setType(typef);
-			//add sprite
+			_setTexture(_gom, piece);
 		}
 		else if (piece->getColor() == NOIR && piece->getType() == PION && piece->getID() >= 0 && piece->getID() < 8)
 		{
@@ -306,7 +343,7 @@ void Board::movePieceTo(Piece* piece, Case caze, Couleur color)
 
 			Type typef = strToType(type);
 			piece->setType(typef);
-			//add sprite
+			_setTexture(_gom, piece);
 		}
 	}
 	else if (_masterColor == BLANC)
@@ -318,7 +355,7 @@ void Board::movePieceTo(Piece* piece, Case caze, Couleur color)
 
 			Type typef = strToType(type);
 			piece->setType(typef);
-			//add sprite
+			_setTexture(_gom, piece);
 		}
 		else if (piece->getColor() == NOIR && piece->getType() == PION && piece->getID() >= 56 && piece->getID() < 64)
 		{
@@ -327,7 +364,7 @@ void Board::movePieceTo(Piece* piece, Case caze, Couleur color)
 
 			Type typef = strToType(type);
 			piece->setType(typef);
-			//add sprite
+			_setTexture(_gom, piece);
 		}
 	}
 }

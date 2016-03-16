@@ -46,6 +46,14 @@ GameObject* GameObjectManager::get(std::string name)
 	return results->second;
 }
 
+void GameObjectManager::replace(std::string name, GameObject* gameObject)
+{
+	for (auto i = _gameObjects.begin(); i != _gameObjects.end(); i++)
+	{
+		if (i->first == name)
+			i->second = gameObject;
+	}
+}
 
 void GameObjectManager::draw(sf::RenderWindow& window)
 {

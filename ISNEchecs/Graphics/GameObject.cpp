@@ -32,6 +32,7 @@ void GameObject::setTexture(std::string texturePath)
 	_texture.loadFromImage(image);
 	_sprite.setTexture(_texture);
 	_isLoaded = true;
+	std::cout << "texture set to " << texturePath << std::endl;
 }
 
 void GameObject::scale(float scalex, float scaley)
