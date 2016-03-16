@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <iostream>
 #include <SFML\Graphics.hpp>
 
@@ -568,6 +569,7 @@ inline std::vector<int> getPathRoi(Board* board, Piece* piece)
 
 inline std::vector<Piece*> lb(Board *board, Couleur mastercolor)
 {
+	auto t1 = std::chrono::high_resolution_clock::now();
 	std::vector <Piece*> alive = board->getAliveNoir();
 	std::vector<Piece*> lb; //id piece qui mangent le roi blanc
 	int roi = findroiblanc(board);
@@ -740,8 +742,9 @@ inline std::vector<Piece*> lb(Board *board, Couleur mastercolor)
 			if (roi - i * 7 < 0)
 				break;
 	}
+	auto t2 = std::chrono::high_resolution_clock::now();
+	std::cout << "lbtime = " << std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() << std::endl;
 	return lb;
-
 }
 
 inline std::vector<Piece*> ln(Board *board)
