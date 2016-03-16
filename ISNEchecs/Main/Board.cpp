@@ -141,6 +141,8 @@ void Board::setPiece(Piece* piece)
 
 bool Board::movePiece(Piece* piece, Case caze)
 {
+	int echeck = echec(this);
+	bool ennmove = 0;
 	Piece none(0, NONEt, NONEc, "");
 	if (caze.isEmpty()) //Si la case est libre
 	{
@@ -152,16 +154,41 @@ bool Board::movePiece(Piece* piece, Case caze)
 				{
 					if (echec(this) != 1)
 					{
-						if (piece->getID() + 2 == caze.getID() && isPossible(this, *piece, caze, _masterColor)) //petit rock 
+						if (piece->getID() + 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //petit rock 
 						{
+							simuleMove(piece, caze);
+							if (lb(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
+							{
+								ennmove = 1;
+							}
+							undoSimileMove(); //si une piece ennemi peut aller sur cette case
+
+							if (ennmove == 1) //si une piece peut aller sur cette case
+								; //le roi peut pas bouger
+							else //si personne ne peux aller sur la case
+							{
 							rock(piece, caze, "droite", _masterColor);
 							std::cout << "petit rock effectue" << std::endl;
 						}
-						if (piece->getID() - 2 == caze.getID() && isPossible(this, *piece, caze, _masterColor)) //grand rock 
+								
+						}
+						if (piece->getID() - 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //grand rock 
 						{
+							simuleMove(piece, caze);
+							if (lb(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
+							{
+								ennmove = 1;
+							}
+							undoSimileMove(); //si une piece ennemi peut aller sur cette case
+
+							if (ennmove == 1) //si une piece peut aller sur cette case
+								; //le roi peut pas bouger
+							else //si personne ne peux aller sur la case
+							{
 							rock(piece, caze, "gauche", _masterColor);
 							std::cout << "grand rock effectue" << std::endl;
 						}
+					}
 					}
 					else
 					{
@@ -175,17 +202,40 @@ bool Board::movePiece(Piece* piece, Case caze)
 				{
 					if (echec(this) != 2)
 					{
-						if (piece->getID() + 2 == caze.getID() && isPossible(this, *piece, caze, _masterColor)) //petit rock 
+						if (piece->getID() + 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //petit rock 
 						{
+							simuleMove(piece, caze);
+							if (ln(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
+						{
+								ennmove = 1;
+							}
+							undoSimileMove(); //si une piece ennemi peut aller sur cette case
 							
+							if (ennmove == 1) //si une piece peut aller sur cette case
+								; //le roi peut pas bouger
+							else //si personne ne peux aller sur la case
+							{
 							rock(piece, caze, "droite", _masterColor);
 							std::cout << "petit rock effectue" << std::endl;
 						}
-						if (piece->getID() - 2 == caze.getID() && isPossible(this, *piece, caze, _masterColor)) //grand rock 
+						}
+						if (piece->getID() - 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //grand rock 
+						{
+							simuleMove(piece, caze);
+							if (ln(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
+							{
+								ennmove = 1;
+							}
+							undoSimileMove(); //si une piece ennemi peut aller sur cette case
+
+							if (ennmove == 1) //si une piece peut aller sur cette case
+								; //le roi peut pas bouger
+							else //si personne ne peux aller sur la case
 						{
 							rock(piece, caze, "gauche", _masterColor);
 							std::cout << "grand rock effectue" << std::endl;
 						}
+					}
 					}
 					else
 					{
@@ -201,12 +251,12 @@ bool Board::movePiece(Piece* piece, Case caze)
 				{
 					if (echec(this) != 1)
 					{
-						if (piece->getID() + 2 == caze.getID() && isPossible(this, *piece, caze, _masterColor)) //grand rock 
+						if (piece->getID() + 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //grand rock 
 						{
 							rock(piece, caze, "droite", _masterColor);
 							std::cout << "grand rock effectue" << std::endl;
 						}
-						if (piece->getID() - 2 == caze.getID() && isPossible(this, *piece, caze, _masterColor)) //petit rock 
+						if (piece->getID() - 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //petit rock 
 						{
 							rock(piece, caze, "gauche", _masterColor);
 							std::cout << "petit rock effectue" << std::endl;
@@ -222,12 +272,12 @@ bool Board::movePiece(Piece* piece, Case caze)
 				{
 					if (echec(this) != 2)
 					{
-						if (piece->getID() + 2 == caze.getID() && isPossible(this, *piece, caze, _masterColor)) //grand rock 
+						if (piece->getID() + 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //grand rock 
 						{
 							rock(piece, caze, "droite", _masterColor);
 							std::cout << "grand rock effectue" << std::endl;
 						}
-						if (piece->getID() - 2 == caze.getID() && isPossible(this, *piece, caze, _masterColor)) //petit rock 
+						if (piece->getID() - 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //petit rock 
 						{
 							rock(piece, caze, "gauche", _masterColor);
 							std::cout << "petit rock effectue" << std::endl;
@@ -243,7 +293,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 
 		} //FIN ROCK
 
-		if (canMove(*this, *piece, caze, _masterColor, echec(this)) &&
+		if (canMove(*this, *piece, caze, _masterColor, echeck) &&
 			piece->getID() + 2 != caze.getID() &&
 			piece->getID() - 2 != caze.getID()) //deplacement
 		{
