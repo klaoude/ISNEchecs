@@ -471,14 +471,29 @@ inline std::vector<int> getPathRoi(Board* board, Piece* piece)
 				else if (findroiblanc(board) == piece->getID() - i * 8)
 					h = -i;
 				else if (floor(findroiblanc(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8)
-					for (int j = 0; j < 8; j++)
-						if (findroiblanc(board) == piece->getID() - i )
-							g = -i;
+				{
+				for (int j = 0; j < 8; j++)
+				{
+					if (findroiblanc(board) == piece->getID() - i)
+						g = -i;
+					else
+						;
+				}
+				}
+					
+					
 					
 				else if (ceil(findroiblanc(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8)
+				{
 					for (int j = 0; j < 8; j++)
+					{
 						if (findroiblanc(board) == piece->getID() - i)
 							d = i;
+						else
+							;
+					}
+				}
+					
 				else if (findroiblanc(board) == piece->getID() + i * 9)
 					bd = i;
 				else if (findroiblanc(board) == piece->getID() - i * 9)
@@ -1071,10 +1086,12 @@ inline int echecm(Board *board)
 				{	
 					for (int i = 0; i < pathRoiBlanc.size(); i++)
 					{
+						std::cout << "path" << pathRoiBlanc[i] << std::endl;
 						if (isPossible(board, *aliveBlanc[j], board->getBoard().at(pathRoiBlanc[i]), board->getMasterColor()) && aliveBlanc[j]->getType() != ROI)
 							return 0;
 					}
 				}
+				
 				return 1;
 			}
 		}

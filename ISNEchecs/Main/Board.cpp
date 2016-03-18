@@ -168,7 +168,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 							else //si personne ne peux aller sur la case
 							{
 							rock(piece, caze, "droite", _masterColor);
-							std::cout << "petit rock effectue" << std::endl;
+
 						}
 								
 						}
@@ -186,13 +186,13 @@ bool Board::movePiece(Piece* piece, Case caze)
 							else //si personne ne peux aller sur la case
 							{
 							rock(piece, caze, "gauche", _masterColor);
-							std::cout << "grand rock effectue" << std::endl;
+
 						}
 					}
 					}
 					else
 					{
-						std::cout << "can't move, roi en echec" << std::endl;
+
 
 					}
 
@@ -216,7 +216,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 							else //si personne ne peux aller sur la case
 							{
 							rock(piece, caze, "droite", _masterColor);
-							std::cout << "petit rock effectue" << std::endl;
+
 						}
 						}
 						if (piece->getID() - 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //grand rock 
@@ -233,13 +233,13 @@ bool Board::movePiece(Piece* piece, Case caze)
 							else //si personne ne peux aller sur la case
 						{
 							rock(piece, caze, "gauche", _masterColor);
-							std::cout << "grand rock effectue" << std::endl;
+
 						}
 					}
 					}
 					else
 					{
-						std::cout << "can't move, roi en echec" << std::endl;
+
 
 					}
 				}
@@ -254,17 +254,15 @@ bool Board::movePiece(Piece* piece, Case caze)
 						if (piece->getID() + 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //grand rock 
 						{
 							rock(piece, caze, "droite", _masterColor);
-							std::cout << "grand rock effectue" << std::endl;
+
 						}
 						if (piece->getID() - 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //petit rock 
 						{
 							rock(piece, caze, "gauche", _masterColor);
-							std::cout << "petit rock effectue" << std::endl;
 						}
 					}
 					else
 					{
-						std::cout << "can't move, roi en echec" << std::endl;
 
 					}
 				}
@@ -275,17 +273,14 @@ bool Board::movePiece(Piece* piece, Case caze)
 						if (piece->getID() + 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //grand rock 
 						{
 							rock(piece, caze, "droite", _masterColor);
-							std::cout << "grand rock effectue" << std::endl;
 						}
 						if (piece->getID() - 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //petit rock 
 						{
 							rock(piece, caze, "gauche", _masterColor);
-							std::cout << "petit rock effectue" << std::endl;
 						}
 					}
 					else
 					{
-						std::cout << "can't move, roi en echec" << std::endl;
 
 					}
 				}
@@ -298,9 +293,9 @@ bool Board::movePiece(Piece* piece, Case caze)
 			piece->getID() - 2 != caze.getID()) //deplacement
 		{
 			movePieceTo(piece, caze, _masterColor);
+			return true;
 		}
 		else {
-			std::cout << "deplacement impossible" << std::endl;
 			return false;
 		}
 
@@ -308,7 +303,6 @@ bool Board::movePiece(Piece* piece, Case caze)
 
 	if (m_board.at(caze.getID()).getPiece()->getColor() == piece->getColor()) //meme color
 	{
-		std::cout << "meme color" << std::endl;
 		return false;
 	}
 	else if (isPossible(this, *piece, caze, _masterColor))
@@ -323,33 +317,20 @@ bool Board::movePiece(Piece* piece, Case caze)
 		if (piece->getColor() == BLANC) //piece noire mangée
 		{
 			mangePiece(piece, caze);
-
-			std::cout << "piece mangee" << std::endl;
-			std::cout << "echec: " << echec(this) << std::endl;
-			if (echec(this) > 0)
-				std::cout << "echec mat: " << echecm(this) << std::endl;
-
-
 		}
 
 		if (piece->getColor() == NOIR) //piece blanche mangée
 		{
 			mangePiece(piece, caze);
-
-			std::cout << "piece mangee" << std::endl;
-			std::cout << "echec: " << echec(this) << std::endl;
-			if (echec(this) > 1)
-				std::cout << "echec mat: " << echecm(this) << std::endl;
 		}
 
 		return true;
 	}
 	else
 	{
-		std::cout << "deplacment impossible" << std::endl;
 		return false;
 	}
-
+	return true;
 }
 
 
@@ -370,10 +351,7 @@ void Board::movePieceTo(Piece* piece, Case caze, Couleur color)
 	std::replace(_alivePiece.begin(), _alivePiece.end(), oldval, newVal);
 	std::replace(_aliveNoir.begin(), _aliveNoir.end(), oldval, newVal);
 	std::replace(_aliveBlanc.begin(), _aliveBlanc.end(), oldval, newVal);
-	std::cout << "deplacement effectuer" << std::endl;
-	std::cout << "echec: " << echec(this) << std::endl;
-	if (echec(this) > 0)
-		std::cout << "echec mat: " << echecm(this) << std::endl;
+
 
 	if (_masterColor == NOIR)
 	{
@@ -527,9 +505,6 @@ void Board::simuleMove(Piece* piece, Case caze)
 	piece->setID(caze.getID()); //new id
 	m_board.at(caze.getID()).setEmpty(0); //setprise
 	m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
-
-	std::cout << "memory of oldPiece : " << &oldPiece << " piece: " << piece << std::endl;
-	std::cout << "memory case of _aliveNoir[11] : " << _aliveNoir[11] << std::endl;
 
 	std::replace(_alivePiece.begin(), _alivePiece.end(), oldPiece, piece);
 	std::replace(_aliveNoir.begin(), _aliveNoir.end(), oldPiece, piece);

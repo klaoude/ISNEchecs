@@ -58,7 +58,6 @@ inline bool blancMove(Board board, Piece piece, Case caze, Couleur color, int ec
 			}
 			else if (lbr.size() == 1)//si la piece n'est pas un roi et qu'il n'y a qu'une seule piece qui met le roi en echec
 			{
-				std::cout << "path size:" << pathRoi.size() << std::endl;
 				for (int i = 0; i < pathRoi.size(); i++) //si caze est sur le path de la piece qui met en echec
 				{
 					if (caze.getID() == pathRoi[i])
@@ -212,7 +211,6 @@ inline bool noirMove(Board board, Piece piece, Case caze, Couleur color, int ech
 			else // SI LE DEPL MET LE ROI EN ECHEC
 			{
 				board.simuleMove(&piece, caze);
-				std::cout << "roinoir: " << piece.getID() << std::endl;
 				if (ln(&board, board.getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
 				{
 					ennmove = 1;

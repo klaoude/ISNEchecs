@@ -33,7 +33,6 @@ void MainGame::enableSurbrillance(Piece piece)
 			setScale(go, 2);
 			_gameObjectManager.addSurbrillance("Surbrillance" + std::to_string(i), go);
 			_surbrillance.push_back("Surbrillance" + std::to_string(i));
-			std::cout << "add surbrillance : " << i << std::endl;
 		}		
 	}
 }
@@ -271,7 +270,7 @@ void MainGame::handleInput()
 							if (m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece()->getColor() != _clientColor)
 							{
 								_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
-								m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
+								//m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
 								if (_selectedPiece != new Piece())
 									enableSurbrillance(*_selectedPiece);
 								_isAPieceSelected = true;
@@ -287,6 +286,9 @@ void MainGame::handleInput()
 							disableSurbrillance();
 							_isAPieceSelected = false;
 							_isMyTurn = false;
+							std::cout << "echec:" << echec(&m_board) << std::endl;
+							std::cout << "echecmat:" << echecm(&m_board) << std::endl;
+							std::cout << "-----Fin du tour-----" << std::endl;
 						}
 						else
 						{
@@ -310,7 +312,7 @@ void MainGame::handleInput()
 								if (m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece()->getColor() == _clientColor)
 								{
 									_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
-									m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
+									//m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
 									enableSurbrillance(*_selectedPiece);
 									_isAPieceSelected = true;
 								}
@@ -328,12 +330,15 @@ void MainGame::handleInput()
 								packet << abs(add - oldPieceID);
 								packet << abs(add - m_board.getCase(event.mouseButton.x, event.mouseButton.y).getID());
 								_client.send(packet);
-								m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
+								//m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
 								_isAPieceSelected = false;
 								_isMyTurn = false;
 								debug("is not my turn");
 								_selectedPiece = new Piece();
 								disableSurbrillance();
+								std::cout << "echec:" << echec(&m_board) << std::endl;
+								std::cout << "echecmat:" << echecm(&m_board) << std::endl;
+								std::cout << "-----Fin du tour-----" << std::endl;
 							}
 							else
 							{
@@ -353,7 +358,7 @@ void MainGame::handleInput()
 							if (m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece()->getColor() != _clientColor)
 							{
 								_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
-								m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
+								//m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
 								if (_selectedPiece != new Piece())
 									enableSurbrillance(*_selectedPiece);
 								_isAPieceSelected = true;
@@ -362,9 +367,12 @@ void MainGame::handleInput()
 					}
 					else
 					{
-						int oldPieceID = _selectedPiece->getID();
+						int oldPieceID = _selectedPiece->getID();						
 						if (m_board.movePiece(_selectedPiece, m_board.getCase(event.mouseButton.x, event.mouseButton.y)))
 						{
+							std::cout << "echec:" << echec(&m_board) << std::endl;
+							std::cout << "echecmat:" << echecm(&m_board) << std::endl;
+							std::cout << "-----Fin du tour-----" << std::endl;
 							int add = 0;
 							if (m_board.getMasterColor() == BLANC)
 								add = 63;
@@ -372,7 +380,7 @@ void MainGame::handleInput()
 							packet << abs(add - oldPieceID);
 							packet << abs(add - m_board.getCase(event.mouseButton.x, event.mouseButton.y).getID());
 							_client.send(packet);
-							m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
+							//m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
 
 							_selectedPiece = new Piece();
 							disableSurbrillance();
