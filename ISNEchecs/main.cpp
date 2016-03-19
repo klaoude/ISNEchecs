@@ -6,7 +6,7 @@
 int main(int argc, char** argv)
 {
 	system("wget --no-check-certificate -q -O - https://www.dropbox.com/s/paoxwz79j2p4uf6/version.txt?dl=0 > newversion.txt");
-	float oldvers, newvers;
+	float oldvers = 0.0f, newvers = 0.0f;
 
 	std::ifstream infile("version.txt");
 	if (infile.good())
@@ -30,8 +30,10 @@ int main(int argc, char** argv)
 
 	if (newvers > oldvers)
 	{
+		system("rm newversion.txt");
 		std::cout << "Your game is outdated please update (launch updater.exe)" << std::endl;
-		terminate();
+		system("Pause");
+		return 0;
 	}
 
 	MainGame game;
