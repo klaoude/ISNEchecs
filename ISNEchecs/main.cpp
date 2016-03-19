@@ -28,9 +28,10 @@ int main(int argc, char** argv)
 	}
 	infile.close();
 
+	system("rm newversion.txt");
+
 	if (newvers > oldvers)
 	{
-		system("rm newversion.txt");
 		std::cout << "Your game is outdated please update (launch updater.exe)" << std::endl;
 		system("Pause");
 		return 0;
