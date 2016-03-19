@@ -1,7 +1,18 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 
-#include "MainGame.h"
+using namespace std;
+
+void deleteFiles()
+{
+	system("rm -r Sound/ Sprites/ ISNEchecs.exe sfml-*.dll openal32 version.txt");
+}
+
+void deleteUpdaterFiles()
+{
+	system("rm update.zip newversion.txt");
+}
 
 int main(int argc, char** argv)
 {
@@ -30,12 +41,17 @@ int main(int argc, char** argv)
 
 	if (newvers > oldvers)
 	{
-		std::cout << "Your game is outdated please update (launch updater.exe)" << std::endl;
-		terminate();
+		std::cout << "need update !" << std::endl;
+		system("wget --no-check-certificate -q https://www.dropbox.com/s/ud4jgjhyfigqa4x/Release.zip?dl=0");
+		system("mv file update.zip");
+		deleteFiles();
+		system("7za x -y update.zip");
+		system("rm version.txt");
+		system("mv newversion.txt version.txt");
+		deleteUpdaterFiles();
 	}
-
-	MainGame game;
-	game.start();
-
+	else
+		std::cout << "Your game is update !";
+	system("Pause");
 	return 0;
 }
