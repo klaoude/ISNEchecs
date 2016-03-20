@@ -24,8 +24,11 @@ int main(int argc, char** argv)
 	{
 		std::string sLine;
 		getline(infile, sLine);
-		std::cout << "version actuelle : " << sLine << std::endl;
-		oldvers = std::stof(sLine.c_str());
+		try
+		{			
+			oldvers = std::stof(sLine.c_str());
+			std::cout << "version actuelle : " << sLine << std::endl;
+		}
 	}
 	infile.close();
 
@@ -34,8 +37,11 @@ int main(int argc, char** argv)
 	{
 		std::string sLine;
 		getline(infile, sLine);
-		std::cout << "derniere version : " << sLine << std::endl;
-		newvers = std::stof(sLine.c_str());
+		try
+		{
+			newvers = std::stof(sLine.c_str());
+			std::cout << "derniere version : " << sLine << std::endl;			
+		}		
 	}
 	infile.close();
 
