@@ -15,7 +15,7 @@ inline bool blancMove(Board board, Piece piece, Case caze, Couleur color, int ec
 	std::vector<Piece*> lbr;
 	int echecr = echeck;
 	if (echecr > 0)
-		lbr = lb(&board);
+		lbr = lb(&board, color);
 	bool isPos = isPossible(&board, piece, caze, color);
 	int roiBlanc = findroiblanc(&board);
 	bool ennmove = 0;
@@ -58,7 +58,6 @@ inline bool blancMove(Board board, Piece piece, Case caze, Couleur color, int ec
 			}
 			else if (lbr.size() == 1)//si la piece n'est pas un roi et qu'il n'y a qu'une seule piece qui met le roi en echec
 			{
-				std::cout << "path size:" << pathRoi.size() << std::endl;
 				for (int i = 0; i < pathRoi.size(); i++) //si caze est sur le path de la piece qui met en echec
 				{
 					if (caze.getID() == pathRoi[i])
@@ -102,7 +101,8 @@ inline bool blancMove(Board board, Piece piece, Case caze, Couleur color, int ec
 			else //SI LE DEPL MET LE ROI EN ECHEC
 			{
 				board.simuleMove(&piece, caze);
-				if (echec(&board) == 1) //si une piece ennemi peut aller sur le roi
+				
+				if (lb(&board, board.getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
 				{
 					ennmove = 1;
 				}
@@ -125,7 +125,7 @@ inline bool noirMove(Board board, Piece piece, Case caze, Couleur color, int ech
 	std::vector<Piece*> lnr;
 	int echecr = echeck;
 	if (echecr > 0)
-		lnr = ln(&board);
+		lnr = ln(&board, color);
 	int roiNoir = findroinoir(&board);
 	bool isPos = isPossible(&board, piece, caze, color);
 	bool ennmove = 0;
@@ -208,14 +208,14 @@ inline bool noirMove(Board board, Piece piece, Case caze, Couleur color, int ech
 		{
 			if (caze.getPiece()->getColor() == NOIR) //s'il y'a un allié sur la case
 				return 0;
-			else //NEED ADD SI LE DEPL MET LE ROI EN ECHEC
+			else // SI LE DEPL MET LE ROI EN ECHEC
 			{
 				board.simuleMove(&piece, caze);
-				if (echec(&board) == 2) //si une piece ennemi peut aller sur cette case
+				if (ln(&board, board.getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
 				{
 					ennmove = 1;
 				}
-				board.undoSimileMove();
+				board.undoSimileMove(); //si une piece ennemi peut aller sur cette case
 
 				if (ennmove == 1) //si une piece peut aller sur cette case
 					return 0; //le roi peut pas bouger

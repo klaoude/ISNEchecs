@@ -29,6 +29,8 @@ private:
 
 	void enableSurbrillance(Piece piece);
 	void disableSurbrillance();
+	void disableSurbrillance(int id);
+
 
 	enum GameState { Uninitialized, ShowingMenu, Playing, Exiting, Joining, Debugging, VersusIA };
 	static GameState _gameState;

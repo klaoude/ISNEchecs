@@ -3,10 +3,52 @@
 #include "../Fonctions.h"
 #include "../IsPossible.h"
 #include "../Main/CaseID.h"
-
+#include "../canMove.h"
 
 std::vector<Type> pnoir;
 std::vector<Type> pblanc;
+
+void _setTexture(GameObjectManager* _gom, Piece* piece)
+{
+	Type typef = piece->getType();
+	switch (piece->getColor())
+	{
+	case BLANC:
+		switch (typef)
+		{
+		case CAVALIER:
+			_gom->get(piece->getTextureID())->setTexture("Sprites/White_Knight.png");
+			break;
+		case TOUR:
+			_gom->get(piece->getTextureID())->setTexture("Sprites/White_Rook.png");
+			break;
+		case FOU:
+			_gom->get(piece->getTextureID())->setTexture("Sprites/White_Bishop.png");
+			break;
+		case REINE:
+			_gom->get(piece->getTextureID())->setTexture("Sprites/White_Queen.png");
+			break;
+		}
+		break;
+	case NOIR:
+		switch (typef)
+		{
+		case CAVALIER:
+			_gom->get(piece->getTextureID())->setTexture("Sprites/Black_Knight.png");
+			break;
+		case TOUR:
+			_gom->get(piece->getTextureID())->setTexture("Sprites/Black_Rook.png");
+			break;
+		case FOU:
+			_gom->get(piece->getTextureID())->setTexture("Sprites/Black_Bishop.png");
+			break;
+		case REINE:
+			_gom->get(piece->getTextureID())->setTexture("Sprites/Black_Queen.png");
+			break;
+		}
+		break;
+	}
+}
 
 Board::Board()
 {
@@ -28,12 +70,12 @@ Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)
 	{
 		if (i % 8 == 0 && i != 0)
 		{
-			y += SCREEN_HEIGHT / 8;
+			y += BOARD_SIZE / 8;
 			x = 0;
 		}
 
 		m_board.push_back(Case(x, y, i));
-		x += SCREEN_HEIGHT / 8;
+		x += BOARD_SIZE / 8;
 	}
 
 	GameObject* board = new GameObject("Sprites/board.png");
@@ -84,10 +126,6 @@ Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)
 			_alivePiece.push_back(m_board.at(i).getPiece());
 		}
 	}
-	for each (Piece* piece in _aliveNoir)
-	{
-		std::cout << piece->getID() << std::endl;
-	}
 }
 
 Board::~Board()
@@ -103,8 +141,8 @@ void Board::setPiece(Piece* piece)
 
 bool Board::movePiece(Piece* piece, Case caze)
 {
-	bool rock = true;
-
+	int echeck = echec(this);
+	bool ennmove = 0;
 	Piece none(0, NONEt, NONEc, "");
 	if (caze.isEmpty()) //Si la case est libre
 	{
@@ -116,51 +154,45 @@ bool Board::movePiece(Piece* piece, Case caze)
 				{
 					if (echec(this) != 1)
 					{
-						if (piece->getID() + 2 == caze.getID() && isPossible(this, *piece, caze, _masterColor)) //petit rock 
+						if (piece->getID() + 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //petit rock 
 						{
-							_gom->get(m_board.at(piece->getID() + 3).getPiece()->getTextureID())->setPosition(caze.get_px() - PIECE_SIZE, caze.get_py()); //sprite
-							m_board.at(piece->getID() + 3).setEmpty(true); //setempty old
-							m_board.at(piece->getID() + 3).delPiece();  //delpiece old
-							m_board.at(piece->getID() + 3).getPiece()->setID(caze.getID() - 1); //new id
-							m_board.at(piece->getID() + 3).getPiece()->setHasMoved(1); //hasmoved
-							m_board.at(caze.getID() + 1).setEmpty(0); //setprise
-							m_board.at(caze.getID() + 1).setPieceCase(m_board.at(piece->getID() + 3).getPiece()); //setpiececase
+							simuleMove(piece, caze);
+							if (lb(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
+							{
+								ennmove = 1;
+							}
+							undoSimileMove(); //si une piece ennemi peut aller sur cette case
 
-							_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite
-							m_board.at(piece->getID()).setEmpty(true); //setempty old
-							m_board.at(piece->getID()).delPiece();  //delpiece old
-							piece->setID(caze.getID()); //new id
-							piece->setHasMoved(1); //hasmoved
-							m_board.at(caze.getID()).setEmpty(0); //setprise
-							m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
+							if (ennmove == 1) //si une piece peut aller sur cette case
+								; //le roi peut pas bouger
+							else //si personne ne peux aller sur la case
+							{
+							rock(piece, caze, "droite", _masterColor);
 
-							std::cout << "grand rock effectuer" << std::endl;
 						}
-						if (piece->getID() - 2 == caze.getID() && isPossible(this, *piece, caze, _masterColor)) //grand rock 
+								
+						}
+						if (piece->getID() - 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //grand rock 
 						{
-							_gom->get(m_board.at(piece->getID() - 4).getPiece()->getTextureID())->setPosition(caze.get_px() + PIECE_SIZE, caze.get_py()); //sprite
-							m_board.at(piece->getID() - 4).setEmpty(true); //setempty old
-							m_board.at(piece->getID() - 4).delPiece();  //delpiece old
-							m_board.at(piece->getID() - 4).getPiece()->setID(caze.getID() - 1); //new id
-							m_board.at(piece->getID() - 4).getPiece()->setHasMoved(1); //hasmoved
-							m_board.at(caze.getID() - 1).setEmpty(0); //setprise
-							m_board.at(caze.getID() - 1).setPieceCase(m_board.at(piece->getID() - 4).getPiece()); //setpiececase
+							simuleMove(piece, caze);
+							if (lb(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
+							{
+								ennmove = 1;
+							}
+							undoSimileMove(); //si une piece ennemi peut aller sur cette case
 
-							_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite
-							m_board.at(piece->getID()).setEmpty(true); //setempty old
-							m_board.at(piece->getID()).delPiece();  //delpiece old
-							piece->setID(caze.getID()); //new id
-							piece->setHasMoved(1); //hasmoved
-							m_board.at(caze.getID()).setEmpty(0); //setprise
-							m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
+							if (ennmove == 1) //si une piece peut aller sur cette case
+								; //le roi peut pas bouger
+							else //si personne ne peux aller sur la case
+							{
+							rock(piece, caze, "gauche", _masterColor);
 
-							std::cout << "petit rock effectuer" << std::endl;
 						}
+					}
 					}
 					else
 					{
-						std::cout << "can't move, roi en echec" << std::endl;
-						rock = false;
+
 
 					}
 
@@ -170,51 +202,44 @@ bool Board::movePiece(Piece* piece, Case caze)
 				{
 					if (echec(this) != 2)
 					{
-						if (piece->getID() + 2 == caze.getID() && isPossible(this, *piece, caze, _masterColor)) //petit rock 
+						if (piece->getID() + 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //petit rock 
 						{
-							_gom->get(m_board.at(piece->getID() + 3).getPiece()->getTextureID())->setPosition(caze.get_px() - PIECE_SIZE, caze.get_py()); //sprite
-							m_board.at(piece->getID() + 3).setEmpty(true); //setempty old
-							m_board.at(piece->getID() + 3).delPiece();  //delpiece old
-							m_board.at(piece->getID() + 3).getPiece()->setID(caze.getID() - 1); //new id
-							m_board.at(piece->getID() + 3).getPiece()->setHasMoved(1); //hasmoved
-							m_board.at(caze.getID() + 1).setEmpty(0); //setprise
-							m_board.at(caze.getID() + 1).setPieceCase(m_board.at(piece->getID() + 3).getPiece()); //setpiececase
-
-							_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite
-							m_board.at(piece->getID()).setEmpty(true); //setempty old
-							m_board.at(piece->getID()).delPiece();  //delpiece old
-							piece->setID(caze.getID()); //new id
-							piece->setHasMoved(1); //hasmoved
-							m_board.at(caze.getID()).setEmpty(0); //setprise
-							m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
-
-							std::cout << "grand rock effectuer" << std::endl;
-						}
-						if (piece->getID() - 2 == caze.getID() && isPossible(this, *piece, caze, _masterColor)) //grand rock 
+							simuleMove(piece, caze);
+							if (ln(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
 						{
-							_gom->get(m_board.at(piece->getID() - 4).getPiece()->getTextureID())->setPosition(caze.get_px() + PIECE_SIZE, caze.get_py()); //sprite
-							m_board.at(piece->getID() - 4).setEmpty(true); //setempty old
-							m_board.at(piece->getID() - 4).delPiece();  //delpiece old
-							m_board.at(piece->getID() - 4).getPiece()->setID(caze.getID() - 1); //new id
-							m_board.at(piece->getID() - 4).getPiece()->setHasMoved(1); //hasmoved
-							m_board.at(caze.getID() - 1).setEmpty(0); //setprise
-							m_board.at(caze.getID() - 1).setPieceCase(m_board.at(piece->getID() - 4).getPiece()); //setpiececase
+								ennmove = 1;
+							}
+							undoSimileMove(); //si une piece ennemi peut aller sur cette case
+							
+							if (ennmove == 1) //si une piece peut aller sur cette case
+								; //le roi peut pas bouger
+							else //si personne ne peux aller sur la case
+							{
+							rock(piece, caze, "droite", _masterColor);
 
-							_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite
-							m_board.at(piece->getID()).setEmpty(true); //setempty old
-							m_board.at(piece->getID()).delPiece();  //delpiece old
-							piece->setID(caze.getID()); //new id
-							piece->setHasMoved(1); //hasmoved
-							m_board.at(caze.getID()).setEmpty(0); //setprise
-							m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
-
-							std::cout << "petit rock effectuer" << std::endl;
 						}
+						}
+						if (piece->getID() - 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //grand rock 
+						{
+							simuleMove(piece, caze);
+							if (ln(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
+							{
+								ennmove = 1;
+							}
+							undoSimileMove(); //si une piece ennemi peut aller sur cette case
+
+							if (ennmove == 1) //si une piece peut aller sur cette case
+								; //le roi peut pas bouger
+							else //si personne ne peux aller sur la case
+						{
+							rock(piece, caze, "gauche", _masterColor);
+
+						}
+					}
 					}
 					else
 					{
-						std::cout << "can't move, roi en echec" << std::endl;
-						rock = false;
+
 
 					}
 				}
@@ -226,51 +251,18 @@ bool Board::movePiece(Piece* piece, Case caze)
 				{
 					if (echec(this) != 1)
 					{
-						if (piece->getID() + 2 == caze.getID() && isPossible(this, *piece, caze, _masterColor)) //grand rock 
+						if (piece->getID() + 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //grand rock 
 						{
-							_gom->get(m_board.at(piece->getID() + 4).getPiece()->getTextureID())->setPosition(caze.get_px() - PIECE_SIZE, caze.get_py()); //sprite
-							m_board.at(piece->getID() + 4).setEmpty(true); //setempty old
-							m_board.at(piece->getID() + 4).delPiece();  //delpiece old
-							m_board.at(piece->getID() + 4).getPiece()->setID(caze.getID() - 1); //new id
-							m_board.at(piece->getID() + 4).getPiece()->setHasMoved(1); //hasmoved
-							m_board.at(caze.getID() + 1).setEmpty(0); //setprise
-							m_board.at(caze.getID() + 1).setPieceCase(m_board.at(piece->getID() + 4).getPiece()); //setpiececase
+							rock(piece, caze, "droite", _masterColor);
 
-							_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite
-							m_board.at(piece->getID()).setEmpty(true); //setempty old
-							m_board.at(piece->getID()).delPiece();  //delpiece old
-							piece->setID(caze.getID()); //new id
-							piece->setHasMoved(1); //hasmoved
-							m_board.at(caze.getID()).setEmpty(0); //setprise
-							m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
-
-							std::cout << "grand rock effectuer" << std::endl;
 						}
-						if (piece->getID() - 2 == caze.getID() && isPossible(this, *piece, caze, _masterColor)) //petit rock 
+						if (piece->getID() - 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //petit rock 
 						{
-							_gom->get(m_board.at(piece->getID() - 3).getPiece()->getTextureID())->setPosition(caze.get_px() + PIECE_SIZE, caze.get_py()); //sprite
-							m_board.at(piece->getID() - 3).setEmpty(true); //setempty old
-							m_board.at(piece->getID() - 3).delPiece();  //delpiece old
-							m_board.at(piece->getID() - 3).getPiece()->setID(caze.getID() - 1); //new id
-							m_board.at(piece->getID() - 3).getPiece()->setHasMoved(1); //hasmoved
-							m_board.at(caze.getID() - 1).setEmpty(0); //setprise
-							m_board.at(caze.getID() - 1).setPieceCase(m_board.at(piece->getID() - 3).getPiece()); //setpiececase
-
-							_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite
-							m_board.at(piece->getID()).setEmpty(true); //setempty old
-							m_board.at(piece->getID()).delPiece();  //delpiece old
-							piece->setID(caze.getID()); //new id
-							piece->setHasMoved(1); //hasmoved
-							m_board.at(caze.getID()).setEmpty(0); //setprise
-							m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
-
-							std::cout << "petit rock effectuer" << std::endl;
+							rock(piece, caze, "gauche", _masterColor);
 						}
 					}
 					else
 					{
-						std::cout << "can't move, roi en echec" << std::endl;
-						rock = false;
 
 					}
 				}
@@ -278,93 +270,39 @@ bool Board::movePiece(Piece* piece, Case caze)
 				{
 					if (echec(this) != 2)
 					{
-						if (piece->getID() + 2 == caze.getID() && isPossible(this, *piece, caze, _masterColor)) //grand rock 
+						if (piece->getID() + 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //grand rock 
 						{
-							_gom->get(m_board.at(piece->getID() + 4).getPiece()->getTextureID())->setPosition(caze.get_px() - PIECE_SIZE, caze.get_py()); //sprite
-							m_board.at(piece->getID() + 4).setEmpty(true); //setempty old
-							m_board.at(piece->getID() + 4).delPiece();  //delpiece old
-							m_board.at(piece->getID() + 4).getPiece()->setID(caze.getID() - 1); //new id
-							m_board.at(piece->getID() + 4).getPiece()->setHasMoved(1); //hasmoved
-							m_board.at(caze.getID() + 1).setEmpty(0); //setprise
-							m_board.at(caze.getID() + 1).setPieceCase(m_board.at(piece->getID() + 4).getPiece()); //setpiececase
-
-							_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite
-							m_board.at(piece->getID()).setEmpty(true); //setempty old
-							m_board.at(piece->getID()).delPiece();  //delpiece old
-							piece->setID(caze.getID()); //new id
-							piece->setHasMoved(1); //hasmoved
-							m_board.at(caze.getID()).setEmpty(0); //setprise
-							m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
-
-							std::cout << "grand rock effectuer" << std::endl;
+							rock(piece, caze, "droite", _masterColor);
 						}
-						if (piece->getID() - 2 == caze.getID() && isPossible(this, *piece, caze, _masterColor)) //petit rock 
+						if (piece->getID() - 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //petit rock 
 						{
-							_gom->get(m_board.at(piece->getID() - 3).getPiece()->getTextureID())->setPosition(caze.get_px() + PIECE_SIZE, caze.get_py()); //sprite
-							m_board.at(piece->getID() - 3).setEmpty(true); //setempty old
-							m_board.at(piece->getID() - 3).delPiece();  //delpiece old
-							m_board.at(piece->getID() - 3).getPiece()->setID(caze.getID() - 1); //new id
-							m_board.at(piece->getID() - 3).getPiece()->setHasMoved(1); //hasmoved
-							m_board.at(caze.getID() - 1).setEmpty(0); //setprise
-							m_board.at(caze.getID() - 1).setPieceCase(m_board.at(piece->getID() - 3).getPiece()); //setpiececase
-
-							_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite
-							m_board.at(piece->getID()).setEmpty(true); //setempty old
-							m_board.at(piece->getID()).delPiece();  //delpiece old
-							piece->setID(caze.getID()); //new id
-							piece->setHasMoved(1); //hasmoved
-							m_board.at(caze.getID()).setEmpty(0); //setprise
-							m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
-
-							std::cout << "petit rock effectuer" << std::endl;
+							rock(piece, caze, "gauche", _masterColor);
 						}
 					}
 					else
 					{
-						std::cout << "can't move, roi en echec" << std::endl;
-						rock = false;
 
 					}
 				}
 			}
-					
+
 		} //FIN ROCK
 
-		if (isPossible(this, *piece, caze, _masterColor) && rock == true) //deplacement
+		if (canMove(*this, *piece, caze, _masterColor, echeck) &&
+			piece->getID() + 2 != caze.getID() &&
+			piece->getID() - 2 != caze.getID()) //deplacement
 		{
-			//_hitmarker->play();
-			Piece* oldval = piece;
-			m_board.at(piece->getID()).setEmpty(true); //setempty old
-			m_board.at(piece->getID()).delPiece();  //delpiece old
-			piece->setID(caze.getID()); //new id
-			piece->setHasMoved(1); //hasmoved
-			m_board.at(caze.getID()).setEmpty(0); //setprise
-			m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
-			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite
-
-
-			Piece* newVal = piece;
-			std::replace(_alivePiece.begin(), _alivePiece.end(), oldval, newVal);
-			std::replace(_aliveNoir.begin(), _aliveNoir.end(), oldval, newVal);
-			std::replace(_aliveBlanc.begin(), _aliveBlanc.end(), oldval, newVal);
-			std::cout << "deplacement effectuer" << std::endl;
-			std::cout << "echec: " << echec(this) << std::endl;
-			if (echec(this) > 0)
-				std::cout << "echec mat: " << echecm(this) << std::endl;
-
-			
+			movePieceTo(piece, caze, _masterColor);
 			return true;
 		}
 		else {
-			std::cout << "deplacement impossible" << std::endl;
 			return false;
 		}
-			
+
 	}
 
 	if (m_board.at(caze.getID()).getPiece()->getColor() == piece->getColor()) //meme color
 	{
-		std::cout << "meme color" << std::endl;
 		return false;
 	}
 	else if (isPossible(this, *piece, caze, _masterColor))
@@ -378,50 +316,146 @@ bool Board::movePiece(Piece* piece, Case caze)
 
 		if (piece->getColor() == BLANC) //piece noire mangée
 		{
-			pblanc.push_back(caze.getPiece()->getType()); //push type in corbeile
-			_gom->remove(caze.getPiece()->getTextureID()); //del sprite
-			caze.delPiece(); // del m_piece
-			m_board.at(piece->getID()).setEmpty(true); //setempty old
-			m_board.at(piece->getID()).delPiece();  //delpiece old
-			piece->setID(caze.getID()); //new id
-			piece->setHasMoved(1); //hasmoved
-			m_board.at(caze.getID()).setEmpty(0); //setprise
-			m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
-			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite 
-			std::cout << "piece mangee" << std::endl;
-			std::cout << "echec: " << echec(this) << std::endl;
-			if (echec(this) > 0)
-				std::cout << "echec mat: " << echecm(this) << std::endl;
-
-
+			mangePiece(piece, caze);
 		}
 
 		if (piece->getColor() == NOIR) //piece blanche mangée
 		{
-			_gom->remove(caze.getPiece()->getTextureID()); //del sprite
-			pnoir.push_back(caze.getPiece()->getType()); //push type in corbeille
-			caze.delPiece(); //del m_piece
-			m_board.at(piece->getID()).setEmpty(true); //setempty old
-			m_board.at(piece->getID()).delPiece();  //delpiece old
-			piece->setID(caze.getID()); //new id
-			piece->setHasMoved(1); //hasmoved
-			m_board.at(caze.getID()).setEmpty(0); //setprise
-			m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
-			_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite 
-			std::cout << "piece mangee" << std::endl;
-			std::cout << "echec: " << echec(this) << std::endl;
-			if (echec(this) > 1)
-				std::cout << "echec mat: " << echecm(this) << std::endl;
-		}		
-		
+			mangePiece(piece, caze);
+		}
+
 		return true;
-	} 
-	else 
+	}
+	else
 	{
-		std::cout << "deplacment impossible" << std::endl;
 		return false;
 	}
-		
+	return true;
+}
+
+
+void Board::movePieceTo(Piece* piece, Case caze, Couleur color)
+{
+	//_hitmarker->play();
+	Piece* oldval = piece;
+	m_board.at(piece->getID()).setEmpty(true); //setempty old
+	m_board.at(piece->getID()).delPiece();  //delpiece old
+	piece->setID(caze.getID()); //new id
+	piece->setHasMoved(1); //hasmoved
+	m_board.at(caze.getID()).setEmpty(0); //setprise
+	m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
+	_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite
+
+
+	Piece* newVal = piece;
+	std::replace(_alivePiece.begin(), _alivePiece.end(), oldval, newVal);
+	std::replace(_aliveNoir.begin(), _aliveNoir.end(), oldval, newVal);
+	std::replace(_aliveBlanc.begin(), _aliveBlanc.end(), oldval, newVal);
+
+
+	if (_masterColor == NOIR)
+	{
+		if (piece->getColor() == BLANC && piece->getType() == PION && piece->getID() >= 56 && piece->getID() < 64)
+		{
+			std::string type;
+			std::cin >> type;
+
+			Type typef = strToType(type);
+			piece->setType(typef);
+			_setTexture(_gom, piece);
+		}
+		else if (piece->getColor() == NOIR && piece->getType() == PION && piece->getID() >= 0 && piece->getID() < 8)
+		{
+			std::string type;
+			std::cin >> type;
+
+			Type typef = strToType(type);
+			piece->setType(typef);
+			_setTexture(_gom, piece);
+		}
+	}
+	else if (_masterColor == BLANC)
+	{
+		if (piece->getColor() == BLANC && piece->getType() == PION && piece->getID() >= 0 && piece->getID() < 8)
+		{
+			std::string type;
+			std::cin >> type;
+
+			Type typef = strToType(type);
+			piece->setType(typef);
+			_setTexture(_gom, piece);
+		}
+		else if (piece->getColor() == NOIR && piece->getType() == PION && piece->getID() >= 56 && piece->getID() < 64)
+		{
+			std::string type;
+			std::cin >> type;
+
+			Type typef = strToType(type);
+			piece->setType(typef);
+			_setTexture(_gom, piece);
+		}
+	}
+}
+
+void Board::mangePiece(Piece* piece, Case caze)
+{
+	if (piece->getColor() == NOIR)
+	{
+		pblanc.push_back(caze.getPiece()->getType()); //push type in corbeile
+		_gom->remove(caze.getPiece()->getTextureID()); //del sprite
+		caze.delPiece(); // del m_piece
+		m_board.at(piece->getID()).setEmpty(true); //setempty old
+		m_board.at(piece->getID()).delPiece();  //delpiece old
+		piece->setID(caze.getID()); //new id
+		piece->setHasMoved(1); //hasmoved
+		m_board.at(caze.getID()).setEmpty(0); //setprise
+		m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
+		_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite  
+	}
+	else if (piece->getColor() == BLANC)
+	{
+		pnoir.push_back(caze.getPiece()->getType()); //push type in corbeile
+		_gom->remove(caze.getPiece()->getTextureID()); //del sprite
+		caze.delPiece(); // del m_piece
+		m_board.at(piece->getID()).setEmpty(true); //setempty old
+		m_board.at(piece->getID()).delPiece();  //delpiece old
+		piece->setID(caze.getID()); //new id
+		piece->setHasMoved(1); //hasmoved
+		m_board.at(caze.getID()).setEmpty(0); //setprise
+		m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
+		_gom->get(piece->getTextureID())->setPosition(caze.get_px(), caze.get_py()); //sprite  
+	}
+}
+
+
+void Board::rock(Piece* piece, Case caze, std::string sens, Couleur color)
+{
+	if (color == BLANC)
+	{
+		if (sens == "gauche")
+		{
+			movePieceTo(m_board.at(piece->getID() -4 ).getPiece(), m_board.at(piece->getID() - 1), _masterColor);
+			movePieceTo(piece, caze, _masterColor);
+		}
+		else if (sens == "droite")
+		{
+			movePieceTo(m_board.at(piece->getID() + 3).getPiece(), m_board.at(piece->getID() + 1), _masterColor);
+			movePieceTo(piece, caze, _masterColor);
+		}
+	}
+	if (color == NOIR)
+	{
+		if (sens == "gauche")
+		{
+			movePieceTo(m_board.at(piece->getID() - 3).getPiece(), m_board.at(piece->getID() - 1), _masterColor);
+			movePieceTo(piece, caze, _masterColor);
+		}
+		else if (sens == "droite")
+		{
+			movePieceTo(m_board.at(piece->getID() + 4).getPiece(), m_board.at(piece->getID() + 1), _masterColor);
+			movePieceTo(piece, caze, _masterColor);
+		}
+	}
 }
 
 Case Board::getCase(int x, int y)
@@ -455,6 +489,8 @@ Case Board::getCase(int caseID)
 
 void Board::simuleMove(Piece* piece, Case caze)
 {
+	Piece* oldPiece;
+	oldPiece = getCase(piece->getID()).getPiece();
 	s_oldCaseID = piece->getID();
 	s_pieceA = piece;
 	s_newCaseID = caze.getID();
@@ -468,11 +504,16 @@ void Board::simuleMove(Piece* piece, Case caze)
 	m_board.at(piece->getID()).delPiece();  //delpiece old
 	piece->setID(caze.getID()); //new id
 	m_board.at(caze.getID()).setEmpty(0); //setprise
-	m_board.at(caze.getID()).setPieceCase(piece); //setpiececase	
+	m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
+
+	std::replace(_alivePiece.begin(), _alivePiece.end(), oldPiece, piece);
+	std::replace(_aliveNoir.begin(), _aliveNoir.end(), oldPiece, piece);
+	std::replace(_aliveBlanc.begin(), _aliveBlanc.end(), oldPiece, piece);
 }
 
 void Board::undoSimileMove()
 {
+	auto piece = m_board.at(s_newCaseID).getPiece();
 	m_board.at(s_newCaseID).setEmpty(true); //setempty old
 	m_board.at(s_newCaseID).delPiece();  //delpiece old
 	s_pieceA->setID(s_oldCaseID); //new id
@@ -485,6 +526,10 @@ void Board::undoSimileMove()
 		m_board.at(s_newCaseID).setEmpty(false);
 		m_board.at(s_newCaseID).setPieceCase(s_pieceB);
 	}
+
+	std::replace(_alivePiece.begin(), _alivePiece.end(), piece, s_pieceA);
+	std::replace(_aliveNoir.begin(), _aliveNoir.end(), piece, s_pieceA);
+	std::replace(_aliveBlanc.begin(), _aliveBlanc.end(), piece, s_pieceA);
 
 	s_oldCaseID = 0;
 	s_newCaseID = 0;

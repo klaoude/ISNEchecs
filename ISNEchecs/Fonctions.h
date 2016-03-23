@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <iostream>
 #include <SFML\Graphics.hpp>
 
@@ -23,6 +24,16 @@ inline int find(std::vector<Piece*>* vec, Piece* piece)
 	for (auto i = 0; i < vec->size(); i++)
 	{
 		if (vec->at(i) == piece)
+			return i;
+	}
+	return -1;
+}
+
+inline int find(std::vector<int> vec, int id)
+{
+	for (auto i = 0; i < vec.size(); i++)
+	{
+		if (vec[i] == id)
 			return i;
 	}
 	return -1;
@@ -470,14 +481,29 @@ inline std::vector<int> getPathRoi(Board* board, Piece* piece)
 				else if (findroiblanc(board) == piece->getID() - i * 8)
 					h = -i;
 				else if (floor(findroiblanc(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8)
-					for (int j = 0; j < 8; j++)
-						if (findroiblanc(board) == piece->getID() - i )
-							g = -i;
+				{
+				for (int j = 0; j < 8; j++)
+				{
+					if (findroiblanc(board) == piece->getID() - i)
+						g = -i;
+					else
+						;
+				}
+				}
+					
+					
 					
 				else if (ceil(findroiblanc(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8)
+				{
 					for (int j = 0; j < 8; j++)
+					{
 						if (findroiblanc(board) == piece->getID() - i)
 							d = i;
+						else
+							;
+					}
+				}
+					
 				else if (findroiblanc(board) == piece->getID() + i * 9)
 					bd = i;
 				else if (findroiblanc(board) == piece->getID() - i * 9)
@@ -566,33 +592,360 @@ inline std::vector<int> getPathRoi(Board* board, Piece* piece)
 
 }
 
-inline std::vector<Piece*> lb(Board *board)
+inline std::vector<Piece*> lb(Board *board, Couleur mastercolor)
 {
-	std::vector <Piece*> alive = board->getAliveNoir();
+	auto t1 = std::chrono::high_resolution_clock::now();
 	std::vector<Piece*> lb; //id piece qui mangent le roi blanc
-	for (int i = 0; i < alive.size(); i++)
+	int roi = findroiblanc(board);
+	bool dhd = 1;
+	bool dhg = 1;
+	bool dbg = 1;
+	bool dbd = 1;
+
+	//cavalier positif
+	if (roi + 17 < 64) //si les deplacements positifs sont possibles
 	{
-		if (isPossible(board, *alive[i], board->getBoard().at(findroiblanc(board)), board->getMasterColor()))
+		if (board->getBoard().at(roi + 17).getPiece()->getColor() == NOIR && board->getBoard().at(roi + 17).getPiece()->getType() == CAVALIER)
+			lb.push_back(board->getBoard().at(roi + 17).getPiece());
+		if (board->getBoard().at(roi + 15).getPiece()->getColor() == NOIR && board->getBoard().at(roi + 15).getPiece()->getType() == CAVALIER)
+			lb.push_back(board->getBoard().at(roi + 15).getPiece());
+		if (board->getBoard().at(roi + 10).getPiece()->getColor() == NOIR && board->getBoard().at(roi + 10).getPiece()->getType() == CAVALIER)
+			lb.push_back(board->getBoard().at(roi + 10).getPiece());
+		if (board->getBoard().at(roi + 6).getPiece()->getColor() == NOIR && board->getBoard().at(roi + 6).getPiece()->getType() == CAVALIER)
+			lb.push_back(board->getBoard().at(roi + 6).getPiece());
+	}
+	else if (roi + 15 < 64) //si les deplacement positifs jusqu'a +15 sont possibles
+	{
+		if (board->getBoard().at(roi + 15).getPiece()->getColor() == NOIR && board->getBoard().at(roi + 15).getPiece()->getType() == CAVALIER)
+			lb.push_back(board->getBoard().at(roi + 15).getPiece());
+		if (board->getBoard().at(roi + 10).getPiece()->getColor() == NOIR && board->getBoard().at(roi + 10).getPiece()->getType() == CAVALIER)
+			lb.push_back(board->getBoard().at(roi + 10).getPiece());
+		if (board->getBoard().at(roi + 6).getPiece()->getColor() == NOIR && board->getBoard().at(roi + 6).getPiece()->getType() == CAVALIER)
+			lb.push_back(board->getBoard().at(roi + 6).getPiece());
+	}
+	else if (roi + 10 < 64) //si les deplacement positifs jusqu'a +9 sont possibles
+	{
+		if (board->getBoard().at(roi + 10).getPiece()->getColor() == NOIR && board->getBoard().at(roi + 10).getPiece()->getType() == CAVALIER)
+			lb.push_back(board->getBoard().at(roi + 10).getPiece());
+		if (board->getBoard().at(roi + 6).getPiece()->getColor() == NOIR && board->getBoard().at(roi + 6).getPiece()->getType() == CAVALIER)
+			lb.push_back(board->getBoard().at(roi + 6).getPiece());
+	}
+	else if (roi + 6 < 64) //si seul +6 est possible
+	{
+		if (board->getBoard().at(roi + 6).getPiece()->getColor() == NOIR && board->getBoard().at(roi + 6).getPiece()->getType() == CAVALIER)
+			lb.push_back(board->getBoard().at(roi + 6).getPiece());
+	}
+
+	//cavalier negatif
+	if (roi - 17 > 0) //si les deplacements positifs sont possibles
+	{
+		if (board->getBoard().at(roi - 17).getPiece()->getColor() == NOIR && board->getBoard().at(roi - 17).getPiece()->getType() == CAVALIER)
+			lb.push_back(board->getBoard().at(roi - 17).getPiece());
+		if (board->getBoard().at(roi - 15).getPiece()->getColor() == NOIR && board->getBoard().at(roi - 15).getPiece()->getType() == CAVALIER)
+			lb.push_back(board->getBoard().at(roi - 15).getPiece());
+		if (board->getBoard().at(roi - 10).getPiece()->getColor() == NOIR && board->getBoard().at(roi - 10).getPiece()->getType() == CAVALIER)
+			lb.push_back(board->getBoard().at(roi - 10).getPiece());
+		if (board->getBoard().at(roi - 6).getPiece()->getColor() == NOIR && board->getBoard().at(roi - 6).getPiece()->getType() == CAVALIER)
+			lb.push_back(board->getBoard().at(roi - 6).getPiece());
+	}
+	else if (roi - 15 > 0) //si les deplacement positifs jusqu'a -15 sont possibles
+	{
+		if (board->getBoard().at(roi - 15).getPiece()->getColor() == NOIR && board->getBoard().at(roi - 15).getPiece()->getType() == CAVALIER)
+			lb.push_back(board->getBoard().at(roi - 15).getPiece());
+		if (board->getBoard().at(roi - 10).getPiece()->getColor() == NOIR && board->getBoard().at(roi - 10).getPiece()->getType() == CAVALIER)
+			lb.push_back(board->getBoard().at(roi - 10).getPiece());
+		if (board->getBoard().at(roi - 6).getPiece()->getColor() == NOIR && board->getBoard().at(roi - 6).getPiece()->getType() == CAVALIER)
+			lb.push_back(board->getBoard().at(roi - 6).getPiece());
+	}
+	else if (roi - 10 > 0) //si les deplacement positifs jusqu'a -9 sont possibles
+	{
+		if (board->getBoard().at(roi - 10).getPiece()->getColor() == NOIR && board->getBoard().at(roi - 10).getPiece()->getType() == CAVALIER)
+			lb.push_back(board->getBoard().at(roi - 10).getPiece());
+		if (board->getBoard().at(roi - 6).getPiece()->getColor() == NOIR && board->getBoard().at(roi - 6).getPiece()->getType() == CAVALIER)
+			lb.push_back(board->getBoard().at(roi - 6).getPiece());
+	}
+	else if (roi - 6 > 0) //si seul -6 est possible
+	{
+		if (board->getBoard().at(roi - 6).getPiece()->getColor() == NOIR && board->getBoard().at(roi - 6).getPiece()->getType() == CAVALIER)
+			lb.push_back(board->getBoard().at(roi - 6).getPiece());
+	}
+
+
+
+
+	if (mastercolor == NOIR) //pion w/ mastercolor noir
+	{
+		if (board->getBoard().at(roi + 9).getPiece()->getColor() == NOIR && board->getBoard().at(roi + 9).getPiece()->getType() == PION)
+			lb.push_back(board->getBoard().at(roi + 9).getPiece());
+		if (board->getBoard().at(roi + 7).getPiece()->getColor() == NOIR && board->getBoard().at(roi + 7).getPiece()->getType() == PION)
+			lb.push_back(board->getBoard().at(roi + 7).getPiece());
+	}
+	if (mastercolor == BLANC) //pion w/ mastercolor blanc
+	{
+		if (board->getBoard().at(roi - 9).getPiece()->getColor() == NOIR && board->getBoard().at(roi - 9).getPiece()->getType() == PION)
+			lb.push_back(board->getBoard().at(roi - 9).getPiece());
+		if (board->getBoard().at(roi - 7).getPiece()->getColor() == NOIR && board->getBoard().at(roi - 7).getPiece()->getType() == PION)
+			lb.push_back(board->getBoard().at(roi - 7).getPiece());
+	}
+
+	for (int i = 1; i <= roi - (div(roi, 8).quot * 8); i++) //depl gauche
+	{
+		if (board->getBoard().at(roi - i).getPiece()->getColor() == NOIR && (board->getBoard().at(roi - i).getPiece()->getType() == TOUR || board->getBoard().at(roi - i).getPiece()->getType() == REINE))
+			lb.push_back(board->getBoard().at(roi - i).getPiece());
+		else if (!board->getBoard().at(roi - i).isEmpty())
+			break;
+	}
+
+	for (int i = 1; i <= ((div(roi, 8).quot + 1) * 8) - roi; i++) //depl droite
+	{
+		if (board->getBoard().at(roi + i).getPiece()->getColor() == NOIR && (board->getBoard().at(roi + i).getPiece()->getType() == TOUR || board->getBoard().at(roi + i).getPiece()->getType() == REINE))
+			lb.push_back(board->getBoard().at(roi + i).getPiece());
+		else if (!board->getBoard().at(roi + i).isEmpty())
+			break;
+	}
+
+	for (int i = 1; i < 8; i++) //depl vertical
+	{
+		if (roi + i * 8 < 63)
 		{
-			lb.push_back(alive[i]);
+			if (board->getBoard().at(roi + i * 8).getPiece()->getColor() == NOIR && (board->getBoard().at(roi + i * 8).getPiece()->getType() == TOUR || board->getBoard().at(roi + i * 8).getPiece()->getType() == REINE))
+				lb.push_back(board->getBoard().at(roi + i * 8).getPiece());
+			else if (!board->getBoard().at(roi + i * 8).isEmpty())
+				break;
+		}
+		if (roi - i * 8 > 0)
+		{
+			if (board->getBoard().at(roi - i * 8).getPiece()->getColor() == NOIR && (board->getBoard().at(roi - i * 8).getPiece()->getType() == TOUR || board->getBoard().at(roi - i * 8).getPiece()->getType() == REINE))
+				lb.push_back(board->getBoard().at(roi - i * 8).getPiece());
+			else if (!board->getBoard().at(roi - i * 8).isEmpty())
+				break;
 		}
 	}
+
+	for (int i = 1; i < 8 - roi; i++) //depl diag bas
+	{
+
+		if (roi + i * 9 < 64 && dbd == 1)
+		{
+			if (board->getBoard().at(roi + i * 9).getPiece()->getColor() == NOIR && (board->getBoard().at(roi + i * 9).getPiece()->getType() == FOU || board->getBoard().at(roi + i * 9).getPiece()->getType() == REINE))
+				lb.push_back(board->getBoard().at(roi + i * 9).getPiece());
+			else if (!board->getBoard().at(roi + i * 9).isEmpty())
+				dbd = 0;
+		}
+		if (roi + i * 7 < 64 && dbg == 1)
+		{
+			if (board->getBoard().at(roi + i * 7).getPiece()->getColor() == NOIR && (board->getBoard().at(roi + i * 7).getPiece()->getType() == FOU || board->getBoard().at(roi + i * 7).getPiece()->getType() == REINE))
+				lb.push_back(board->getBoard().at(roi + i * 7).getPiece());
+			else if (!board->getBoard().at(roi + i * 7).isEmpty())
+				dbg = 0;
+		}
+		if (roi + i * 7 > 63)
+			if (roi + i * 9 > 63)
+				break;
+	}
+
+	for (int i = 1; i < 8; i++) //depl diag haut
+	{
+
+		if (roi - i * 9 > 0 && dhd == 1)
+		{
+			if (board->getBoard().at(roi - i * 9).getPiece()->getColor() == NOIR && (board->getBoard().at(roi - i * 9).getPiece()->getType() == FOU || board->getBoard().at(roi - i * 9).getPiece()->getType() == REINE))
+				lb.push_back(board->getBoard().at(roi - i * 9).getPiece());
+			else if (!board->getBoard().at(roi - i * 9).isEmpty())
+				dhd = 0;
+		}
+		if (roi - i * 7 > 0 && dhg == 1)
+		{
+			if (board->getBoard().at(roi - i * 7).getPiece()->getColor() == NOIR && (board->getBoard().at(roi - i * 7).getPiece()->getType() == FOU || board->getBoard().at(roi - i * 7).getPiece()->getType() == REINE))
+				lb.push_back(board->getBoard().at(roi - i * 7).getPiece());
+			else if (!board->getBoard().at(roi - i * 7).isEmpty())
+				dhg = 0;
+		}
+
+		if (roi - i * 9 < 0)
+			if (roi - i * 7 < 0)
+				break;
+	}
+	auto t2 = std::chrono::high_resolution_clock::now();
+	std::cout << "lbtime = " << std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() << std::endl;
 	return lb;
 }
 
-inline std::vector<Piece*> ln(Board *board)
+inline std::vector<Piece*> ln(Board *board, Couleur mastercolor)
 {
-	std::vector <Piece*> alive = board->getAliveBlanc();
+	auto t1 = std::chrono::high_resolution_clock::now();
 	std::vector<Piece*> ln; //id piece qui mangent le roi noir
-	int roiNoir = findroinoir(board);
+	int roi = findroinoir(board);
+	bool dhd = 1;
+	bool dhg = 1;
+	bool dbg = 1;
+	bool dbd = 1;
 
-	for (int i = 0; i < alive.size(); i++)
+	//cavalier positif
+	if (roi + 17 < 64) //si les deplacements positifs sont possibles
 	{
-		if (isPossible(board, *alive[i], board->getCase(roiNoir), board->getMasterColor()))
+		if (board->getBoard().at(roi + 17).getPiece()->getColor() == BLANC && board->getBoard().at(roi + 17).getPiece()->getType() == CAVALIER)
+			ln.push_back(board->getBoard().at(roi + 17).getPiece());
+		if (board->getBoard().at(roi + 15).getPiece()->getColor() == BLANC && board->getBoard().at(roi + 15).getPiece()->getType() == CAVALIER)
+			ln.push_back(board->getBoard().at(roi + 15).getPiece());
+		if (board->getBoard().at(roi + 10).getPiece()->getColor() == BLANC && board->getBoard().at(roi + 10).getPiece()->getType() == CAVALIER)
+			ln.push_back(board->getBoard().at(roi + 10).getPiece());
+		if (board->getBoard().at(roi + 6).getPiece()->getColor() == BLANC && board->getBoard().at(roi + 6).getPiece()->getType() == CAVALIER)
+			ln.push_back(board->getBoard().at(roi + 6).getPiece());
+	}
+	else if (roi + 15 < 64) //si les deplacement positifs jusqu'a +15 sont possibles
+	{
+		if (board->getBoard().at(roi + 15).getPiece()->getColor() == BLANC && board->getBoard().at(roi + 15).getPiece()->getType() == CAVALIER)
+			ln.push_back(board->getBoard().at(roi + 15).getPiece());
+		if (board->getBoard().at(roi + 10).getPiece()->getColor() == BLANC && board->getBoard().at(roi + 10).getPiece()->getType() == CAVALIER)
+			ln.push_back(board->getBoard().at(roi + 10).getPiece());
+		if (board->getBoard().at(roi + 6).getPiece()->getColor() == BLANC && board->getBoard().at(roi + 6).getPiece()->getType() == CAVALIER)
+			ln.push_back(board->getBoard().at(roi + 6).getPiece());
+	}
+	else if (roi + 10 < 64) //si les deplacement positifs jusqu'a +9 sont possibles
+	{
+		if (board->getBoard().at(roi + 10).getPiece()->getColor() == BLANC && board->getBoard().at(roi + 10).getPiece()->getType() == CAVALIER)
+			ln.push_back(board->getBoard().at(roi + 10).getPiece());
+		if (board->getBoard().at(roi + 6).getPiece()->getColor() == BLANC && board->getBoard().at(roi + 6).getPiece()->getType() == CAVALIER)
+			ln.push_back(board->getBoard().at(roi + 6).getPiece());
+	}
+	else if (roi + 6 < 64) //si seul +6 est possible
+	{
+		if (board->getBoard().at(roi + 6).getPiece()->getColor() == BLANC && board->getBoard().at(roi + 6).getPiece()->getType() == CAVALIER)
+			ln.push_back(board->getBoard().at(roi + 6).getPiece());
+	}
+
+	//cavalier negatif
+	if (roi - 17 > 0) //si les deplacements positifs sont possibles
+	{
+		if (board->getBoard().at(roi - 17).getPiece()->getColor() == BLANC && board->getBoard().at(roi - 17).getPiece()->getType() == CAVALIER)
+			ln.push_back(board->getBoard().at(roi - 17).getPiece());
+		if (board->getBoard().at(roi - 15).getPiece()->getColor() == BLANC && board->getBoard().at(roi - 15).getPiece()->getType() == CAVALIER)
+			ln.push_back(board->getBoard().at(roi - 15).getPiece());
+		if (board->getBoard().at(roi - 10).getPiece()->getColor() == BLANC && board->getBoard().at(roi - 10).getPiece()->getType() == CAVALIER)
+			ln.push_back(board->getBoard().at(roi - 10).getPiece());
+		if (board->getBoard().at(roi - 6).getPiece()->getColor() == BLANC && board->getBoard().at(roi - 6).getPiece()->getType() == CAVALIER)
+			ln.push_back(board->getBoard().at(roi - 6).getPiece());
+	}
+	else if (roi - 15 > 0) //si les deplacement positifs jusqu'a -15 sont possibles
+	{
+		if (board->getBoard().at(roi - 15).getPiece()->getColor() == BLANC && board->getBoard().at(roi - 15).getPiece()->getType() == CAVALIER)
+			ln.push_back(board->getBoard().at(roi - 15).getPiece());
+		if (board->getBoard().at(roi - 10).getPiece()->getColor() == BLANC && board->getBoard().at(roi - 10).getPiece()->getType() == CAVALIER)
+			ln.push_back(board->getBoard().at(roi - 10).getPiece());
+		if (board->getBoard().at(roi - 6).getPiece()->getColor() == BLANC && board->getBoard().at(roi - 6).getPiece()->getType() == CAVALIER)
+			ln.push_back(board->getBoard().at(roi - 6).getPiece());
+	}
+	else if (roi - 10 > 0) //si les deplacement positifs jusqu'a -9 sont possibles
+	{
+		if (board->getBoard().at(roi - 10).getPiece()->getColor() == BLANC && board->getBoard().at(roi - 10).getPiece()->getType() == CAVALIER)
+			ln.push_back(board->getBoard().at(roi - 10).getPiece());
+		if (board->getBoard().at(roi - 6).getPiece()->getColor() == BLANC && board->getBoard().at(roi - 6).getPiece()->getType() == CAVALIER)
+			ln.push_back(board->getBoard().at(roi - 6).getPiece());
+	}
+	else if (roi - 6 > 0) //si seul -6 est possible
+	{
+		if (board->getBoard().at(roi - 6).getPiece()->getColor() == BLANC && board->getBoard().at(roi - 6).getPiece()->getType() == CAVALIER)
+			ln.push_back(board->getBoard().at(roi - 6).getPiece());
+	}
+
+
+
+
+	if (mastercolor == BLANC) //pion w/ mastercolor BLANC
+	{
+		if (board->getBoard().at(roi + 9).getPiece()->getColor() == BLANC && board->getBoard().at(roi + 9).getPiece()->getType() == PION)
+			ln.push_back(board->getBoard().at(roi + 9).getPiece());
+		if (board->getBoard().at(roi + 7).getPiece()->getColor() == BLANC && board->getBoard().at(roi + 7).getPiece()->getType() == PION)
+			ln.push_back(board->getBoard().at(roi + 7).getPiece());
+	}
+	if (mastercolor == NOIR) //pion w/ mastercolor BLANC
+	{
+		if (board->getBoard().at(roi - 9).getPiece()->getColor() == BLANC && board->getBoard().at(roi - 9).getPiece()->getType() == PION)
+			ln.push_back(board->getBoard().at(roi - 9).getPiece());
+		if (board->getBoard().at(roi - 7).getPiece()->getColor() == BLANC && board->getBoard().at(roi - 7).getPiece()->getType() == PION)
+			ln.push_back(board->getBoard().at(roi - 7).getPiece());
+	}
+
+	for (int i = 1; i <= roi - (div(roi, 8).quot * 8); i++) //depl gauche
+	{
+		if (board->getBoard().at(roi - i).getPiece()->getColor() == BLANC && (board->getBoard().at(roi - i).getPiece()->getType() == TOUR || board->getBoard().at(roi - i).getPiece()->getType() == REINE))
+			ln.push_back(board->getBoard().at(roi - i).getPiece());
+		else if (!board->getBoard().at(roi - i).isEmpty())
+			break;
+	}
+
+	for (int i = 1; i <= ((div(roi, 8).quot + 1) * 8) - roi; i++) //depl droite
+	{
+		if (board->getBoard().at(roi + i).getPiece()->getColor() == BLANC && (board->getBoard().at(roi + i).getPiece()->getType() == TOUR || board->getBoard().at(roi + i).getPiece()->getType() == REINE))
+			ln.push_back(board->getBoard().at(roi + i).getPiece());
+		else if (!board->getBoard().at(roi + i).isEmpty())
+			break;
+	}
+
+	for (int i = 1; i < 8; i++) //depl vertical
+	{
+		if (roi + i * 8 < 63)
 		{
-			ln.push_back(alive[i]);
+			if (board->getBoard().at(roi + i * 8).getPiece()->getColor() == BLANC && (board->getBoard().at(roi + i * 8).getPiece()->getType() == TOUR || board->getBoard().at(roi + i * 8).getPiece()->getType() == REINE))
+				ln.push_back(board->getBoard().at(roi + i * 8).getPiece());
+			else if (!board->getBoard().at(roi + i * 8).isEmpty())
+				break;
+		}
+		if (roi - i * 8 > 0)
+		{
+			if (board->getBoard().at(roi - i * 8).getPiece()->getColor() == BLANC && (board->getBoard().at(roi - i * 8).getPiece()->getType() == TOUR || board->getBoard().at(roi - i * 8).getPiece()->getType() == REINE))
+				ln.push_back(board->getBoard().at(roi - i * 8).getPiece());
+			else if (!board->getBoard().at(roi - i * 8).isEmpty())
+				break;
 		}
 	}
+
+	for (int i = 1; i < 8 - roi; i++) //depl diag bas
+	{
+
+		if (roi + i * 9 < 64 && dbd == 1)
+		{
+			if (board->getBoard().at(roi + i * 9).getPiece()->getColor() == BLANC && (board->getBoard().at(roi + i * 9).getPiece()->getType() == FOU || board->getBoard().at(roi + i * 9).getPiece()->getType() == REINE))
+				ln.push_back(board->getBoard().at(roi + i * 9).getPiece());
+			else if (!board->getBoard().at(roi + i * 9).isEmpty())
+				dbd = 0;
+		}
+		if (roi + i * 7 < 64 && dbg == 1)
+		{
+			if (board->getBoard().at(roi + i * 7).getPiece()->getColor() == BLANC && (board->getBoard().at(roi + i * 7).getPiece()->getType() == FOU || board->getBoard().at(roi + i * 7).getPiece()->getType() == REINE))
+				ln.push_back(board->getBoard().at(roi + i * 7).getPiece());
+			else if (!board->getBoard().at(roi + i * 7).isEmpty())
+				dbg = 0;
+		}
+		if (roi + i * 7 > 63)
+			if (roi + i * 9 > 63)
+				break;
+	}
+
+	for (int i = 1; i < 8; i++) //depl diag haut
+	{
+		if (roi - i * 9 > 0 && dhd == 1)
+		{
+			if (board->getBoard().at(roi - i * 9).getPiece()->getColor() == BLANC && (board->getBoard().at(roi - i * 9).getPiece()->getType() == FOU || board->getBoard().at(roi - i * 9).getPiece()->getType() == REINE))
+				ln.push_back(board->getBoard().at(roi - i * 9).getPiece());
+			else if (!board->getBoard().at(roi - i * 9).isEmpty())
+				dhd = 0;
+		}
+		if (roi - i * 7 > 0 && dhg == 1)
+		{
+			if (board->getBoard().at(roi - i * 7).getPiece()->getColor() == BLANC && (board->getBoard().at(roi - i * 7).getPiece()->getType() == FOU || board->getBoard().at(roi - i * 7).getPiece()->getType() == REINE))
+				ln.push_back(board->getBoard().at(roi - i * 7).getPiece());
+			else if (!board->getBoard().at(roi - i * 7).isEmpty())
+				dhg = 0;
+		}
+
+		if (roi - i * 9 < 0)
+			if (roi - i * 7 < 0)
+				break;
+	}
+	auto t2 = std::chrono::high_resolution_clock::now();
+	std::cout << "lntime = " << std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() << std::endl;
 	return ln;
 }
 
@@ -680,25 +1033,13 @@ inline int nm(Board *board)
 	return nm;
 }
 
-inline bool echec(Board* board)
+inline int echec(Board* board)
 {
-	auto alive = board->getAlivePiece();
-
-	Case roiblanc = board->getBoard().at(findroiblanc(board));
-	Case roinoir = board->getBoard().at(findroinoir(board));
-
-	auto mastercolor = board->getMasterColor();
-
-	for (int i = 0; i < alive.size(); i++)
-	{
-		if (alive[i]->getColor() == BLANC)
-			if (isPossible(board, *alive[i], roinoir, mastercolor))
-				return 2;
-
-		if (alive[i]->getColor() == NOIR)
-			if (isPossible(board, *alive[i], roiblanc, mastercolor))
-				return 1;
-	}
+	
+	if (lb(board, board->getMasterColor()).size() > 0)
+		return 1;
+	if (ln(board, board->getMasterColor()).size() > 0)
+		return 2;
 	return 0;
 }
 	
@@ -721,8 +1062,9 @@ inline int echecm(Board *board)
 	int roiNoir = findroinoir(board);
 	auto aliveNoir = board->getAliveNoir();
 	auto aliveBlanc = board->getAliveBlanc();
-	auto _lb = lb(board);
-	auto _ln = ln(board);
+	Couleur mastercolor = board->getMasterColor();
+	auto _lb = lb(board, mastercolor);
+	auto _ln = ln(board, mastercolor);
 	std::vector<int> pathRoiBlanc;
 	std::vector<int> pathRoiNoir;
 	if (_lb.size() > 0)
@@ -744,21 +1086,22 @@ inline int echecm(Board *board)
 	{
 		if (_bm == 8) //if roi can't move
 		{
-			if (lb(board).size() > 1) //si plus d'une piece mette le roi blanc en echec
+			if (_lb.size() > 1) //si plus d'une piece mette le roi blanc en echec
 			{
 				return 1;
 			}
 			else //if qu'une piece le met en echec
 			{
 				for (int j = 0; j < aliveBlanc.size(); j++)
-				{					
+				{	
 					for (int i = 0; i < pathRoiBlanc.size(); i++)
 					{
-
+						std::cout << "path" << pathRoiBlanc[i] << std::endl;
 						if (isPossible(board, *aliveBlanc[j], board->getBoard().at(pathRoiBlanc[i]), board->getMasterColor()) && aliveBlanc[j]->getType() != ROI)
 							return 0;
 					}
 				}
+				
 				return 1;
 			}
 		}
@@ -773,7 +1116,7 @@ inline int echecm(Board *board)
 	{
 		if (_nm == 8) //if roi can't move
 	{
-			if (ln(board).size() > 1) //si plus d'une piece mette le roi blanc en echec
+			if (_ln.size() > 1) //si plus d'une piece mette le roi blanc en echec
 		{
 				return 2;
 			}
@@ -800,4 +1143,23 @@ inline int echecm(Board *board)
 
 
 	
+}
+
+inline Type strToType(std::string type)
+{
+	Type typef = NONEt;
+	if (type == "pion")
+		typef = PION;
+	else if (type == "cavalier")
+		typef = CAVALIER;
+	else if (type == "tour")
+		typef = TOUR;
+	else if (type == "reine")
+		typef = REINE;
+	else if (type == "fou")
+		typef = FOU;
+	else if (type == "roi")
+		typef = ROI;
+
+	return typef;
 }

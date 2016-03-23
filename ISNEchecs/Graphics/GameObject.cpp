@@ -26,9 +26,10 @@ GameObject::~GameObject()
 
 void GameObject::setTexture(std::string texturePath) 
 {
+	_texture.setSmooth(true);
 	sf::Image image;
 	image.loadFromFile(texturePath);
-	image.createMaskFromColor(sf::Color::Red);
+	image.createMaskFromColor(sf::Color::Green);
 	_texture.loadFromImage(image);
 	_sprite.setTexture(_texture);
 	_isLoaded = true;

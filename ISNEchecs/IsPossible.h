@@ -14,7 +14,7 @@ inline bool Cavalier(Board *board, Piece piece, Case caze, Couleur color)
 	{
 		return 1;
 	}
-	if (piece.getID() - 6 == caze.getID() && (piece.getID() + 1) % 8 != 0 && (piece.getID() + 1) % 8 != 7) // WTF
+	if (piece.getID() - 6 == caze.getID() && (piece.getID() + 1) % 8 != 0 && (piece.getID() + 1) % 8 != 7)
 	{
 		return 1;
 	}
@@ -262,7 +262,7 @@ inline bool Roi(Board *board, Piece piece, Case caze, Couleur color)
 				board->getBoard().at(piece.getID() - 2).isEmpty() &&
 				board->getBoard().at(piece.getID() - 3).isEmpty() && 
 				!board->getBoard().at(piece.getID() - 4).getPiece()->getHasMoved() &&
-				board->getBoard().at(piece.getID() + 4).getPiece()->getType() == TOUR) //si cases sont libres et les tour/roi hasn't moved
+				board->getBoard().at(piece.getID() - 4).getPiece()->getType() == TOUR) //si cases sont libres et les tour/roi hasn't moved
 				return 1;
 			else
 				return 0;
@@ -275,7 +275,7 @@ inline bool Roi(Board *board, Piece piece, Case caze, Couleur color)
 			if (board->getBoard().at(piece.getID() + 1).isEmpty() &&
 				board->getBoard().at(piece.getID() + 2).isEmpty() &&
 				!board->getBoard().at(piece.getID() + 3).getPiece()->getHasMoved() &&
-				board->getBoard().at(piece.getID() + 4).getPiece()->getType() == TOUR) //si cases sont libres et les tour/roi hasn't moved
+				board->getBoard().at(piece.getID() + 3).getPiece()->getType() == TOUR) //si cases sont libres et les tour/roi hasn't moved
 				return 1;
 			else
 				return 0;
@@ -384,12 +384,18 @@ inline bool Pion(Board *board, Piece piece, Case caze, Couleur color)
 
 			if (piece.getID() - 7 == caze.getID() && (piece.getID()+1) % 8 != 0)
 			{
-				return 1;
+				if (caze.getPiece()->getColor() != BLANC && caze.getPiece()->getColor() != NONEc)
+					return 1;
+				else
+					return 0;
 			}
 
 			if (piece.getID() - 9 == caze.getID() && piece.getID() % 8 != 0)
 			{
-				return 1;
+				if (caze.getPiece()->getColor() != BLANC && caze.getPiece()->getColor() != NONEc)
+					return 1;
+				else
+					return 0;
 			}
 		}
 		return 0;
@@ -452,12 +458,18 @@ inline bool Pion(Board *board, Piece piece, Case caze, Couleur color)
 
 			if (piece.getID() + 7 == caze.getID() && piece.getID() % 8 != 0)
 			{
-				return 1;
+				if (caze.getPiece()->getColor() != NOIR && caze.getPiece()->getColor() != NONEc)
+					return 1;
+				else
+					return 0;
 			}
 
 			if (piece.getID() + 9 == caze.getID() && (piece.getID()+1) % 8 != 0)
 			{
-				return 1;
+				if (caze.getPiece()->getColor() != NOIR && caze.getPiece()->getColor() != NONEc)
+					return 1;
+				else
+					return 0;
 			}
 		}
 		return 0;

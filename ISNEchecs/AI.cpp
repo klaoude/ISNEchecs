@@ -24,7 +24,7 @@ std::vector<int> AI::canEat(std::vector<Piece*> allPiece)
 			if (_board->getCase(allPath[j]).getPiece()->getColor() != _iaColor && _board->getCase(allPath[j]).getPiece()->getColor() != NONEc)
 				if (canMove(*_board, *allPiece[i], _board->getCase(allPath[j]), _board->getMasterColor(), 0))
 					ret.insert(std::pair<Piece*, Piece*>(allPiece[i], _board->getCase(allPath[j]).getPiece()));
-	}
+}
 	return ret;
 }
 
@@ -143,12 +143,12 @@ void AI::play()
 
 	if (pieceAttacked.size() == 0) //si une de nos piece est attaqué
 	{
-		std::map<std::pair<Piece*, int>, int> map;
-		for (int i = 0; i < canMovePiece.size(); i++)
+	std::map<std::pair<Piece*, int>, int> map;
+	for (int i = 0; i < canMovePiece.size(); i++)
+	{
+		auto allPath = getAllPath(_board, canMovePiece[i], _board->getMasterColor());
+		for (int j = 0; j < allPath.size(); j++)
 		{
-			auto allPath = getAllPath(_board, canMovePiece[i], _board->getMasterColor());
-			for (int j = 0; j < allPath.size(); j++)
-			{
 				int situ;
 				if (canMovePiece[i]->getColor() != _board->getCase(allPath[j]).getPiece()->getColor() && _board->getCase(allPath[j]).getPiece()->getColor() != NONEc)
 				{
@@ -180,17 +180,17 @@ void AI::play()
 					situ = getSituationPoint(*canMovePiece[i], _board->getCase(allPath[j]), allPiece);
 				}
 				
-				std::cout << situ << std::endl;
-				std::pair<Piece*, int> tmpPair = std::make_pair(canMovePiece[i], allPath[j]);
-				map.emplace(std::pair<std::pair<Piece*, int>, int>(tmpPair, situ));
-			}
+			std::cout << situ << std::endl;
+			std::pair<Piece*, int> tmpPair = std::make_pair(canMovePiece[i], allPath[j]);
+			map.emplace(std::pair<std::pair<Piece*, int>, int>(tmpPair, situ));
 		}
-
-		auto possibility = returnMax(map);
-		int id;
-		id = rand() % possibility.size();
-		_board->movePiece(possibility[id].first, _board->getCase(possibility[id].second));
 	}
+
+	auto possibility = returnMax(map);
+	int id;
+	id = rand() % possibility.size();
+	_board->movePiece(possibility[id].first, _board->getCase(possibility[id].second));
+}
 	else //si aucune de nos piece est attaqué
 	{
 		std::cout << "else statement" << std::endl;
@@ -254,7 +254,7 @@ int AI::getSituationPoint(Piece piece, Case caze, std::vector<Piece* > allPiece)
 			{
 				//point -= getValPiece(&piece);
 				std::cout << std::endl;
-			}				
+			}
 		}
 	}
 

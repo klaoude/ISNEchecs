@@ -62,3 +62,4 @@ void Piece::draw(sf::RenderWindow& window)
 {
 	GameObject::draw(window);
 }
+
