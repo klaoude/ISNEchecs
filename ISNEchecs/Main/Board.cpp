@@ -70,12 +70,12 @@ Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)
 	{
 		if (i % 8 == 0 && i != 0)
 		{
-			y += SCREEN_HEIGHT / 8;
+			y += BOARD_SIZE / 8;
 			x = 0;
 		}
 
 		m_board.push_back(Case(x, y, i));
-		x += SCREEN_HEIGHT / 8;
+		x += BOARD_SIZE / 8;
 	}
 
 	GameObject* board = new GameObject("Sprites/board.png");
