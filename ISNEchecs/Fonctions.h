@@ -1147,7 +1147,7 @@ inline int echecm(Board *board)
 
 inline Type strToType(std::string type)
 {
-	Type typef;
+	Type typef = NONEt;
 	if (type == "pion")
 		typef = PION;
 	else if (type == "cavalier")
