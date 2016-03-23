@@ -29,6 +29,16 @@ inline int find(std::vector<Piece*>* vec, Piece* piece)
 	return -1;
 }
 
+inline int find(std::vector<int> vec, int id)
+{
+	for (auto i = 0; i < vec.size(); i++)
+	{
+		if (vec[i] == id)
+			return i;
+	}
+	return -1;
+}
+
 inline int getValPiece(Piece* piece)
 {
 	switch (piece->getType())
