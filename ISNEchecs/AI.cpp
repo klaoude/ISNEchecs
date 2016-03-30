@@ -14,30 +14,6 @@ AI::~AI()
 
 }
 
-std::vector<int> AI::canEat(std::vector<Piece*> allPiece)
-{
-	std::map<Piece*, Piece*> ret;
-	for (int i = 0; i < allPiece.size(); i++)
-	{
-		auto allPath = getAllPath(_board, allPiece[i], _board->getMasterColor());
-		for (int j = 0; j < allPath.size(); j++)
-			if (_board->getCase(allPath[j]).getPiece()->getColor() != _iaColor && _board->getCase(allPath[j]).getPiece()->getColor() != NONEc)
-				if (canMove(*_board, *allPiece[i], _board->getCase(allPath[j]), _board->getMasterColor(), 0))
-					ret.insert(std::pair<Piece*, Piece*>(allPiece[i], _board->getCase(allPath[j]).getPiece()));
-}
-	return ret;
-}
-
-bool AI::enemyCanEatMe(std::vector<Piece*> enemiPiece, int caseid)
-{
-	for each(Piece* piece in enemiPiece)
-	{
-		if (canMove(*_board, *piece, _board->getCase(caseid), _board->getMasterColor(), 0))
-			return true;
-	}
-	return false;
-}
-
 std::vector<std::pair<Piece*, int>> returnMax(std::map<std::pair<Piece*, int>, int> map)
 {
 	int max = -101;
@@ -57,7 +33,6 @@ std::vector<std::pair<Piece*, int>> returnMax(std::map<std::pair<Piece*, int>, i
 Piece* returnMax(std::map<Piece*, int> map)
 {
 	int max = -101;
-	auto maxId = map.begin()->first;
 	Piece* ret;
 	for (auto i = map.begin(); i != map.end(); i++)
 	{
@@ -83,26 +58,38 @@ int returnMax(std::vector<int> vec)
 
 void AI::play()
 {
+	/*
+	*	Shema de reflexion :
+	*		1: check si je peux me faire mangé
+	*		2: check pour chaque move possible:
+	*			si on bouge une piece qui est attacké (+/- 2*getVal(Piece))
+	*			Si on bouge la bas est-ce qu'on est protégé ? (si oui +4)
+	*			Si on bouge et que je peux me faire mangé (-4*getVal(Piece))
+	*			Si je mange une piece enemie (+2*getVal(PieceEnemie))
+	*			Si j'attaque une piece (+getVal(PieceAttacké))
+	*		3: Check le move qui a le plus de points. En cas d'egalité prend au hazard
+	*		4: Move
+	*/
+
+
 	std::map<std::pair<Piece*, int>, int> mapPoint;
 
 	//init vars
-	std::vector<Piece* > allPiece;
-	if (_iaColor == BLANC)
-		allPiece = _board->getAliveBlanc();
-	else if (_iaColor == NOIR)
-		allPiece = _board->getAliveNoir();
+	reloadMyPiece();
 
-	std::vector<Piece*> enemyPiece;
-	if (_iaColor == BLANC)
-		enemyPiece = _board->getAliveNoir();
-	else
-		enemyPiece = _board->getAliveBlanc();
+	reloadEnemiPiece();
+
+	_echec = echec(_board);
 	//---------
 
+	//AI vars
+	int stepOne = enemyCanEatMe();
+	//-------
+
 	//set canMovePiece for opti
-	auto canMovePiece = allPiece;
+	auto canMovePiece = _myPiece;
 	int supr = 0;
-	for (int i = 0; i < allPiece.size(); i++)
+	for (int i = 0; i < _myPiece.size(); i++)
 	{
 		if (getAllPath(_board, allPiece[i], _board->getMasterColor()).size() == 0)
 		{
@@ -112,35 +99,9 @@ void AI::play()
 	}
 	//-------------------------
 
-	//regarde si une de nos piece sont attaqué
-	std::map<Piece*, int> pieceAttacked;
-	for (int i = 0; i < enemyPiece.size(); i++)
-	{
-		for (int j = 0; j < allPiece.size(); j++)
-		{
-			if (canMove(*_board, *enemyPiece[i], _board->getCase(allPiece[j]->getID()), _board->getMasterColor(), 0))
-			{
-				pieceAttacked.insert(std::pair<Piece*, int>(allPiece[j], getValPiece(allPiece[j])));
-			}
-		}
-	}
-	//----------------------------------------
 
-	//regarde si on peux manger une piece
-	auto eatPiece = canEat(allPiece);
-	//-----------------------------------
 
-	//regarde si, si on mange une piece, on se fais remangé est si on perd au change
-	for each (Piece* piece in enemyPiece)
-	{
-		auto allPath = getAllPath(_board, piece, _board->getMasterColor());
-		for each(int path in allPath)
-		{
-			
-		}
-	}
-	//------------------------------------------------------------------------------
-
+	/*
 	if (pieceAttacked.size() == 0) //si une de nos piece est attaqué
 	{
 	std::map<std::pair<Piece*, int>, int> map;
@@ -212,7 +173,7 @@ void AI::play()
 		id = rand() % possibility.size();
 		_board->movePiece(possibility[id].first, _board->getCase(possibility[id].second));
 		std::cout << situ << std::endl;
-	}	
+	}	*/
 }
 
 int AI::getSituationPoint(Piece piece, Case caze, std::vector<Piece* > allPiece)
@@ -276,4 +237,40 @@ int AI::getSituationPoint(Piece piece, Case caze, std::vector<Piece* > allPiece)
 	std::cout << "stopSimu" << std::endl;
 
 	return point;
+}
+
+void AI::reloadMyPiece()
+{
+	std::vector<Piece* > allPiece;
+	if (_iaColor == BLANC)
+		allPiece = _board->getAliveBlanc();
+	else if (_iaColor == NOIR)
+		allPiece = _board->getAliveNoir();
+	_myPiece = allPiece;
+}
+
+void AI::reloadEnemiPiece()
+{
+	std::vector<Piece*> enemyPiece;
+	if (_iaColor == BLANC)
+		enemyPiece = _board->getAliveNoir();
+	else
+		enemyPiece = _board->getAliveBlanc();
+	_enemiPiece = enemyPiece;
+}
+
+int AI::enemyCanEatMe()
+{
+	int ret = 0;
+	for each(Piece* enemi in _enemiPiece)
+		for each(Piece* mi in _myPiece)
+			if (isPossible(_board, *enemi, _board->getCase(mi->getID()), _iaColor))
+				if (canMove(*_board, *enemi, _board->getCase(mi->getID()), _iaColor, _echec))
+					if (getValPiece(mi) > ret)
+					{
+						ret = getValPiece(mi);
+						_pieceNeddedToMove = mi;
+					}
+						
+	return 2*ret;
 }

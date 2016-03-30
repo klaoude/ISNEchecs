@@ -18,9 +18,16 @@ private:
 	bool canTake(Piece piece);
 	Piece getMinVal(std::vector<Piece> vec);
 	std::vector<int> canEat(std::vector<Piece*> allPiece);
-	bool AI::enemyCanEatMe(std::vector<Piece*> enemiPiece, int caseid);
+	int enemyCanEatMe();
+
+	void reloadMyPiece();
+	void reloadEnemiPiece();
 
 	Board* _board;
 	Couleur _iaColor;
+	std::vector<Piece*> _myPiece;
+	std::vector<Piece*> _enemiPiece;
+	Piece* _pieceNeddedToMove;
+	int _echec;
 };
 
