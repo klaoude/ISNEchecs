@@ -14,7 +14,7 @@ public:
 	void play();
 
 private:
-	int getSituationPoint(Piece piece, Case caze, std::vector<Piece* > allPiece);
+	int getSituationPoint(Piece piece, Case caze);
 	bool canTake(Piece piece);
 	Piece getMinVal(std::vector<Piece> vec);
 	std::vector<int> canEat(std::vector<Piece*> allPiece);
@@ -22,6 +22,8 @@ private:
 
 	void reloadMyPiece();
 	void reloadEnemiPiece();
+
+	int _stepOne;
 
 	Board* _board;
 	Couleur _iaColor;

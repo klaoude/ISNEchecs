@@ -83,7 +83,7 @@ void AI::play()
 	//---------
 
 	//AI vars
-	int stepOne = enemyCanEatMe();
+	_stepOne = enemyCanEatMe();
 	//-------
 
 	//set canMovePiece for opti
@@ -91,15 +91,30 @@ void AI::play()
 	int supr = 0;
 	for (int i = 0; i < _myPiece.size(); i++)
 	{
-		if (getAllPath(_board, allPiece[i], _board->getMasterColor()).size() == 0)
+		if (getAllPath(_board, _myPiece[i], _board->getMasterColor()).size() == 0)
 		{
 			canMovePiece.erase(canMovePiece.begin() + (i-supr));
 			supr++;
 		}			
 	}
 	//-------------------------
+	
+	for (int i = 0; i < canMovePiece.size(); i++)
+	{
+		auto allPath = getAllPath(_board, canMovePiece[i], _board->getMasterColor());
+		for (int j = 0; j < allPath.size(); j++)
+		{
+			mapPoint.insert(std::pair<std::pair<Piece*, int>, int>(std::pair<Piece*, int>(canMovePiece[i], allPath[j]), getSituationPoint(*canMovePiece[i], _board->getCase(allPath[j]))));
+		}
+	}
 
-
+	//best Move
+	auto possibility = returnMax(mapPoint);
+	int id;
+	id = rand() % possibility.size();
+	std::cout << "[AI] i move " << possibility[id].first->getID() << " to " << _board->getCase(possibility[id].second).getID() << std::endl;
+	_board->movePiece(possibility[id].first, _board->getCase(possibility[id].second));	
+	//---------
 
 	/*
 	if (pieceAttacked.size() == 0) //si une de nos piece est attaqué
@@ -176,13 +191,75 @@ void AI::play()
 	}	*/
 }
 
-int AI::getSituationPoint(Piece piece, Case caze, std::vector<Piece* > allPiece)
+int AI::getSituationPoint(Piece piece, Case caze)
 {
-	std::cout << "start Simulation " << piece.getID() << " to " << caze.getID() << std::endl;
+	std::cout << "start Simulation " << piece.getID() << " to " << caze.getID() << std::endl;	
 	int point = 0;
 	Board board = *_board;
+	int oldid = piece.getID();
 	board.simuleMove(&piece, caze);
 
+	//Blue
+	if (&piece == _pieceNeddedToMove)
+		point += _stepOne / 2;
+	else
+		point -= _stepOne;
+
+	std::cout << "[IA] Blue step : " << point << std::endl;
+
+	//Red
+	for each (Piece* ppiece in _myPiece)
+	{
+		if (isPossible(_board, *ppiece, caze, _iaColor) && ppiece->getID() != oldid)
+		{
+			if (canMove(*_board, *ppiece, caze, _iaColor, _echec))
+			{
+				std::cout << "[IA] Red Step -> " << ppiece->getID() << " protect " << caze.getID() << std::endl;
+				point += 4;
+				break;
+			}
+		}	
+	}
+
+	std::cout << "[IA] Red step : " << point << std::endl;
+
+	//Brown
+	for each(Piece* ppiece in _enemiPiece)
+	{
+		if (isPossible(_board, *ppiece, caze, _board->getMasterColor()))
+		{
+			if (canMove(*_board, *ppiece, caze, _board->getMasterColor(), _echec))
+			{
+				point += -4 * getValPiece(&piece);
+				break;
+			}				
+		}			
+	}
+
+	std::cout << "[IA] Brown step : " << point << std::endl;
+
+	//Green
+	if (caze.getPiece()->getColor() != _iaColor && caze.getPiece()->getColor() != Couleur::NONEc)
+		point += 2 * getValPiece(caze.getPiece());
+
+	std::cout << "[IA] Green step : " << point << std::endl;
+	
+	//Cyan
+	for each(Piece* enemie in _enemiPiece)
+	{
+		if (isPossible(_board, piece, _board->getCase(enemie->getID()), _board->getMasterColor()))
+			if (canMove(*_board, piece, _board->getCase(enemie->getID()), _board->getMasterColor(), _echec))
+				point += getValPiece(enemie);
+	}
+
+	std::cout << "[IA] Cyan step : " << point << std::endl;
+
+	board.undoSimileMove();
+	std::cout << "stopSimu" << std::endl;
+
+	return point;
+
+	/*
 	std::vector<Piece*> enemyPiece;
 	if (_iaColor == BLANC)
 		enemyPiece = board.getAliveNoir();
@@ -200,9 +277,9 @@ int AI::getSituationPoint(Piece piece, Case caze, std::vector<Piece* > allPiece)
 			
 			board.getCase(caze.getID()).getPiece()->setColor(NOIR);
 			bool canretake = false;
-			for (int j = 0; j < allPiece.size(); j++)
+			for (int j = 0; j < _myPiece.size(); j++)
 			{
-				if (canMove(board, *allPiece[j], caze, _board->getMasterColor(), Echec))
+				if (canMove(board, *_myPiece[j], caze, _board->getMasterColor(), Echec))
 					canretake = true;
 			}
 			board.getCase(caze.getID()).getPiece()->setColor(BLANC);
@@ -237,6 +314,7 @@ int AI::getSituationPoint(Piece piece, Case caze, std::vector<Piece* > allPiece)
 	std::cout << "stopSimu" << std::endl;
 
 	return point;
+	*/
 }
 
 void AI::reloadMyPiece()
@@ -270,7 +348,6 @@ int AI::enemyCanEatMe()
 					{
 						ret = getValPiece(mi);
 						_pieceNeddedToMove = mi;
-					}
-						
+					}						
 	return 2*ret;
 }
