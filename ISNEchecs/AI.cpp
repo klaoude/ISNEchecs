@@ -1,5 +1,7 @@
 #include "AI.h"
 
+#include <fstream>
+
 #include "Fonctions.h"
 #include "canMove.h"
 
@@ -7,6 +9,8 @@ AI::AI(Board* board)
 {
 	_board = board;
 	_iaColor = BLANC;
+	_turn = 0;
+	_turnFile = new std::ofstream();
 }
 
 AI::~AI()
@@ -14,7 +18,22 @@ AI::~AI()
 
 }
 
-std::vector<std::pair<Piece*, int>> returnMax(std::map<std::pair<Piece*, int>, int> map)
+void AI::makeTurnFile()
+{
+	_turnFile->open("IAFiles/turn" + std::to_string(_turn) + ".txt");
+
+	*_turnFile << "!" << std::endl;
+	
+	for each (Piece* piece in _board->getAlivePiece())	
+		*_turnFile << piece->getType() << "/" << piece->getColor() << "/" << piece->getID() << "/";
+	*_turnFile << std::endl;
+
+	*_turnFile << "!" << std::endl;
+
+	*_turnFile << _iaColor << "/";
+}
+
+std::vector<std::pair<Piece*, int>> AI::returnMax(std::map<std::pair<Piece*, int>, int> map)
 {
 	int max = -101;
 	auto maxId = map.begin()->first;
@@ -75,6 +94,9 @@ void AI::play()
 	std::map<std::pair<Piece*, int>, int> mapPoint;
 
 	//init vars
+	_turn++;
+	makeTurnFile();
+
 	reloadMyPiece();
 
 	reloadEnemiPiece();
@@ -107,13 +129,16 @@ void AI::play()
 			mapPoint.insert(std::pair<std::pair<Piece*, int>, int>(std::pair<Piece*, int>(canMovePiece[i], allPath[j]), getSituationPoint(*canMovePiece[i], _board->getCase(allPath[j]))));
 		}
 	}
+	*_turnFile << std::endl << "!" << std::endl;
 
 	//best Move
 	auto possibility = returnMax(mapPoint);
 	int id;
 	id = rand() % possibility.size();
 	std::cout << "[AI] i move " << possibility[id].first->getID() << " to " << _board->getCase(possibility[id].second).getID() << std::endl;
+	*_turnFile << possibility[id].first->getID() << "-" << _board->getCase(possibility[id].second).getID() << std::endl;
 	_board->movePiece(possibility[id].first, _board->getCase(possibility[id].second));	
+	_turnFile->close();
 	//---------
 
 	/*
@@ -193,6 +218,8 @@ void AI::play()
 
 int AI::getSituationPoint(Piece piece, Case caze)
 {
+	*_turnFile << piece.getID() << "-" << caze.getID() << "/";
+
 	std::cout << "start Simulation " << piece.getID() << " to " << caze.getID() << std::endl;	
 	int point = 0;
 	Board board = *_board;
@@ -200,14 +227,16 @@ int AI::getSituationPoint(Piece piece, Case caze)
 	board.simuleMove(&piece, caze);
 
 	//Blue
+	int oldpts = point;	
 	if (&piece == _pieceNeddedToMove)
 		point += _stepOne / 2;
 	else
 		point -= _stepOne;
-
-	std::cout << "[IA] Blue step : " << point << std::endl;
+	*_turnFile << point - oldpts << ":";
+	std::cout << "[IA] Blue step : " << point - oldpts << std::endl;
 
 	//Red
+	oldpts = point;
 	for each (Piece* ppiece in _myPiece)
 	{
 		if (isPossible(_board, *ppiece, caze, _iaColor) && ppiece->getID() != oldid)
@@ -220,10 +249,11 @@ int AI::getSituationPoint(Piece piece, Case caze)
 			}
 		}	
 	}
-
+	*_turnFile << point - oldpts << ":";
 	std::cout << "[IA] Red step : " << point << std::endl;
 
 	//Brown
+	oldpts = point;
 	for each(Piece* ppiece in _enemiPiece)
 	{
 		if (isPossible(_board, *ppiece, caze, _board->getMasterColor()))
@@ -235,23 +265,25 @@ int AI::getSituationPoint(Piece piece, Case caze)
 			}				
 		}			
 	}
-
+	*_turnFile << point - oldpts << ":";
 	std::cout << "[IA] Brown step : " << point << std::endl;
 
 	//Green
+	oldpts = point;
 	if (caze.getPiece()->getColor() != _iaColor && caze.getPiece()->getColor() != Couleur::NONEc)
 		point += 2 * getValPiece(caze.getPiece());
-
+	*_turnFile << point - oldpts << ":";
 	std::cout << "[IA] Green step : " << point << std::endl;
 	
 	//Cyan
+	oldpts = point;
 	for each(Piece* enemie in _enemiPiece)
 	{
 		if (isPossible(_board, piece, _board->getCase(enemie->getID()), _board->getMasterColor()))
 			if (canMove(*_board, piece, _board->getCase(enemie->getID()), _board->getMasterColor(), _echec))
 				point += getValPiece(enemie);
 	}
-
+	*_turnFile << point - oldpts << "/";
 	std::cout << "[IA] Cyan step : " << point << std::endl;
 
 	board.undoSimileMove();

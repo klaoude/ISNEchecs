@@ -14,6 +14,8 @@ public:
 	void play();
 
 private:
+	void makeTurnFile();
+
 	int getSituationPoint(Piece piece, Case caze);
 	bool canTake(Piece piece);
 	Piece getMinVal(std::vector<Piece> vec);
@@ -23,6 +25,8 @@ private:
 	void reloadMyPiece();
 	void reloadEnemiPiece();
 
+	std::vector<std::pair<Piece*, int>> returnMax(std::map<std::pair<Piece*, int>, int> map);
+
 	int _stepOne;
 
 	Board* _board;
@@ -31,5 +35,7 @@ private:
 	std::vector<Piece*> _enemiPiece;
 	Piece* _pieceNeddedToMove;
 	int _echec;
+	int _turn;
+	std::ofstream* _turnFile;
 };
 
