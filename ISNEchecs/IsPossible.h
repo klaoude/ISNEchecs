@@ -8,7 +8,7 @@
 
 #include "Global.h"
 
-inline bool Cavalier(Board *board, Piece piece, Case caze, Couleur color)
+inline bool Cavalier(Board *board, Piece piece, Case caze, Couleur color, bool self)
 {
 	if (piece.getID() + 6 == caze.getID() && piece.getID() % 8 != 0 && piece.getID() % 8 != 1)
 	{
@@ -45,7 +45,7 @@ inline bool Cavalier(Board *board, Piece piece, Case caze, Couleur color)
 	return 0;
 }
 
-inline bool Tour(Board *board, Piece piece, Case caze, Couleur color)
+inline bool Tour(Board *board, Piece piece, Case caze, Couleur color, bool self)
 {
 	int v = 0;
 	for (int i = 1; i < 9; i++)
@@ -113,7 +113,7 @@ inline bool Tour(Board *board, Piece piece, Case caze, Couleur color)
 	return 0;
 }
 
-inline bool Fou(Board *board, Piece piece, Case caze, Couleur color)
+inline bool Fou(Board *board, Piece piece, Case caze, Couleur color, bool self)
 {
 	int p = 0; //positif
 	int n = 0; //negatif
@@ -220,7 +220,7 @@ inline bool Fou(Board *board, Piece piece, Case caze, Couleur color)
 	return 0;
 }
 
-inline bool Roi(Board *board, Piece piece, Case caze, Couleur color)
+inline bool Roi(Board *board, Piece piece, Case caze, Couleur color, bool self)
 {
 	if (board->getMasterColor() == NOIR && !piece.getHasMoved()) //to do si !echec
 	{
@@ -325,7 +325,7 @@ inline bool Roi(Board *board, Piece piece, Case caze, Couleur color)
 	return 0;
 }
 
-inline bool Pion(Board *board, Piece piece, Case caze, Couleur color)
+inline bool Pion(Board *board, Piece piece, Case caze, Couleur color, bool self)
 {
 	if (piece.getColor() == BLANC)
 	{
@@ -349,18 +349,22 @@ inline bool Pion(Board *board, Piece piece, Case caze, Couleur color)
 
 			if (piece.getID() + 7 == caze.getID() && piece.getID() % 8 != 0)
 			{
-				if (caze.getPiece()->getColor() != BLANC && caze.getPiece()->getColor() != NONEc)
+				if (caze.getPiece()->getColor() != BLANC && caze.getPiece()->getColor() != NONEc && !self)
 					return 1;
-				else
+				else if (!self)
 					return 0;
+				else
+					return 1;
 			}
 
 			if (piece.getID() + 9 == caze.getID() && (piece.getID()+1) % 8 != 0)
 			{
-				if (caze.getPiece()->getColor() != BLANC && caze.getPiece()->getColor() != NONEc)
+				if (caze.getPiece()->getColor() != BLANC && caze.getPiece()->getColor() != NONEc && !self)
 					return 1;
-				else
+				else if (!self)
 					return 0;
+				else
+					return 1;
 			}
 		}
 
@@ -384,18 +388,22 @@ inline bool Pion(Board *board, Piece piece, Case caze, Couleur color)
 
 			if (piece.getID() - 7 == caze.getID() && (piece.getID()+1) % 8 != 0)
 			{
-				if (caze.getPiece()->getColor() != BLANC && caze.getPiece()->getColor() != NONEc)
+				if (caze.getPiece()->getColor() != BLANC && caze.getPiece()->getColor() != NONEc && !self)
 					return 1;
-				else
+				else if (!self)
 					return 0;
+				else
+					return 1;
 			}
 
 			if (piece.getID() - 9 == caze.getID() && piece.getID() % 8 != 0)
 			{
-				if (caze.getPiece()->getColor() != BLANC && caze.getPiece()->getColor() != NONEc)
+				if (caze.getPiece()->getColor() != BLANC && caze.getPiece()->getColor() != NONEc && !self)
 					return 1;
-				else
+				else if (!self)
 					return 0;
+				else
+					return 1;
 			}
 		}
 		return 0;
@@ -423,18 +431,22 @@ inline bool Pion(Board *board, Piece piece, Case caze, Couleur color)
 
 			if (piece.getID() - 7 == caze.getID() &&  (piece.getID()+1) % 8 != 0)
 			{
-				if (caze.getPiece()->getColor() != NOIR && caze.getPiece()->getColor() != NONEc)
+				if (caze.getPiece()->getColor() != NOIR && caze.getPiece()->getColor() != NONEc && !self)
 					return 1;
-				else
+				else if (!self)
 					return 0;
+				else
+					return 1;
 			}
 
 			if (piece.getID() - 9 == caze.getID() && piece.getID() % 8 != 0)
 			{
-				if (caze.getPiece()->getColor() != NOIR && caze.getPiece()->getColor() != NONEc)
+				if (caze.getPiece()->getColor() != NOIR && caze.getPiece()->getColor() != NONEc && !self)
 					return 1;
-				else
+				else if (!self)
 					return 0;
+				else
+					return 1;
 			}
 		}
 
@@ -458,18 +470,22 @@ inline bool Pion(Board *board, Piece piece, Case caze, Couleur color)
 
 			if (piece.getID() + 7 == caze.getID() && piece.getID() % 8 != 0)
 			{
-				if (caze.getPiece()->getColor() != NOIR && caze.getPiece()->getColor() != NONEc)
+				if (caze.getPiece()->getColor() != NOIR && caze.getPiece()->getColor() != NONEc && !self)
 					return 1;
-				else
+				else if (!self)
 					return 0;
+				else
+					return 1;
 			}
 
 			if (piece.getID() + 9 == caze.getID() && (piece.getID()+1) % 8 != 0)
 			{
-				if (caze.getPiece()->getColor() != NOIR && caze.getPiece()->getColor() != NONEc)
+				if (caze.getPiece()->getColor() != NOIR && caze.getPiece()->getColor() != NONEc && !self)
 					return 1;
-				else
+				else if (!self)
 					return 0;
+				else
+					return 1;
 			}
 		}
 		return 0;
@@ -481,7 +497,7 @@ inline bool Reine(Board *board, Piece piece, Case caze, Couleur color)
 	return Fou(board, piece, caze, color) || Tour(board, piece, caze, color);
 }
 
-inline bool isPossible(Board *board, Piece piece, Case caze, Couleur color)
+inline bool isPossible(Board *board, Piece piece, Case caze, Couleur color, bool self = false )
 {
 	switch (piece.getType())
 	{
