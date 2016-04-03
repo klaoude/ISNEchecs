@@ -427,7 +427,7 @@ void MainGame::showMenu()
 	case MainMenu::Debug:
 		_debugMode = true;
 		_gameState = Debugging;
-		m_board = Board(&_gameObjectManager, NOIR);
+		m_board = Board(&_gameObjectManager, BLANC);
 		break;
 	}
 }
