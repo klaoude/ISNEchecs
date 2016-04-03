@@ -152,7 +152,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 			{
 				if (piece->getColor() == BLANC)
 				{
-					if (echec(this) != 1)
+					if (echeck != 1)
 					{
 						if (piece->getID() + 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //petit rock 
 						{
@@ -164,13 +164,12 @@ bool Board::movePiece(Piece* piece, Case caze)
 							undoSimileMove(); //si une piece ennemi peut aller sur cette case
 
 							if (ennmove == 1) //si une piece peut aller sur cette case
-								; //le roi peut pas bouger
+								return false; //le roi peut pas bouger
 							else //si personne ne peux aller sur la case
 							{
-							rock(piece, caze, "droite", _masterColor);
-
-						}
-								
+								rock(piece, caze, "droite", _masterColor);
+								return true;
+							}								
 						}
 						if (piece->getID() - 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //grand rock 
 						{
@@ -182,42 +181,42 @@ bool Board::movePiece(Piece* piece, Case caze)
 							undoSimileMove(); //si une piece ennemi peut aller sur cette case
 
 							if (ennmove == 1) //si une piece peut aller sur cette case
-								; //le roi peut pas bouger
+								return false; //le roi peut pas bouger
 							else //si personne ne peux aller sur la case
 							{
-							rock(piece, caze, "gauche", _masterColor);
+								rock(piece, caze, "gauche", _masterColor);
+								return true;
 
+							}
 						}
-					}
+						return false;
 					}
 					else
 					{
-
-
+						return false;
 					}
-
 				}
 
 				else if (piece->getColor() == NOIR)
 				{
-					if (echec(this) != 2)
+					if (echeck != 2)
 					{
 						if (piece->getID() + 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //petit rock 
 						{
 							simuleMove(piece, caze);
 							if (ln(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
-						{
+							{
 								ennmove = 1;
 							}
 							undoSimileMove(); //si une piece ennemi peut aller sur cette case
 							
 							if (ennmove == 1) //si une piece peut aller sur cette case
-								; //le roi peut pas bouger
+								return false; //le roi peut pas bouger
 							else //si personne ne peux aller sur la case
 							{
-							rock(piece, caze, "droite", _masterColor);
-
-						}
+								rock(piece, caze, "droite", _masterColor);
+								return true;
+							}
 						}
 						if (piece->getID() - 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //grand rock 
 						{
@@ -229,18 +228,17 @@ bool Board::movePiece(Piece* piece, Case caze)
 							undoSimileMove(); //si une piece ennemi peut aller sur cette case
 
 							if (ennmove == 1) //si une piece peut aller sur cette case
-								; //le roi peut pas bouger
+								return false; //le roi peut pas bouger
 							else //si personne ne peux aller sur la case
-						{
-							rock(piece, caze, "gauche", _masterColor);
-
+							{
+								rock(piece, caze, "gauche", _masterColor);
+								return true;
+							}
 						}
-					}
 					}
 					else
 					{
-
-
+						return false;
 					}
 				}
 			}
@@ -249,53 +247,54 @@ bool Board::movePiece(Piece* piece, Case caze)
 			{
 				if (piece->getColor() == BLANC)
 				{
-					if (echec(this) != 1)
+					if (echeck != 1)
 					{
 						if (piece->getID() + 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //grand rock 
 						{
 							rock(piece, caze, "droite", _masterColor);
-
+							return true;
 						}
 						if (piece->getID() - 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //petit rock 
 						{
 							rock(piece, caze, "gauche", _masterColor);
+							return true;
 						}
 					}
 					else
 					{
-
+						return false;
 					}
 				}
 				else if (piece->getColor() == NOIR)
 				{
-					if (echec(this) != 2)
+					if (echeck != 2)
 					{
 						if (piece->getID() + 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //grand rock 
 						{
 							rock(piece, caze, "droite", _masterColor);
+							return true;
 						}
 						if (piece->getID() - 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //petit rock 
 						{
 							rock(piece, caze, "gauche", _masterColor);
+							return true;
 						}
 					}
 					else
 					{
-
+						return false;
 					}
 				}
 			}
-
 		} //FIN ROCK
 
-		if (canMove(*this, *piece, caze, _masterColor, echeck) &&
-			piece->getID() + 2 != caze.getID() &&
-			piece->getID() - 2 != caze.getID()) //deplacement
+		if (canMove(*this, *piece, caze, _masterColor, echeck) && caze.getID() != piece->getID() + 2 && caze.getID() != piece->getID() - 2) //deplacement
 		{
 			movePieceTo(piece, caze, _masterColor);
 			return true;
 		}
-		else {
+		else 
+		{
 			return false;
 		}
 

@@ -40,7 +40,9 @@ int main(int argc, char** argv)
 	{
 		std::cout << "Your game is outdated please update (launch updater.exe)" << std::endl;
 		system("Pause");
-		//return 0;
+#ifdef _RELEASE
+		return 0;
+#endif
 	}
 
 	MainGame game;
