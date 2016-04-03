@@ -22,18 +22,57 @@ void debug(std::string debugstring)
 
 void MainGame::enableSurbrillance(Piece piece)
 {
-	auto allPath = getAllPath(&m_board, &piece, m_board.getMasterColor());
-	for (int i = 0; i < allPath.size(); i++)
+	if (piece.getColor() == BLANC && piece.getType() == ROI && echec(&m_board) == 1)
 	{
-		if (m_board.getCase(allPath[i]).getPiece()->getColor() != piece.getColor())
+		auto allPath = getAllPath(&m_board, &piece, m_board.getMasterColor());
+		int pathRock1 = find(allPath, piece.getID() + 2);
+		int pathRock2 = find(allPath, piece.getID() - 2);
+		for (int i = 0; i < allPath.size(); i++)
 		{
-			GameObject* go = new GameObject("Sprites/surbrillance.png");
-			go->setPosition(m_board.getCase(allPath[i]).getPos());
-			go->setColor(sf::Color(255, 255, 255, 100));
-			setScale(go, 2);
-			_gameObjectManager.addSurbrillance("Surbrillance" + std::to_string(i), go);
-			_surbrillance.push_back("Surbrillance" + std::to_string(i));
-		}		
+			if (m_board.getCase(allPath[i]).getPiece()->getColor() != piece.getColor() && i != pathRock1 && i != pathRock2)
+			{
+				GameObject* go = new GameObject("Sprites/surbrillance.png");
+				go->setPosition(m_board.getCase(allPath[i]).getPos());
+				go->setColor(sf::Color(255, 255, 255, 100));
+				setScale(go, 2);
+				_gameObjectManager.addSurbrillance("Surbrillance" + std::to_string(allPath[i]), go);
+				_surbrillance.push_back("Surbrillance" + std::to_string(allPath[i]));
+			}
+		}
+	}
+	else if (piece.getColor() == NOIR && piece.getType() == ROI && echec(&m_board) == 2)
+	{
+		auto allPath = getAllPath(&m_board, &piece, m_board.getMasterColor());
+		int pathRock1 = find(allPath, piece.getID() + 2);
+		int pathRock2 = find(allPath, piece.getID() - 2);
+		for (int i = 0; i < allPath.size(); i++)
+		{
+			if (m_board.getCase(allPath[i]).getPiece()->getColor() != piece.getColor() && i != pathRock1 && i != pathRock2)
+			{
+				GameObject* go = new GameObject("Sprites/surbrillance.png");
+				go->setPosition(m_board.getCase(allPath[i]).getPos());
+				go->setColor(sf::Color(255, 255, 255, 100));
+				setScale(go, 2);
+				_gameObjectManager.addSurbrillance("Surbrillance" + std::to_string(allPath[i]), go);
+				_surbrillance.push_back("Surbrillance" + std::to_string(allPath[i]));
+			}
+		}
+	}
+	else
+	{
+		auto allPath = getAllPath(&m_board, &piece, m_board.getMasterColor());
+		for (int i = 0; i < allPath.size(); i++)
+		{
+			if (m_board.getCase(allPath[i]).getPiece()->getColor() != piece.getColor())
+			{
+				GameObject* go = new GameObject("Sprites/surbrillance.png");
+				go->setPosition(m_board.getCase(allPath[i]).getPos());
+				go->setColor(sf::Color(255, 255, 255, 100));
+				setScale(go, 2);
+				_gameObjectManager.addSurbrillance("Surbrillance" + std::to_string(allPath[i]), go);
+				_surbrillance.push_back("Surbrillance" + std::to_string(allPath[i]));
+			}
+		}
 	}
 }
 
@@ -44,6 +83,15 @@ void MainGame::disableSurbrillance()
 		_gameObjectManager.removeSurbrillance(_surbrillance[i]);
 	}
 	_surbrillance.clear();
+}
+
+void MainGame::disableSurbrillance(int id)
+{
+	for (int i = 0; i < _surbrillance.size(); i++)
+	{
+		if (_surbrillance[i] == "Surbrillance" + std::to_string(id))
+			_gameObjectManager.removeSurbrillance(_surbrillance[i]);
+	}
 }
 
 MainGame::MainGame()

@@ -29,6 +29,16 @@ inline int find(std::vector<Piece*>* vec, Piece* piece)
 	return -1;
 }
 
+inline int find(std::vector<int> vec, int id)
+{
+	for (auto i = 0; i < vec.size(); i++)
+	{
+		if (vec[i] == id)
+			return i;
+	}
+	return -1;
+}
+
 inline int getValPiece(Piece* piece)
 {
 	switch (piece->getType())
@@ -771,9 +781,11 @@ inline std::vector<Piece*> ln(Board *board, Couleur mastercolor)
 	bool dbg = 1;
 	bool dbd = 1;
 
+
 	//cavalier positif
 	if (roi + 17 < 64) //si les deplacements positifs sont possibles
-	{
+	{		
+
 		if (board->getBoard().at(roi + 17).getPiece()->getColor() == BLANC && board->getBoard().at(roi + 17).getPiece()->getType() == CAVALIER)
 			ln.push_back(board->getBoard().at(roi + 17).getPiece());
 		if (board->getBoard().at(roi + 15).getPiece()->getColor() == BLANC && board->getBoard().at(roi + 15).getPiece()->getType() == CAVALIER)
@@ -849,7 +861,7 @@ inline std::vector<Piece*> ln(Board *board, Couleur mastercolor)
 		if (board->getBoard().at(roi + 7).getPiece()->getColor() == BLANC && board->getBoard().at(roi + 7).getPiece()->getType() == PION)
 			ln.push_back(board->getBoard().at(roi + 7).getPiece());
 	}
-	if (mastercolor == NOIR) //pion w/ mastercolor BLANC
+	else if (mastercolor == NOIR) //pion w/ mastercolor BLANC
 	{
 		if (board->getBoard().at(roi - 9).getPiece()->getColor() == BLANC && board->getBoard().at(roi - 9).getPiece()->getType() == PION)
 			ln.push_back(board->getBoard().at(roi - 9).getPiece());
@@ -859,14 +871,18 @@ inline std::vector<Piece*> ln(Board *board, Couleur mastercolor)
 
 	for (int i = 1; i <= roi - (div(roi, 8).quot * 8); i++) //depl gauche
 	{
+		if (roi - i < 0)
+			break;
 		if (board->getBoard().at(roi - i).getPiece()->getColor() == BLANC && (board->getBoard().at(roi - i).getPiece()->getType() == TOUR || board->getBoard().at(roi - i).getPiece()->getType() == REINE))
 			ln.push_back(board->getBoard().at(roi - i).getPiece());
 		else if (!board->getBoard().at(roi - i).isEmpty())
 			break;
 	}
 
-	for (int i = 1; i <= ((div(roi, 8).quot + 1) * 8) - roi; i++) //depl droite
+	for (int i = 1; i < ((div(roi, 8).quot + 1) * 8) - roi; i++) //depl droite
 	{
+		if (roi + i > 64)
+			break;
 		if (board->getBoard().at(roi + i).getPiece()->getColor() == BLANC && (board->getBoard().at(roi + i).getPiece()->getType() == TOUR || board->getBoard().at(roi + i).getPiece()->getType() == REINE))
 			ln.push_back(board->getBoard().at(roi + i).getPiece());
 		else if (!board->getBoard().at(roi + i).isEmpty())
@@ -875,7 +891,7 @@ inline std::vector<Piece*> ln(Board *board, Couleur mastercolor)
 
 	for (int i = 1; i < 8; i++) //depl vertical
 	{
-		if (roi + i * 8 < 63)
+		if (roi + i * 8 < 64)
 		{
 			if (board->getBoard().at(roi + i * 8).getPiece()->getColor() == BLANC && (board->getBoard().at(roi + i * 8).getPiece()->getType() == TOUR || board->getBoard().at(roi + i * 8).getPiece()->getType() == REINE))
 				ln.push_back(board->getBoard().at(roi + i * 8).getPiece());
@@ -893,7 +909,6 @@ inline std::vector<Piece*> ln(Board *board, Couleur mastercolor)
 
 	for (int i = 1; i < 8 - roi; i++) //depl diag bas
 	{
-
 		if (roi + i * 9 < 64 && dbd == 1)
 		{
 			if (board->getBoard().at(roi + i * 9).getPiece()->getColor() == BLANC && (board->getBoard().at(roi + i * 9).getPiece()->getType() == FOU || board->getBoard().at(roi + i * 9).getPiece()->getType() == REINE))
@@ -1086,7 +1101,6 @@ inline int echecm(Board *board)
 				{	
 					for (int i = 0; i < pathRoiBlanc.size(); i++)
 					{
-						std::cout << "path" << pathRoiBlanc[i] << std::endl;
 						if (isPossible(board, *aliveBlanc[j], board->getBoard().at(pathRoiBlanc[i]), board->getMasterColor()) && aliveBlanc[j]->getType() != ROI)
 							return 0;
 					}
@@ -1127,9 +1141,9 @@ inline int echecm(Board *board)
 		{
 			return 0;
 		}
-			
+		return 0;
 	}
-
+	return 0;
 
 
 	
@@ -1137,7 +1151,7 @@ inline int echecm(Board *board)
 
 inline Type strToType(std::string type)
 {
-	Type typef;
+	Type typef = NONEt;
 	if (type == "pion")
 		typef = PION;
 	else if (type == "cavalier")
