@@ -377,7 +377,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 			}
 		} //FIN ROCK
 
-		if (canMove(*this, *piece, caze, _masterColor, echeck) && caze.getID() != piece->getID() + 2 && caze.getID() != piece->getID() - 2) //deplacement
+		if (canMove(*this, *piece, caze, _masterColor, echeck)) //deplacement
 		{
 			movePieceTo(piece, caze, _masterColor);
 			return true;
