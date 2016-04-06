@@ -33,7 +33,7 @@ private:
 	Couleur _iaColor;
 	std::vector<Piece*> _myPiece;
 	std::vector<Piece*> _enemiPiece;
-	Piece* _pieceNeddedToMove;
+	int _pieceNeddedToMove;
 	int _echec;
 	int _turn;
 	std::ofstream* _turnFile;

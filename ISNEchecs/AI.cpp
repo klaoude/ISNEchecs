@@ -40,11 +40,14 @@ std::vector<std::pair<Piece*, int>> AI::returnMax(std::map<std::pair<Piece*, int
 	std::vector<std::pair<Piece*, int>> ret;
 	for (auto i = map.begin(); i != map.end(); i++)
 	{
-		if (i->second >= max)
+		if (i->second > max)
 		{
+			ret.clear();
 			max = i->second;
 			ret.push_back(i->first);
 		}
+		if (i->second == max)
+			ret.push_back(i->first);
 	}
 	return ret;
 }
@@ -77,11 +80,18 @@ int returnMax(std::vector<int> vec)
 
 void AI::play()
 {
-	std::vector<Piece* > allPiece;
-	if (_iaColor == BLANC)
-		allPiece = _board->getAliveBlanc();
-	else if (_iaColor == NOIR)
-		allPiece = _board->getAliveNoir();
+	/*
+	*	Shema de reflexion :
+	*		1: check si je peux me faire mangé
+	*		2: check pour chaque move possible:
+	*			si on bouge une piece qui est attacké (+/- 2*getVal(Piece))
+	*			Si on bouge la bas est-ce qu'on est protégé ? (si oui +4)
+	*			Si on bouge et que je peux me faire mangé (-4*getVal(Piece))
+	*			Si je mange une piece enemie (+2*getVal(PieceEnemie))
+	*			Si j'attaque une piece (+getVal(PieceAttacké))
+	*		3: Check le move qui a le plus de points. En cas d'egalité prend au hazard
+	*		4: Move
+	*/
 
 
 	std::map<std::pair<Piece*, int>, int> mapPoint;
@@ -133,8 +143,8 @@ void AI::play()
 	_board->movePiece(possibility[id].first, _board->getCase(possibility[id].second));	
 	_turnFile->close();
 	//---------
-				}
-				
+}
+
 int AI::getSituationPoint(Piece piece, Case caze)
 {
 	*_turnFile << piece.getID() << "-" << caze.getID() << "/";
@@ -147,7 +157,7 @@ int AI::getSituationPoint(Piece piece, Case caze)
 
 	//Blue
 	int oldpts = point;	
-	if (&piece == _pieceNeddedToMove)
+	if (oldid == _pieceNeddedToMove)
 		point += _stepOne / 2;
 	else
 		point -= _stepOne;
@@ -158,9 +168,9 @@ int AI::getSituationPoint(Piece piece, Case caze)
 	oldpts = point;
 	for each (Piece* ppiece in _myPiece)
 	{
-		if (isPossible(_board, *ppiece, caze, _iaColor) && ppiece->getID() != oldid)
+		if (isPossible(_board, *ppiece, caze, _board->getMasterColor(), true) && ppiece->getID() != oldid)
 		{
-			if (canMove(*_board, *ppiece, caze, _iaColor, _echec))
+			if (canMove(*_board, *ppiece, caze, _board->getMasterColor(), _echec, true))
 			{
 				std::cout << "[IA] Red Step -> " << ppiece->getID() << " protect " << caze.getID() << std::endl;
 				point += 4;
@@ -171,25 +181,79 @@ int AI::getSituationPoint(Piece piece, Case caze)
 	*_turnFile << point - oldpts << ":";
 	std::cout << "[IA] Red step : " << point << std::endl;
 
-			}
-			}
-
-	for (int i = 0; i < enemyPiece.size(); i++)
+	//Brown
+	oldpts = point;
+	for each(Piece* ppiece in _enemiPiece)
 	{
-		if (canMove(board, *enemyPiece[i], caze, _board->getMasterColor(), Echec))
+		if (isPossible(&board, *ppiece, caze, _board->getMasterColor(), true))
 		{
-			point -= getValPiece(&piece);
-			std::cout << "je peux me faire manger ma piece si " << enemyPiece[i]->getID() << " viens sur la case " << caze.getID() << std::endl;
-		}
+			std::cout << "is possible for " << ppiece->getID() << " to go " << caze.getID() << std::endl;
+			if (canMove(board, *ppiece, caze, _board->getMasterColor(), _echec, true))
+			{
+				std::cout << "can move for " << ppiece->getID() << " to go " << caze.getID() << std::endl;
+				point += -4 * getValPiece(&piece);
+				break;
+			}				
+		}			
 	}
+	*_turnFile << point - oldpts << ":";
+	std::cout << "[IA] Brown step : " << point << std::endl;
 
-	if (_iaColor == BLANC && Echec == 2)
-		point += 4;
-	if (_iaColor == NOIR && Echec == 1)
-		point += 4;
+	//Green
+	oldpts = point;
+	if (caze.getPiece()->getColor() != _iaColor && caze.getPiece()->getColor() != Couleur::NONEc)
+		point += 2 * getValPiece(caze.getPiece());
+	*_turnFile << point - oldpts << ":";
+	std::cout << "[IA] Green step : " << point << std::endl;
+	
+	//Cyan
+	oldpts = point;
+	for each(Piece* enemie in _enemiPiece)
+	{
+		if (isPossible(_board, piece, _board->getCase(enemie->getID()), _board->getMasterColor()))
+			if (canMove(*_board, piece, _board->getCase(enemie->getID()), _board->getMasterColor(), _echec))
+				point += getValPiece(enemie);
+	}
+	*_turnFile << point - oldpts << "/";
+	std::cout << "[IA] Cyan step : " << point << std::endl;
 
 	board.undoSimileMove();
 	std::cout << "stopSimu" << std::endl;
 
 	return point;
+}
+
+void AI::reloadMyPiece()
+{
+	std::vector<Piece* > allPiece;
+	if (_iaColor == BLANC)
+		allPiece = _board->getAliveBlanc();
+	else if (_iaColor == NOIR)
+		allPiece = _board->getAliveNoir();
+	_myPiece = allPiece;
+}
+
+void AI::reloadEnemiPiece()
+{
+	std::vector<Piece*> enemyPiece;
+	if (_iaColor == BLANC)
+		enemyPiece = _board->getAliveNoir();
+	else
+		enemyPiece = _board->getAliveBlanc();
+	_enemiPiece = enemyPiece;
+}
+
+int AI::enemyCanEatMe()
+{
+	int ret = 0;
+	for each(Piece* enemi in _enemiPiece)
+		for each(Piece* mi in _myPiece)
+			if (isPossible(_board, *enemi, _board->getCase(mi->getID()), _board->getMasterColor()))
+				if (canMove(*_board, *enemi, _board->getCase(mi->getID()), _board->getMasterColor(), _echec))
+					if (getValPiece(mi) > ret)
+					{
+						ret = getValPiece(mi);
+						_pieceNeddedToMove = mi->getID();
+					}						
+	return 2*ret;
 }
