@@ -129,7 +129,7 @@ inline bool noirMove(Board board, Piece piece, Case caze, Couleur color, int ech
 	if (echecr > 0)
 		lnr = ln(&board, color);
 	int roiNoir = findroinoir(&board);
-	bool isPos = isPossible(&board, piece, caze, color);
+	bool isPos = isPossible(&board, piece, caze, color, self);
 	bool ennmove = 0;
 	bool isOnPath = 0;
 
@@ -206,9 +206,11 @@ inline bool noirMove(Board board, Piece piece, Case caze, Couleur color, int ech
 
 	else if (echecr < 2) //si le roi noir n'est pas en echec
 	{
+		if (piece.getID() == 43)
+			std::cout << "hey" << std::endl;
 		if (isPos) //si c'est possible d'aller sur cette case 
 		{
-			if (caze.getPiece()->getColor() == NOIR) //s'il y'a un allié sur la case
+			if (caze.getPiece()->getColor() == NOIR && !self) //s'il y'a un allié sur la case
 				return 0;
 			else if (!self)// SI LE DEPL MET LE ROI EN ECHEC
 			{
