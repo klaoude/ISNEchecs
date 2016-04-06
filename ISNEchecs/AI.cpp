@@ -140,80 +140,6 @@ void AI::play()
 	_board->movePiece(possibility[id].first, _board->getCase(possibility[id].second));	
 	_turnFile->close();
 	//---------
-
-	/*
-	if (pieceAttacked.size() == 0) //si une de nos piece est attaqué
-	{
-	std::map<std::pair<Piece*, int>, int> map;
-	for (int i = 0; i < canMovePiece.size(); i++)
-	{
-		auto allPath = getAllPath(_board, canMovePiece[i], _board->getMasterColor());
-		for (int j = 0; j < allPath.size(); j++)
-		{
-				int situ;
-				if (canMovePiece[i]->getColor() != _board->getCase(allPath[j]).getPiece()->getColor() && _board->getCase(allPath[j]).getPiece()->getColor() != NONEc)
-				{
-					situ = getValPiece(_board->getCase(allPath[j]).getPiece()) * 2;
-					_board->simuleMove(canMovePiece[i], _board->getCase(allPath[j]));
-
-					std::vector<Piece*> enemyPiece;
-					if (_iaColor == BLANC)
-						enemyPiece = _board->getAliveNoir();
-					else
-						enemyPiece = _board->getAliveBlanc();
-
-					int Echec = echec(_board);
-
-					std::vector<int> vec;
-
-					for each(Piece* piece in enemyPiece)
-					{
-						if (canMove(*_board, *piece, _board->getCase(canMovePiece[i]->getID()), _board->getMasterColor(), Echec))
-							vec.push_back(getValPiece(piece));
-					}
-
-					_board->undoSimileMove();
-
-					situ += (-2) * returnMax(vec);
-				}
-				else
-				{
-					situ = getSituationPoint(*canMovePiece[i], _board->getCase(allPath[j]), allPiece);
-				}
-				
-			std::cout << situ << std::endl;
-			std::pair<Piece*, int> tmpPair = std::make_pair(canMovePiece[i], allPath[j]);
-			map.emplace(std::pair<std::pair<Piece*, int>, int>(tmpPair, situ));
-		}
-	}
-
-	auto possibility = returnMax(map);
-	int id;
-	id = rand() % possibility.size();
-	_board->movePiece(possibility[id].first, _board->getCase(possibility[id].second));
-}
-	else //si aucune de nos piece est attaqué
-	{
-		std::cout << "else statement" << std::endl;
-		Piece* piece = returnMax(pieceAttacked);
-		int val = getValPiece(piece);
-		auto move = getAllPath(_board, piece, _board->getMasterColor());
-		std::map<std::pair<Piece*, int>, int> map;
-		int situ;
-
-		for each(int var in move)
-		{
-			situ = getSituationPoint(*piece, _board->getCase(var), allPiece);
-			std::pair<Piece*, int> tmpPair = std::make_pair(piece, var);
-			map.emplace(std::pair<std::pair<Piece*, int>, int>(tmpPair, situ));
-		}
-
-		auto possibility = returnMax(map);
-		int id;
-		id = rand() % possibility.size();
-		_board->movePiece(possibility[id].first, _board->getCase(possibility[id].second));
-		std::cout << situ << std::endl;
-	}	*/
 }
 
 int AI::getSituationPoint(Piece piece, Case caze)
@@ -256,9 +182,9 @@ int AI::getSituationPoint(Piece piece, Case caze)
 	oldpts = point;
 	for each(Piece* ppiece in _enemiPiece)
 	{
-		if (isPossible(_board, *ppiece, caze, _board->getMasterColor()))
+		if (isPossible(&board, *ppiece, caze, _board->getMasterColor(), true))
 		{
-			if (canMove(*_board, *ppiece, caze, _board->getMasterColor(), _echec))
+			if (canMove(board, *ppiece, caze, _board->getMasterColor(), _echec, true))
 			{
 				point += -4 * getValPiece(&piece);
 				break;

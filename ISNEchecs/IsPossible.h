@@ -492,9 +492,9 @@ inline bool Pion(Board *board, Piece piece, Case caze, Couleur color, bool self)
 	}
 }
 
-inline bool Reine(Board *board, Piece piece, Case caze, Couleur color)
+inline bool Reine(Board *board, Piece piece, Case caze, Couleur color, bool self)
 {
-	return Fou(board, piece, caze, color) || Tour(board, piece, caze, color);
+	return Fou(board, piece, caze, color, self) || Tour(board, piece, caze, color, self);
 }
 
 inline bool isPossible(Board *board, Piece piece, Case caze, Couleur color, bool self = false )
@@ -502,22 +502,22 @@ inline bool isPossible(Board *board, Piece piece, Case caze, Couleur color, bool
 	switch (piece.getType())
 	{
 	case CAVALIER:
-		return Cavalier(board, piece, caze, color);
+		return Cavalier(board, piece, caze, color, self);
 		break;
 	case TOUR:
-		return Tour(board, piece, caze, color);
+		return Tour(board, piece, caze, color, self);
 		break;
 	case FOU:
-		return Fou(board, piece, caze, color);
+		return Fou(board, piece, caze, color, self);
 		break;
 	case ROI:
-		return Roi(board, piece, caze, color);
+		return Roi(board, piece, caze, color, self);
 		break;
 	case PION:
-		return Pion(board, piece, caze, color);
+		return Pion(board, piece, caze, color, self);
 		break;
 	case REINE:
-		return Reine(board, piece, caze, color);
+		return Reine(board, piece, caze, color, self);
 		break;
 	default:
 		return 0;
