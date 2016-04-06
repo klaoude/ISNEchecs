@@ -40,11 +40,14 @@ std::vector<std::pair<Piece*, int>> AI::returnMax(std::map<std::pair<Piece*, int
 	std::vector<std::pair<Piece*, int>> ret;
 	for (auto i = map.begin(); i != map.end(); i++)
 	{
-		if (i->second >= max)
+		if (i->second > max)
 		{
+			ret.clear();
 			max = i->second;
 			ret.push_back(i->first);
 		}
+		if (i->second == max)
+			ret.push_back(i->first);
 	}
 	return ret;
 }
@@ -153,8 +156,8 @@ int AI::getSituationPoint(Piece piece, Case caze)
 	board.simuleMove(&piece, caze);
 
 	//Blue
-	int oldpts = point;	
-	if (&piece == _pieceNeddedToMove)
+	int oldpts = point;
+	if (oldid == _pieceNeddedToMove)
 		point += _stepOne / 2;
 	else
 		point -= _stepOne;
@@ -165,9 +168,9 @@ int AI::getSituationPoint(Piece piece, Case caze)
 	oldpts = point;
 	for each (Piece* ppiece in _myPiece)
 	{
-		if (isPossible(_board, *ppiece, caze, _iaColor) && ppiece->getID() != oldid)
+		if (isPossible(_board, *ppiece, caze, _board->getMasterColor(), true) && ppiece->getID() != oldid)
 		{
-			if (canMove(*_board, *ppiece, caze, _iaColor, _echec))
+			if (canMove(*_board, *ppiece, caze, _board->getMasterColor(), _echec, true))
 			{
 				std::cout << "[IA] Red Step -> " << ppiece->getID() << " protect " << caze.getID() << std::endl;
 				point += 4;
@@ -184,8 +187,10 @@ int AI::getSituationPoint(Piece piece, Case caze)
 	{
 		if (isPossible(&board, *ppiece, caze, _board->getMasterColor(), true))
 		{
+			std::cout << "is possible for " << ppiece->getID() << " to go " << caze.getID() << std::endl;
 			if (canMove(board, *ppiece, caze, _board->getMasterColor(), _echec, true))
 			{
+				std::cout << "can move for " << ppiece->getID() << " to go " << caze.getID() << std::endl;
 				point += -4 * getValPiece(&piece);
 				break;
 			}				
@@ -216,63 +221,6 @@ int AI::getSituationPoint(Piece piece, Case caze)
 	std::cout << "stopSimu" << std::endl;
 
 	return point;
-
-	/*
-	std::vector<Piece*> enemyPiece;
-	if (_iaColor == BLANC)
-		enemyPiece = board.getAliveNoir();
-	else
-		enemyPiece = board.getAliveBlanc();
-
-	int Echec = echec(&board);
-
-	for (int i = 0; i < enemyPiece.size(); i++)
-	{
-		if (canMove(board, piece, board.getCase(enemyPiece[i]->getID()), _board->getMasterColor(), Echec))
-		{
-			point += getValPiece(enemyPiece[i]);
-			std::cout << "je peux manger sa piece si " << piece.getID() << " viens sur la case " << enemyPiece[i]->getID();
-			
-			board.getCase(caze.getID()).getPiece()->setColor(NOIR);
-			bool canretake = false;
-			for (int j = 0; j < _myPiece.size(); j++)
-			{
-				if (canMove(board, *_myPiece[j], caze, _board->getMasterColor(), Echec))
-					canretake = true;
-			}
-			board.getCase(caze.getID()).getPiece()->setColor(BLANC);
-			if (!canretake)
-			{
-				point -= 2*getValPiece(&piece) + 1;
-				std::cout << " cependant je me fais niquer" << std::endl;
-			}
-			else
-			{
-				//point -= getValPiece(&piece);
-				std::cout << std::endl;
-			}
-		}
-	}
-
-	for (int i = 0; i < enemyPiece.size(); i++)
-	{
-		if (canMove(board, *enemyPiece[i], caze, _board->getMasterColor(), Echec))
-		{
-			point -= getValPiece(&piece);
-			std::cout << "je peux me faire manger ma piece si " << enemyPiece[i]->getID() << " viens sur la case " << caze.getID() << std::endl;
-		}
-	}
-
-	if (_iaColor == BLANC && Echec == 2)
-		point += 4;
-	if (_iaColor == NOIR && Echec == 1)
-		point += 4;
-
-	board.undoSimileMove();
-	std::cout << "stopSimu" << std::endl;
-
-	return point;
-	*/
 }
 
 void AI::reloadMyPiece()
@@ -300,12 +248,12 @@ int AI::enemyCanEatMe()
 	int ret = 0;
 	for each(Piece* enemi in _enemiPiece)
 		for each(Piece* mi in _myPiece)
-			if (isPossible(_board, *enemi, _board->getCase(mi->getID()), _iaColor))
-				if (canMove(*_board, *enemi, _board->getCase(mi->getID()), _iaColor, _echec))
+			if (isPossible(_board, *enemi, _board->getCase(mi->getID()), _board->getMasterColor()))
+				if (canMove(*_board, *enemi, _board->getCase(mi->getID()), _board->getMasterColor(), _echec))
 					if (getValPiece(mi) > ret)
 					{
 						ret = getValPiece(mi);
-						_pieceNeddedToMove = mi;
+						_pieceNeddedToMove = mi->getID();
 					}						
 	return 2*ret;
 }
