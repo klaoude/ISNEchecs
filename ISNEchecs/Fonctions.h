@@ -1141,9 +1141,9 @@ inline int echecm(Board *board)
 		{
 			return 0;
 		}
-			
+		return 0;
 	}
-
+	return 0;
 
 
 	

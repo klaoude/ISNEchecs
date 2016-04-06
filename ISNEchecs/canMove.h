@@ -10,7 +10,7 @@
 #include "Fonctions.h"
 #include "Global.h"
 
-inline bool blancMove(Board board, Piece piece, Case caze, Couleur color, int echeck)
+inline bool blancMove(Board board, Piece piece, Case caze, Couleur color, int echeck, bool self)
 {
 	std::vector<Piece*> lbr;
 	int echecr = echeck;
@@ -96,12 +96,12 @@ inline bool blancMove(Board board, Piece piece, Case caze, Couleur color, int ec
 	{
 		if (isPos) //si c'est possible d'aller sur cette case 
 		{
-			if (caze.getPiece()->getColor() == BLANC) //s'il y'a un allié sur la case
+			if (caze.getPiece()->getColor() == BLANC && !self) //s'il y'a un allié sur la case
 				return 0;
-			else //SI LE DEPL MET LE ROI EN ECHEC
+			else if (!self)//SI LE DEPL MET LE ROI EN ECHEC
 			{
 				board.simuleMove(&piece, caze);
-				
+
 				if (lb(&board, board.getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
 				{
 					ennmove = 1;
@@ -113,6 +113,8 @@ inline bool blancMove(Board board, Piece piece, Case caze, Couleur color, int ec
 				else //si personne ne peux aller sur la case
 					return 1; //le roi peux bouger
 			}
+			else
+				return 1;
 		}
 		return 0;
 	}
@@ -120,7 +122,7 @@ inline bool blancMove(Board board, Piece piece, Case caze, Couleur color, int ec
 		return 0;
 }
 
-inline bool noirMove(Board board, Piece piece, Case caze, Couleur color, int echeck)
+inline bool noirMove(Board board, Piece piece, Case caze, Couleur color, int echeck, bool self)
 {
 	std::vector<Piece*> lnr;
 	int echecr = echeck;
@@ -208,7 +210,7 @@ inline bool noirMove(Board board, Piece piece, Case caze, Couleur color, int ech
 		{
 			if (caze.getPiece()->getColor() == NOIR) //s'il y'a un allié sur la case
 				return 0;
-			else // SI LE DEPL MET LE ROI EN ECHEC
+			else if (!self)// SI LE DEPL MET LE ROI EN ECHEC
 			{
 				board.simuleMove(&piece, caze);
 				if (ln(&board, board.getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
@@ -222,6 +224,8 @@ inline bool noirMove(Board board, Piece piece, Case caze, Couleur color, int ech
 				else //si personne ne peux aller sur la case
 					return 1; //le roi peux bouger
 			}
+			else
+				return 1;
 		}
 		return 0;
 	}
@@ -229,15 +233,15 @@ inline bool noirMove(Board board, Piece piece, Case caze, Couleur color, int ech
 		return 0;
 }
 
-inline bool canMove(Board board, Piece piece, Case caze, Couleur color, int echec)
+inline bool canMove(Board board, Piece piece, Case caze, Couleur color, int echec, bool self = false)
 {
 	switch (piece.getColor())
 	{
 	case BLANC:
-		return blancMove(board, piece, caze, color, echec);
+		return blancMove(board, piece, caze, color, echec, self);
 		break;
 	case NOIR:
-		return noirMove(board, piece, caze, color, echec);
+		return noirMove(board, piece, caze, color, echec, self);
 		break;
 	}
 }
