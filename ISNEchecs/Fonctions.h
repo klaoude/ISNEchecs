@@ -727,16 +727,9 @@ inline std::vector<Piece*> lb(Board *board, Couleur mastercolor)
 		}
 	}
 
-	for (int i = 1; i < 8 - roi; i++) //depl diag bas
+	for (int i = 1; i < roi % 8; i++) //depl diag gauche
 	{
 
-		if (roi + i * 9 < 64 && dbd == 1)
-		{
-			if (board->getBoard().at(roi + i * 9).getPiece()->getColor() == NOIR && (board->getBoard().at(roi + i * 9).getPiece()->getType() == FOU || board->getBoard().at(roi + i * 9).getPiece()->getType() == REINE))
-				lb.push_back(board->getBoard().at(roi + i * 9).getPiece());
-			else if (!board->getBoard().at(roi + i * 9).isEmpty())
-				dbd = 0;
-		}
 		if (roi + i * 7 < 64 && dbg == 1)
 		{
 			if (board->getBoard().at(roi + i * 7).getPiece()->getColor() == NOIR && (board->getBoard().at(roi + i * 7).getPiece()->getType() == FOU || board->getBoard().at(roi + i * 7).getPiece()->getType() == REINE))
@@ -744,13 +737,6 @@ inline std::vector<Piece*> lb(Board *board, Couleur mastercolor)
 			else if (!board->getBoard().at(roi + i * 7).isEmpty())
 				dbg = 0;
 		}
-		if (roi + i * 7 > 63)
-			if (roi + i * 9 > 63)
-				break;
-	}
-
-	for (int i = 1; i < 8; i++) //depl diag haut
-	{
 
 		if (roi - i * 9 > 0 && dhd == 1)
 		{
@@ -758,6 +744,20 @@ inline std::vector<Piece*> lb(Board *board, Couleur mastercolor)
 				lb.push_back(board->getBoard().at(roi - i * 9).getPiece());
 			else if (!board->getBoard().at(roi - i * 9).isEmpty())
 				dhd = 0;
+		}
+		if (roi + i * 7 > 63)
+		if (roi - i * 9 > 63)
+			break;
+	}
+
+	for (int i = 1; i < 8 - roi % 8; i++) //depl diag droite
+	{
+		if (roi + i * 9 < 64 && dbd == 1)
+		{
+			if (board->getBoard().at(roi + i * 9).getPiece()->getColor() == NOIR && (board->getBoard().at(roi + i * 9).getPiece()->getType() == FOU || board->getBoard().at(roi + i * 9).getPiece()->getType() == REINE))
+				lb.push_back(board->getBoard().at(roi + i * 9).getPiece());
+			else if (!board->getBoard().at(roi + i * 9).isEmpty())
+				dbd = 0;
 		}
 		if (roi - i * 7 > 0 && dhg == 1)
 		{
@@ -767,9 +767,9 @@ inline std::vector<Piece*> lb(Board *board, Couleur mastercolor)
 				dhg = 0;
 		}
 
-		if (roi - i * 9 < 0)
-			if (roi - i * 7 < 0)
-				break;
+		if (roi + i * 9 < 0)
+		if (roi - i * 7 < 0)
+			break;
 	}
 	auto t2 = std::chrono::high_resolution_clock::now();
 	std::cout << "lbtime = " << std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() << std::endl;
@@ -912,15 +912,9 @@ inline std::vector<Piece*> ln(Board *board, Couleur mastercolor)
 		}
 	}
 
-	for (int i = 1; i < 8 - roi; i++) //depl diag bas
+	for (int i = 1; i < roi % 8; i++) //depl diag gauche
 	{
-		if (roi + i * 9 < 64 && dbd == 1)
-		{
-			if (board->getBoard().at(roi + i * 9).getPiece()->getColor() == BLANC && (board->getBoard().at(roi + i * 9).getPiece()->getType() == FOU || board->getBoard().at(roi + i * 9).getPiece()->getType() == REINE))
-				ln.push_back(board->getBoard().at(roi + i * 9).getPiece());
-			else if (!board->getBoard().at(roi + i * 9).isEmpty())
-				dbd = 0;
-		}
+		
 		if (roi + i * 7 < 64 && dbg == 1)
 		{
 			if (board->getBoard().at(roi + i * 7).getPiece()->getColor() == BLANC && (board->getBoard().at(roi + i * 7).getPiece()->getType() == FOU || board->getBoard().at(roi + i * 7).getPiece()->getType() == REINE))
@@ -928,19 +922,27 @@ inline std::vector<Piece*> ln(Board *board, Couleur mastercolor)
 			else if (!board->getBoard().at(roi + i * 7).isEmpty())
 				dbg = 0;
 		}
-		if (roi + i * 7 > 63)
-			if (roi + i * 9 > 63)
-				break;
-	}
-
-	for (int i = 1; i < 8; i++) //depl diag haut
-	{
+		
 		if (roi - i * 9 > 0 && dhd == 1)
 		{
 			if (board->getBoard().at(roi - i * 9).getPiece()->getColor() == BLANC && (board->getBoard().at(roi - i * 9).getPiece()->getType() == FOU || board->getBoard().at(roi - i * 9).getPiece()->getType() == REINE))
 				ln.push_back(board->getBoard().at(roi - i * 9).getPiece());
 			else if (!board->getBoard().at(roi - i * 9).isEmpty())
 				dhd = 0;
+		}
+		if (roi + i * 7 > 63)
+			if (roi - i * 9 > 63)
+				break;
+	}
+
+	for (int i = 1; i < 8 - roi % 8; i++) //depl diag droite
+	{
+		if (roi + i * 9 < 64 && dbd == 1)
+		{
+			if (board->getBoard().at(roi + i * 9).getPiece()->getColor() == BLANC && (board->getBoard().at(roi + i * 9).getPiece()->getType() == FOU || board->getBoard().at(roi + i * 9).getPiece()->getType() == REINE))
+				ln.push_back(board->getBoard().at(roi + i * 9).getPiece());
+			else if (!board->getBoard().at(roi + i * 9).isEmpty())
+				dbd = 0;
 		}
 		if (roi - i * 7 > 0 && dhg == 1)
 		{
@@ -950,7 +952,7 @@ inline std::vector<Piece*> ln(Board *board, Couleur mastercolor)
 				dhg = 0;
 		}
 
-		if (roi - i * 9 < 0)
+		if (roi + i * 9 < 0)
 			if (roi - i * 7 < 0)
 				break;
 	}
