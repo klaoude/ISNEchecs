@@ -675,21 +675,24 @@ inline std::vector<Piece*> lb(Board *board, Couleur mastercolor)
 
 	if (mastercolor == NOIR) //pion w/ mastercolor noir
 	{
-		if (board->getBoard().at(roi + 9).getPiece()->getColor() == NOIR && board->getBoard().at(roi + 9).getPiece()->getType() == PION)
+
+		if (roi + 9 > 63 && board->getBoard().at(roi + 9).getPiece()->getColor() == NOIR && board->getBoard().at(roi + 9).getPiece()->getType() == PION)
 			lb.push_back(board->getBoard().at(roi + 9).getPiece());
-		if (board->getBoard().at(roi + 7).getPiece()->getColor() == NOIR && board->getBoard().at(roi + 7).getPiece()->getType() == PION)
+		if (roi + 7 > 63 && board->getBoard().at(roi + 7).getPiece()->getColor() == NOIR && board->getBoard().at(roi + 7).getPiece()->getType() == PION)
 			lb.push_back(board->getBoard().at(roi + 7).getPiece());
 	}
 	if (mastercolor == BLANC) //pion w/ mastercolor blanc
 	{
-		if (board->getBoard().at(roi - 9).getPiece()->getColor() == NOIR && board->getBoard().at(roi - 9).getPiece()->getType() == PION)
+		if (roi - 9 < 0 && board->getBoard().at(roi - 9).getPiece()->getColor() == NOIR && board->getBoard().at(roi - 9).getPiece()->getType() == PION)
 			lb.push_back(board->getBoard().at(roi - 9).getPiece());
-		if (board->getBoard().at(roi - 7).getPiece()->getColor() == NOIR && board->getBoard().at(roi - 7).getPiece()->getType() == PION)
+		if (roi - 7 < 0 && board->getBoard().at(roi - 7).getPiece()->getColor() == NOIR && board->getBoard().at(roi - 7).getPiece()->getType() == PION)
 			lb.push_back(board->getBoard().at(roi - 7).getPiece());
 	}
 
 	for (int i = 1; i <= roi - (div(roi, 8).quot * 8); i++) //depl gauche
 	{
+		if (roi + i < 0)
+			break;
 		if (board->getBoard().at(roi - i).getPiece()->getColor() == NOIR && (board->getBoard().at(roi - i).getPiece()->getType() == TOUR || board->getBoard().at(roi - i).getPiece()->getType() == REINE))
 			lb.push_back(board->getBoard().at(roi - i).getPiece());
 		else if (!board->getBoard().at(roi - i).isEmpty())
@@ -698,6 +701,8 @@ inline std::vector<Piece*> lb(Board *board, Couleur mastercolor)
 
 	for (int i = 1; i <= ((div(roi, 8).quot + 1) * 8) - roi; i++) //depl droite
 	{
+		if (roi + i > 63)
+			break;
 		if (board->getBoard().at(roi + i).getPiece()->getColor() == NOIR && (board->getBoard().at(roi + i).getPiece()->getType() == TOUR || board->getBoard().at(roi + i).getPiece()->getType() == REINE))
 			lb.push_back(board->getBoard().at(roi + i).getPiece());
 		else if (!board->getBoard().at(roi + i).isEmpty())
@@ -856,16 +861,16 @@ inline std::vector<Piece*> ln(Board *board, Couleur mastercolor)
 
 	if (mastercolor == BLANC) //pion w/ mastercolor BLANC
 	{
-		if (board->getBoard().at(roi + 9).getPiece()->getColor() == BLANC && board->getBoard().at(roi + 9).getPiece()->getType() == PION)
+		if (roi + 9 > 63 && board->getBoard().at(roi + 9).getPiece()->getColor() == BLANC && board->getBoard().at(roi + 9).getPiece()->getType() == PION)
 			ln.push_back(board->getBoard().at(roi + 9).getPiece());
-		if (board->getBoard().at(roi + 7).getPiece()->getColor() == BLANC && board->getBoard().at(roi + 7).getPiece()->getType() == PION)
+		if (roi + 7 > 63 && board->getBoard().at(roi + 7).getPiece()->getColor() == BLANC && board->getBoard().at(roi + 7).getPiece()->getType() == PION)
 			ln.push_back(board->getBoard().at(roi + 7).getPiece());
 	}
 	else if (mastercolor == NOIR) //pion w/ mastercolor BLANC
 	{
-		if (board->getBoard().at(roi - 9).getPiece()->getColor() == BLANC && board->getBoard().at(roi - 9).getPiece()->getType() == PION)
+		if (roi - 9 < 0 && board->getBoard().at(roi - 9).getPiece()->getColor() == BLANC && board->getBoard().at(roi - 9).getPiece()->getType() == PION)
 			ln.push_back(board->getBoard().at(roi - 9).getPiece());
-		if (board->getBoard().at(roi - 7).getPiece()->getColor() == BLANC && board->getBoard().at(roi - 7).getPiece()->getType() == PION)
+		if (roi - 7 < 0 && board->getBoard().at(roi - 7).getPiece()->getColor() == BLANC && board->getBoard().at(roi - 7).getPiece()->getType() == PION)
 			ln.push_back(board->getBoard().at(roi - 7).getPiece());
 	}
 
