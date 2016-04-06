@@ -189,11 +189,40 @@ bool Board::movePiece(Piece* piece, Case caze)
 
 							}
 						}
-						return false;
+
+						simuleMove(piece, caze);
+						if (lb(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
+						{
+							ennmove = 1;
+						}
+						undoSimileMove(); //si une piece ennemi peut aller sur cette case
+
+						if (ennmove == 1) //si une piece peut aller sur cette case
+							return false; //le roi peut pas bouger
+						else //si personne ne peux aller sur la case
+						{
+							movePieceTo(piece, caze, _masterColor);
+							return true;
+
+						}
 					}
 					else
 					{
-						return false;
+						simuleMove(piece, caze);
+						if (lb(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
+						{
+							ennmove = 1;
+						}
+						undoSimileMove(); //si une piece ennemi peut aller sur cette case
+
+						if (ennmove == 1) //si une piece peut aller sur cette case
+							return false; //le roi peut pas bouger
+						else //si personne ne peux aller sur la case
+						{
+							movePieceTo(piece, caze, _masterColor);
+							return true;
+
+						}
 					}
 				}
 
@@ -235,10 +264,40 @@ bool Board::movePiece(Piece* piece, Case caze)
 								return true;
 							}
 						}
+
+						simuleMove(piece, caze);
+						if (lb(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
+						{
+							ennmove = 1;
+						}
+						undoSimileMove(); //si une piece ennemi peut aller sur cette case
+
+						if (ennmove == 1) //si une piece peut aller sur cette case
+							return false; //le roi peut pas bouger
+						else //si personne ne peux aller sur la case
+						{
+							movePieceTo(piece, caze, _masterColor);
+							return true;
+
+						}
 					}
 					else
 					{
-						return false;
+						simuleMove(piece, caze);
+						if (lb(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
+						{
+							ennmove = 1;
+						}
+						undoSimileMove(); //si une piece ennemi peut aller sur cette case
+
+						if (ennmove == 1) //si une piece peut aller sur cette case
+							return false; //le roi peut pas bouger
+						else //si personne ne peux aller sur la case
+						{
+							movePieceTo(piece, caze, _masterColor);
+							return true;
+
+						}
 					}
 				}
 			}
@@ -259,10 +318,25 @@ bool Board::movePiece(Piece* piece, Case caze)
 							rock(piece, caze, "gauche", _masterColor);
 							return true;
 						}
+						return false;
 					}
 					else
 					{
-						return false;
+						simuleMove(piece, caze);
+						if (lb(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
+						{
+							ennmove = 1;
+						}
+						undoSimileMove(); //si une piece ennemi peut aller sur cette case
+
+						if (ennmove == 1) //si une piece peut aller sur cette case
+							return false; //le roi peut pas bouger
+						else //si personne ne peux aller sur la case
+						{
+							movePieceTo(piece, caze, _masterColor);
+							return true;
+
+						}
 					}
 				}
 				else if (piece->getColor() == NOIR)
@@ -279,10 +353,25 @@ bool Board::movePiece(Piece* piece, Case caze)
 							rock(piece, caze, "gauche", _masterColor);
 							return true;
 						}
+						return false;
 					}
 					else
 					{
-						return false;
+						simuleMove(piece, caze);
+						if (lb(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
+						{
+							ennmove = 1;
+						}
+						undoSimileMove(); //si une piece ennemi peut aller sur cette case
+
+						if (ennmove == 1) //si une piece peut aller sur cette case
+							return false; //le roi peut pas bouger
+						else //si personne ne peux aller sur la case
+						{
+							movePieceTo(piece, caze, _masterColor);
+							return true;
+
+						}
 					}
 				}
 			}

@@ -137,7 +137,7 @@ inline bool Fou(Board *board, Piece piece, Case caze, Couleur color, bool self)
 
 			if (p > 0 && piece.getID() + i * 9 == caze.getID())
 			{
-				if (i <= 8 - (piece.getID()+1) % 8 && (piece.getID()+1) % 8 != 0)
+				if (i <= 8 - (piece.getID()+1) % 8)
 				{
 					return 1;
 				}

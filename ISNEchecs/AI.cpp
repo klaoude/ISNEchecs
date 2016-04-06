@@ -118,7 +118,7 @@ void AI::play()
 	{
 		if (getAllPath(_board, _myPiece[i], _board->getMasterColor()).size() == 0)
 		{
-			canMovePiece.erase(canMovePiece.begin() + (i-supr));
+			canMovePiece.erase(canMovePiece.begin() + (i - supr));
 			supr++;
 		}			
 	}
@@ -143,8 +143,8 @@ void AI::play()
 	_board->movePiece(possibility[id].first, _board->getCase(possibility[id].second));	
 	_turnFile->close();
 	//---------
-}
-
+				}
+				
 int AI::getSituationPoint(Piece piece, Case caze)
 {
 	*_turnFile << piece.getID() << "-" << caze.getID() << "/";
@@ -193,11 +193,8 @@ int AI::getSituationPoint(Piece piece, Case caze)
 				std::cout << "can move for " << ppiece->getID() << " to go " << caze.getID() << std::endl;
 				point += -4 * getValPiece(&piece);
 				break;
-			}				
-		}			
-	}
-	*_turnFile << point - oldpts << ":";
-	std::cout << "[IA] Brown step : " << point << std::endl;
+			}
+			}
 
 	//Green
 	oldpts = point;
@@ -209,7 +206,7 @@ int AI::getSituationPoint(Piece piece, Case caze)
 	//Cyan
 	oldpts = point;
 	for each(Piece* enemie in _enemiPiece)
-	{
+		{
 		if (isPossible(_board, piece, _board->getCase(enemie->getID()), _board->getMasterColor()))
 			if (canMove(*_board, piece, _board->getCase(enemie->getID()), _board->getMasterColor(), _echec))
 				point += getValPiece(enemie);
@@ -221,6 +218,42 @@ int AI::getSituationPoint(Piece piece, Case caze)
 	std::cout << "stopSimu" << std::endl;
 
 	return point;
+	*/
+}
+
+void AI::reloadMyPiece()
+{
+	std::vector<Piece* > allPiece;
+	if (_iaColor == BLANC)
+		allPiece = _board->getAliveBlanc();
+	else if (_iaColor == NOIR)
+		allPiece = _board->getAliveNoir();
+	_myPiece = allPiece;
+}
+
+void AI::reloadEnemiPiece()
+{
+	std::vector<Piece*> enemyPiece;
+	if (_iaColor == BLANC)
+		enemyPiece = _board->getAliveNoir();
+	else
+		enemyPiece = _board->getAliveBlanc();
+	_enemiPiece = enemyPiece;
+}
+
+int AI::enemyCanEatMe()
+{
+	int ret = 0;
+	for each(Piece* enemi in _enemiPiece)
+	for each(Piece* mi in _myPiece)
+	if (isPossible(_board, *enemi, _board->getCase(mi->getID()), _iaColor))
+	if (canMove(*_board, *enemi, _board->getCase(mi->getID()), _iaColor, _echec))
+	if (getValPiece(mi) > ret)
+	{
+		ret = getValPiece(mi);
+		_pieceNeddedToMove = mi;
+	}
+	return 2 * ret;
 }
 
 void AI::reloadMyPiece()
