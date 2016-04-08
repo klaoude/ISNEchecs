@@ -62,6 +62,7 @@ inline int getValPiece(Piece* piece)
 		return 1;
 		break;
 	default:
+		return 0;
 		break;
 	}
 }
