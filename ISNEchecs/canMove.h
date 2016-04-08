@@ -124,6 +124,10 @@ inline bool blancMove(Board board, Piece piece, Case caze, Couleur color, int ec
 
 inline bool noirMove(Board board, Piece piece, Case caze, Couleur color, int echeck, bool self)
 {
+	if (caze.getID() == 33)
+	{
+		std::cout << "test" << std::endl;
+	}
 	std::vector<Piece*> lnr;
 	int echecr = echeck;
 	if (echecr > 0)

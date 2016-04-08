@@ -195,9 +195,9 @@ inline std::vector<int> getPathRoi(Board* board, Piece* piece)
 					b = i;
 				else if (findroinoir(board) == piece->getID() - i * 8)
 					h = -i;
-				else if (floor(findroinoir(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8)
+				else if (floor(findroinoir(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8 && piece->getID() - i == findroinoir(board))
 					g = -i;
-				else if (ceil(findroinoir(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8)
+				else if (ceil(findroinoir(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8 && piece->getID() + i == findroinoir(board))
 					d = i;
 			}
 
@@ -254,9 +254,9 @@ inline std::vector<int> getPathRoi(Board* board, Piece* piece)
 					b = i;
 				else if (findroinoir(board) == piece->getID() - i * 8)
 					h = -i;
-				else if (floor(findroinoir(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8)
+				else if (floor(findroinoir(board) / 8) * 8 + 8 == ceil(piece->getID() / 8.0f) * 8 &&  piece->getID() - i == findroinoir(board))
 					g = -i;
-				else if (ceil(findroinoir(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8)
+				else if (ceil(findroinoir(board) / 8.0f) * 8 == floor(piece->getID() / 8.0f) * 8 + 8 && piece->getID() + i == findroinoir(board))
 					d = i;
 				else if (findroinoir(board) == piece->getID() + i * 9)
 					bd = i;
