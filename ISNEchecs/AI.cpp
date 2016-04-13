@@ -196,6 +196,7 @@ int AI::getSituationPoint(Piece piece, Case caze)
 			}
 		}
 	}
+	*_turnFile << point - oldpts << ":";
 
 	//Green
 	oldpts = point;

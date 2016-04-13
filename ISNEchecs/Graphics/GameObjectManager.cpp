@@ -42,7 +42,7 @@ GameObject* GameObjectManager::get(std::string name)
 {
 	std::unordered_map<std::string, GameObject*>::const_iterator results = _gameObjects.find(name);
 	if (results == _gameObjects.end())
-		return NULL;
+		return nullptr;
 	return results->second;
 }
 

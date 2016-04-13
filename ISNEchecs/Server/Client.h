@@ -11,7 +11,7 @@ public:
 
 	sf::Packet recv();
 
-	bool isConnected() { return _connected; }
+	bool isConnected() const { return _connected; }
 
 	void connect(sf::IpAddress ip, unsigned short port);
 	void send(sf::Packet packet);

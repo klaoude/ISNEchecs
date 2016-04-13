@@ -1,14 +1,12 @@
 #pragma once
 #include <SFML\Graphics.hpp>
-#include <iostream>
-
 
 class GameObject
 {
 public:
 	GameObject();
-	GameObject(sf::Texture texture);
-	GameObject(std::string texturePath);
+	explicit GameObject(sf::Texture texture);
+	explicit GameObject(std::string texturePath);
 	~GameObject();
 
 	virtual sf::Sprite getSprite() const { return _sprite; }

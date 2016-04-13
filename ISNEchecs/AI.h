@@ -8,7 +8,8 @@ class AI
 {
 public:
 	AI() {}
-	AI(Board* board);
+
+	explicit AI(Board* board);
 	~AI();
 
 	void play();

@@ -28,6 +28,10 @@ void _setTexture(GameObjectManager* _gom, Piece* piece)
 		case REINE:
 			_gom->get(piece->getTextureID())->setTexture("Sprites/White_Queen.png");
 			break;
+		case NONEt: break;
+		case PION: break;
+		case ROI: break;
+		default: break;
 		}
 		break;
 	case NOIR:
@@ -45,12 +49,18 @@ void _setTexture(GameObjectManager* _gom, Piece* piece)
 		case REINE:
 			_gom->get(piece->getTextureID())->setTexture("Sprites/Black_Queen.png");
 			break;
+		case NONEt: break;
+		case PION: break;
+		case ROI: break;
+		default: break;
 		}
 		break;
+	case NONEc: break;
+	default: break;
 	}
 }
 
-Board::Board()
+Board::Board(): _gom(nullptr), _masterColor(), _hitmarker(nullptr), s_oldCaseID(0), s_newCaseID(0)
 {
 	s_pieceA = nullptr;
 	s_pieceB = nullptr;
@@ -63,8 +73,8 @@ Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)
 	s_pieceA = nullptr;
 	s_pieceB = nullptr;
 	_masterColor = mc;
-	int x=0;
-	int y=0;
+	int x = 0;
+	int y = 0;
 
 	for (size_t i = 0; i < 64; i++) // on place les cases
 	{
@@ -86,11 +96,11 @@ Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)
 	if (_masterColor == BLANC)
 		add = 63;
 
-	
+
 	for (int i = 0; i < 8; i++) //Placement des pions
 	{
-		setPiece(new Piece(abs(add-(i+8)), Type::PION, Couleur::BLANC, "WhitePawn" + std::to_string(i + 1)));
-		setPiece(new Piece(abs(add-(i+48)), Type::PION, Couleur::NOIR, "BlackPawn" + std::to_string(i + 1)));
+		setPiece(new Piece(abs(add - (i + 8)), Type::PION, Couleur::BLANC, "WhitePawn" + std::to_string(i + 1)));
+		setPiece(new Piece(abs(add - (i + 48)), Type::PION, Couleur::NOIR, "BlackPawn" + std::to_string(i + 1)));
 	}
 
 	setPiece(new Piece(abs(add - 0), Type::TOUR, Couleur::BLANC, "WhiteRook1")); //Placement des tours
@@ -166,11 +176,9 @@ bool Board::movePiece(Piece* piece, Case caze)
 
 							if (ennmove == 1) //si une piece peut aller sur cette case
 								return false; //le roi peut pas bouger
-							else //si personne ne peux aller sur la case
-							{
-								rock(piece, caze, "droite", _masterColor);
-								return true;
-							}								
+							//si personne ne peux aller sur la case
+							rock(piece, caze, "droite", _masterColor);
+							return true;
 						}
 						if (piece->getID() - 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //grand rock 
 						{
@@ -183,12 +191,9 @@ bool Board::movePiece(Piece* piece, Case caze)
 
 							if (ennmove == 1) //si une piece peut aller sur cette case
 								return false; //le roi peut pas bouger
-							else //si personne ne peux aller sur la case
-							{
-								rock(piece, caze, "gauche", _masterColor);
-								return true;
-
-							}
+							//si personne ne peux aller sur la case
+							rock(piece, caze, "gauche", _masterColor);
+							return true;
 						}
 
 						simuleMove(piece, caze);
@@ -200,34 +205,25 @@ bool Board::movePiece(Piece* piece, Case caze)
 
 						if (ennmove == 1) //si une piece peut aller sur cette case
 							return false; //le roi peut pas bouger
-						else //si personne ne peux aller sur la case
-						{
-							movePieceTo(piece, caze, _masterColor);
-							return true;
-
-						}
+						//si personne ne peux aller sur la case
+						movePieceTo(piece, caze, _masterColor);
+						return true;
 					}
-					else
+					simuleMove(piece, caze);
+					if (lb(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
 					{
-						simuleMove(piece, caze);
-						if (lb(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
-						{
-							ennmove = 1;
-						}
-						undoSimileMove(); //si une piece ennemi peut aller sur cette case
-
-						if (ennmove == 1) //si une piece peut aller sur cette case
-							return false; //le roi peut pas bouger
-						else //si personne ne peux aller sur la case
-						{
-							movePieceTo(piece, caze, _masterColor);
-							return true;
-
-						}
+						ennmove = 1;
 					}
+					undoSimileMove(); //si une piece ennemi peut aller sur cette case
+
+					if (ennmove == 1) //si une piece peut aller sur cette case
+						return false; //le roi peut pas bouger
+					//si personne ne peux aller sur la case
+					movePieceTo(piece, caze, _masterColor);
+					return true;
 				}
 
-				else if (piece->getColor() == NOIR)
+				if (piece->getColor() == NOIR)
 				{
 					if (echeck != 2)
 					{
@@ -239,14 +235,12 @@ bool Board::movePiece(Piece* piece, Case caze)
 								ennmove = 1;
 							}
 							undoSimileMove(); //si une piece ennemi peut aller sur cette case
-							
+
 							if (ennmove == 1) //si une piece peut aller sur cette case
 								return false; //le roi peut pas bouger
-							else //si personne ne peux aller sur la case
-							{
-								rock(piece, caze, "droite", _masterColor);
-								return true;
-							}
+							//si personne ne peux aller sur la case
+							rock(piece, caze, "droite", _masterColor);
+							return true;
 						}
 						if (piece->getID() - 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //grand rock 
 						{
@@ -259,7 +253,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 
 							if (ennmove == 1) //si une piece peut aller sur cette case
 								return false; //le roi peut pas bouger
-							else //si personne ne peux aller sur la case
+							//si personne ne peux aller sur la case
 							{
 								rock(piece, caze, "gauche", _masterColor);
 								return true;
@@ -275,31 +269,22 @@ bool Board::movePiece(Piece* piece, Case caze)
 
 						if (ennmove == 1) //si une piece peut aller sur cette case
 							return false; //le roi peut pas bouger
-						else //si personne ne peux aller sur la case
-						{
-							movePieceTo(piece, caze, _masterColor);
-							return true;
-
-						}
+						//si personne ne peux aller sur la case
+						movePieceTo(piece, caze, _masterColor);
+						return true;
 					}
-					else
+					simuleMove(piece, caze);
+					if (ln(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
 					{
-						simuleMove(piece, caze);
-						if (ln(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
-						{
-							ennmove = 1;
-						}
-						undoSimileMove(); //si une piece ennemi peut aller sur cette case
-
-						if (ennmove == 1) //si une piece peut aller sur cette case
-							return false; //le roi peut pas bouger
-						else //si personne ne peux aller sur la case
-						{
-							movePieceTo(piece, caze, _masterColor);
-							return true;
-
-						}
+						ennmove = 1;
 					}
+					undoSimileMove(); //si une piece ennemi peut aller sur cette case
+
+					if (ennmove == 1) //si une piece peut aller sur cette case
+						return false; //le roi peut pas bouger
+					//si personne ne peux aller sur la case
+					movePieceTo(piece, caze, _masterColor);
+					return true;
 				}
 			}
 
@@ -319,27 +304,6 @@ bool Board::movePiece(Piece* piece, Case caze)
 							rock(piece, caze, "gauche", _masterColor);
 							return true;
 						}
-						else
-						{
-							simuleMove(piece, caze);
-							if (lb(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
-							{
-								ennmove = 1;
-							}
-							undoSimileMove(); //si une piece ennemi peut aller sur cette case
-
-							if (ennmove == 1) //si une piece peut aller sur cette case
-								return false; //le roi peut pas bouger
-							else //si personne ne peux aller sur la case
-							{
-								movePieceTo(piece, caze, _masterColor);
-								return true;
-
-							}
-						}
-					}
-					else
-					{
 						simuleMove(piece, caze);
 						if (lb(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
 						{
@@ -349,15 +313,24 @@ bool Board::movePiece(Piece* piece, Case caze)
 
 						if (ennmove == 1) //si une piece peut aller sur cette case
 							return false; //le roi peut pas bouger
-						else //si personne ne peux aller sur la case
-						{
-							movePieceTo(piece, caze, _masterColor);
-							return true;
-
-						}
+						//si personne ne peux aller sur la case
+						movePieceTo(piece, caze, _masterColor);
+						return true;
 					}
+					simuleMove(piece, caze);
+					if (lb(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
+					{
+						ennmove = 1;
+					}
+					undoSimileMove(); //si une piece ennemi peut aller sur cette case
+
+					if (ennmove == 1) //si une piece peut aller sur cette case
+						return false; //le roi peut pas bouger
+					//si personne ne peux aller sur la case
+					movePieceTo(piece, caze, _masterColor);
+					return true;
 				}
-				else if (piece->getColor() == NOIR)
+				if (piece->getColor() == NOIR)
 				{
 					if (echeck != 2)
 					{
@@ -366,33 +339,11 @@ bool Board::movePiece(Piece* piece, Case caze)
 							rock(piece, caze, "droite", _masterColor);
 							return true;
 						}
-						else if (piece->getID() - 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //petit rock 
+						if (piece->getID() - 2 == caze.getID() && canMove(*this, *piece, caze, _masterColor, echeck)) //petit rock 
 						{
 							rock(piece, caze, "gauche", _masterColor);
 							return true;
 						}
-						else
-						{
-							simuleMove(piece, caze);
-							if (lb(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
-							{
-								ennmove = 1;
-							}
-							undoSimileMove(); //si une piece ennemi peut aller sur cette case
-
-							if (ennmove == 1) //si une piece peut aller sur cette case
-								return false; //le roi peut pas bouger
-							else //si personne ne peux aller sur la case
-							{
-								movePieceTo(piece, caze, _masterColor);
-								return true;
-
-							}
-						}
-
-					}
-					else
-					{
 						simuleMove(piece, caze);
 						if (lb(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
 						{
@@ -402,13 +353,22 @@ bool Board::movePiece(Piece* piece, Case caze)
 
 						if (ennmove == 1) //si une piece peut aller sur cette case
 							return false; //le roi peut pas bouger
-						else //si personne ne peux aller sur la case
-						{
-							movePieceTo(piece, caze, _masterColor);
-							return true;
-
-						}
+						//si personne ne peux aller sur la case
+						movePieceTo(piece, caze, _masterColor);
+						return true;
 					}
+					simuleMove(piece, caze);
+					if (lb(this, getMasterColor()).size() > 0) //si une piece ennemi peut aller sur le roi
+					{
+						ennmove = 1;
+					}
+					undoSimileMove(); //si une piece ennemi peut aller sur cette case
+
+					if (ennmove == 1) //si une piece peut aller sur cette case
+						return false; //le roi peut pas bouger
+					//si personne ne peux aller sur la case
+					movePieceTo(piece, caze, _masterColor);
+					return true;
 				}
 			}
 		} //FIN ROCK
@@ -418,18 +378,14 @@ bool Board::movePiece(Piece* piece, Case caze)
 			movePieceTo(piece, caze, _masterColor);
 			return true;
 		}
-		else 
-		{
-			return false;
-		}
-
+		return false;
 	}
 
 	if (m_board.at(caze.getID()).getPiece()->getColor() == piece->getColor()) //meme color
 	{
 		return false;
 	}
-	else if (isPossible(this, *piece, caze, _masterColor))
+	if (isPossible(this, *piece, caze, _masterColor))
 	{
 		if (find(&_alivePiece, caze.getPiece()) != -1)
 			_alivePiece.erase(_alivePiece.begin() + find(&_alivePiece, caze.getPiece()));
@@ -450,11 +406,7 @@ bool Board::movePiece(Piece* piece, Case caze)
 
 		return true;
 	}
-	else
-	{
-		return false;
-	}
-	return true;
+	return false;
 }
 
 
@@ -463,7 +415,7 @@ void Board::movePieceTo(Piece* piece, Case caze, Couleur color)
 	//_hitmarker->play();
 	Piece* oldval = piece;
 	m_board.at(piece->getID()).setEmpty(true); //setempty old
-	m_board.at(piece->getID()).delPiece();  //delpiece old
+	m_board.at(piece->getID()).delPiece(); //delpiece old
 	piece->setID(caze.getID()); //new id
 	piece->setHasMoved(1); //hasmoved
 	m_board.at(caze.getID()).setEmpty(0); //setprise
@@ -529,7 +481,7 @@ void Board::mangePiece(Piece* piece, Case caze)
 		_gom->remove(caze.getPiece()->getTextureID()); //del sprite
 		caze.delPiece(); // del m_piece
 		m_board.at(piece->getID()).setEmpty(true); //setempty old
-		m_board.at(piece->getID()).delPiece();  //delpiece old
+		m_board.at(piece->getID()).delPiece(); //delpiece old
 		piece->setID(caze.getID()); //new id
 		piece->setHasMoved(1); //hasmoved
 		m_board.at(caze.getID()).setEmpty(0); //setprise
@@ -542,7 +494,7 @@ void Board::mangePiece(Piece* piece, Case caze)
 		_gom->remove(caze.getPiece()->getTextureID()); //del sprite
 		caze.delPiece(); // del m_piece
 		m_board.at(piece->getID()).setEmpty(true); //setempty old
-		m_board.at(piece->getID()).delPiece();  //delpiece old
+		m_board.at(piece->getID()).delPiece(); //delpiece old
 		piece->setID(caze.getID()); //new id
 		piece->setHasMoved(1); //hasmoved
 		m_board.at(caze.getID()).setEmpty(0); //setprise
@@ -558,7 +510,7 @@ void Board::rock(Piece* piece, Case caze, std::string sens, Couleur color)
 	{
 		if (sens == "gauche")
 		{
-			movePieceTo(m_board.at(piece->getID() -4 ).getPiece(), m_board.at(piece->getID() - 1), _masterColor);
+			movePieceTo(m_board.at(piece->getID() - 4).getPiece(), m_board.at(piece->getID() - 1), _masterColor);
 			movePieceTo(piece, caze, _masterColor);
 		}
 		else if (sens == "droite")
@@ -584,8 +536,8 @@ void Board::rock(Piece* piece, Case caze, std::string sens, Couleur color)
 
 Case Board::getCase(int x, int y)
 {
-	int a=0; // a->x
-	int b=0; // b->y
+	int a = 0; // a->x
+	int b = 0; // b->y
 	for (size_t i = 0; i < 8; i++)
 	{
 		if (m_board.at(i).get_px() <= x && x <= m_board.at(i).get_px() + (SCREEN_WIDTH / 8))
@@ -594,10 +546,10 @@ Case Board::getCase(int x, int y)
 
 	for (size_t i = 0; i < 8; i++)
 	{
-		if (m_board.at(i*8).get_py() <= y && y <= m_board.at(i*8).get_py() + (SCREEN_WIDTH / 8))
+		if (m_board.at(i * 8).get_py() <= y && y <= m_board.at(i * 8).get_py() + (SCREEN_WIDTH / 8))
 			b = i;
 	}
-	return m_board.at(a + (b*8));
+	return m_board.at(a + (b * 8));
 }
 
 Case Board::getCase(int caseID)
@@ -625,7 +577,7 @@ void Board::simuleMove(Piece* piece, Case caze)
 		s_pieceB = nullptr;
 
 	m_board.at(piece->getID()).setEmpty(true); //setempty old
-	m_board.at(piece->getID()).delPiece();  //delpiece old
+	m_board.at(piece->getID()).delPiece(); //delpiece old
 	piece->setID(caze.getID()); //new id
 	m_board.at(caze.getID()).setEmpty(0); //setprise
 	m_board.at(caze.getID()).setPieceCase(piece); //setpiececase
@@ -639,7 +591,7 @@ void Board::undoSimileMove()
 {
 	auto piece = m_board.at(s_newCaseID).getPiece();
 	m_board.at(s_newCaseID).setEmpty(true); //setempty old
-	m_board.at(s_newCaseID).delPiece();  //delpiece old
+	m_board.at(s_newCaseID).delPiece(); //delpiece old
 	s_pieceA->setID(s_oldCaseID); //new id
 	m_board.at(s_oldCaseID).setEmpty(0); //setprise
 	m_board.at(s_oldCaseID).setPieceCase(s_pieceA); //setpiececase

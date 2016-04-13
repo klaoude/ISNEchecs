@@ -7,7 +7,8 @@ class Son
 {
 public:
 	Son() {}
-	Son(std::string path);
+
+	explicit Son(std::string path);
 	
 	void setBuffer();
 	void play();

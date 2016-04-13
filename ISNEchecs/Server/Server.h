@@ -15,5 +15,5 @@ private:
 	sf::TcpSocket _client;
 
 	char _buffer[2000];
-	std::size_t _received;
+	size_t _received;
 };

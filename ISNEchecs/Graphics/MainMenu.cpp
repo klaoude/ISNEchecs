@@ -84,4 +84,5 @@ MainMenu::MenuResult  MainMenu::GetMenuResponse(sf::RenderWindow& window)
 			return Exit;
 		}
 	}
+	return {};
 }

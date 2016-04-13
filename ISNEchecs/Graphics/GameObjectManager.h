@@ -15,7 +15,7 @@ public:
 	void removeSurbrillance(std::string name);
 
 	int getObjectCount() const { return _gameObjects.size(); }
-	std::unordered_map<std::string, GameObject*> getMap() { return _gameObjects; }
+	std::unordered_map<std::string, GameObject*> getMap() const	{ return _gameObjects; }
 
 	void add(std::string name, GameObject* gameObject);
 	void remove(std::string name);	

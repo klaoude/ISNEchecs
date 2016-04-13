@@ -28,12 +28,11 @@
 // Win32 incompatibilities
 #if defined(WIN32) && !defined(__GNUC__)
 	#define wcsncasecmp _wcsnicmp
-	static inline bool isnan(double x) { return x != x; }
-	static inline bool isinf(double x) { return !isnan(x) && isnan(x - x); }
+	static bool isnan(double x) { return x != x; }
+	static bool isinf(double x) { return !isnan(x) && isnan(x - x); }
 #endif
 
 #include <vector>
-#include <string>
 #include <map>
 
 // Linux compile fix - from quaker66

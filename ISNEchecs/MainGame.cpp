@@ -5,15 +5,13 @@
 #include "MainGame.h"
 #include "Global.h"
 
-#include "Main/CaseID.h"
-
 #include "Server/Server.h"
 #include "Server/Client.h"
 #include "Server/MSClient.h"
 
 #include "Fonctions.h"
 #include "canMove.h"
-#include "Son.h"
+#include "Graphics/MainMenu.h"
 
 void debug(std::string debugstring)
 {
@@ -94,7 +92,7 @@ void MainGame::disableSurbrillance(int id)
 	}
 }
 
-MainGame::MainGame()
+MainGame::MainGame(): _debugMode(false), _selectedPiece(nullptr), _isAPieceSelected(false), _isMyTurn(false), _clientColor()
 {
 
 }
@@ -212,7 +210,7 @@ void MainGame::initAI()
 void MainGame::init()
 {
 	_ipaddress = "127.0.0.1";
-	_gameState = GameState::ShowingMenu;
+	_gameState = ShowingMenu;
 	_window.create(sf::VideoMode(SCREEN_HEIGHT, SCREEN_WIDTH), "Chess");
 	_isAPieceSelected = false;
 	_debugMode = false;
@@ -224,14 +222,14 @@ void MainGame::gameLoop()
 	{
 		switch (_gameState)
 		{
-		case GameState::ShowingMenu:
+		case ShowingMenu:
 			showMenu();
 			break;
-		case GameState::Debugging:
+		case Debugging:
 			handleInput();
 			draw();
 			break;
-		case GameState::VersusIA:
+		case VersusIA:
 			if (!_isMyTurn)
 			{
 				_ai.play();
@@ -240,15 +238,17 @@ void MainGame::gameLoop()
 			handleInput();
 			draw();
 			break;
-		case GameState::Playing:
-		case GameState::Joining:
+		case Playing:
+		case Joining:
 			serverManager();
 			handleInput();
 			draw();
 			break;
-		case GameState::Exiting:
+		case Exiting:
 			_window.close();
 			break;
+		case Uninitialized: break;
+		default: break;
 		}		
 	}
 }
@@ -276,13 +276,13 @@ void MainGame::serverManager()
 		std::string ip;
 		switch (_gameState)
 		{
-		case GameState::Playing:
+		case Playing:
 			_client.createServer();
 			_isMyTurn = true;
 			_clientColor = BLANC;
 			m_board = Board(&_gameObjectManager, _clientColor);
 			break;
-		case GameState::Joining:			
+		case Joining:			
 			std::cout << "IP : ";
 			std::cin >> ip;
 			_client.connect(ip, 1337);
@@ -290,9 +290,12 @@ void MainGame::serverManager()
 			_clientColor = NOIR;
 			m_board = Board(&_gameObjectManager, _clientColor);
 			break;
-		default:
-			return;
-			break;
+		case Uninitialized: break;
+		case ShowingMenu: break;
+		case Exiting: break;
+		case Debugging: break;
+		case VersusIA: break;
+		default: break;
 		}
 	}
 }

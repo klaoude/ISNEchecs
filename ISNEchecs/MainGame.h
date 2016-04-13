@@ -2,7 +2,6 @@
 #include <SFML\Graphics.hpp>
 
 #include "Graphics/GameObjectManager.h"
-#include "Graphics/MainMenu.h"
 
 #include "Main/Board.h"
 
@@ -24,7 +23,7 @@ private:
 
 	void serverManager();
 	void handleInput();
-	void draw();
+	static void draw();
 	void showMenu();
 
 	void enableSurbrillance(Piece piece);

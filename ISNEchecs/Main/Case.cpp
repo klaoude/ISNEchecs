@@ -25,8 +25,6 @@ void Case::setPieceCase(Piece* piece)
 {
 	m_piece = piece;
 	m_piece->setID(piece->getID());
-
-
 }
 
 void Case::delPiece()
@@ -35,7 +33,7 @@ void Case::delPiece()
 	m_empty = true;
 }
 
-void Case::debugCase()
+void Case::debugCase() const
 {
 	std::cout << "[DEBUG CASE] : Piece = color : " << m_piece->getColor() << " ID : " << m_piece->getID() << std::endl;
 	std::cout << "[DEBUG CASE] : Case ID : " << m_ID << " isEmpty : " << m_empty << std::endl;

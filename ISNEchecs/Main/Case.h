@@ -10,20 +10,20 @@ public:
 
 	void setEmpty(bool choice) { m_empty = choice; }
 
-	int getID() { return m_ID; }
-	Piece* getPiece() { return m_piece; }
+	int getID() const	{ return m_ID; }
+	Piece* getPiece() const	{ return m_piece; }
 
-	bool isEmpty() { return m_empty; }	
+	bool isEmpty() const	{ return m_empty; }	
 	void setPieceCase(Piece* piece);
 	void delPiece();
 	Case* pcase() { return this; }
 
-	int get_px(){ return m_px; }
-	int get_py(){ return m_py; }
+	int get_px() const	{ return m_px; }
+	int get_py() const	{ return m_py; }
 
-	sf::Vector2u getPos() { return sf::Vector2u(m_px, m_py); }
+	sf::Vector2u getPos() const	{ return sf::Vector2u(m_px, m_py); }
 
-	void debugCase();
+	void debugCase() const;
 
 private:
 	int m_sx;

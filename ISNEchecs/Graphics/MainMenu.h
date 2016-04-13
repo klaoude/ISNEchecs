@@ -1,8 +1,6 @@
 #pragma once
 #include <SFML\Graphics.hpp>
-#include <SFML\Window.hpp>
 #include <list>
-#include <iostream>
 
 class MainMenu
 {
@@ -11,7 +9,6 @@ public:
 
 	struct MenuItem
 	{
-	public:
 		sf::Rect<int> rect;
 		MenuResult action;
 	};
