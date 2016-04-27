@@ -240,6 +240,7 @@ void MainGame::gameLoop()
 			break;
 		case Playing:
 		case Joining:
+			m_chat.init();
 			serverManager();
 			handleInput();
 			draw();
@@ -306,6 +307,11 @@ void MainGame::handleInput()
 
 	while (_window.pollEvent(event))
 	{
+		if (event.type == sf::Event::TextEntered)
+		{
+			std::cout << static_cast<char>(event.text.unicode) << std::endl;
+			m_chat.update(static_cast<char>(event.text.unicode));
+		}			
 		if (event.type == sf::Event::EventType::Closed)
 			_window.close();		
 		if (event.type == sf::Event::MouseButtonPressed)
@@ -456,6 +462,18 @@ void MainGame::draw()
 	_window.clear();
 
 	_gameObjectManager.draw(_window);
+
+	m_chat.draw();
+
+	sf::Text text;
+	sf::Font font;
+	font.loadFromFile("Font/CSMS.ttf");
+	text.setFont(font);
+	text.setString("bite");
+	text.setColor(sf::Color::Red);
+	text.setPosition(450, 450);
+
+	_window.draw(text);
 
 	_window.display();
 }

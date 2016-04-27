@@ -7,6 +7,7 @@
 
 #include "Server\Client.h"
 #include "AI.h"
+#include "Server\Chat.h"
 
 class MainGame
 {
@@ -23,7 +24,7 @@ private:
 
 	void serverManager();
 	void handleInput();
-	static void draw();
+	void draw();
 	void showMenu();
 
 	void enableSurbrillance(Piece piece);
@@ -58,5 +59,7 @@ private:
 	std::vector<std::string> _surbrillance;
 
 	AI _ai;
+
+	Chat m_chat;
 };
 

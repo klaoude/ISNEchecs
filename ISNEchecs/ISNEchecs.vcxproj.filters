@@ -84,6 +84,9 @@
     <ClCompile Include="Son.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="Server\Chat.cpp">
+      <Filter>Fichiers sources\Server</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -145,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="Son.h">
       <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Chat.h">
+      <Filter>Fichiers d%27en-tête\Server</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
