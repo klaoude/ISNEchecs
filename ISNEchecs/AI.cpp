@@ -173,7 +173,10 @@ int AI::getSituationPoint(Piece piece, Case caze)
 			if (canMove(*_board, *ppiece, caze, _board->getMasterColor(), _echec, true))
 			{
 				std::cout << "[IA] Red Step -> " << ppiece->getID() << " protect " << caze.getID() << std::endl;
-				point += 4;
+				if (piece.getType() == PION)
+					point += 1;
+				else
+					point += 4;
 				break;
 			}
 		}	
