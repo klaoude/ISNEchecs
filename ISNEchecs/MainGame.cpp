@@ -263,7 +263,7 @@ void MainGame::serverManager()
 		sf::Packet packet = _client.recv();
 		int pieceID, caseID;
 		packet >> pieceID >> caseID;
-		if (pieceID != -1)
+		if (pieceID < 64 && pieceID > -1)
 		{
 			m_board.movePiece(m_board.getCase(abs(add - pieceID)).getPiece(), m_board.getCase(abs(add - caseID)));
 			_isMyTurn = true;
