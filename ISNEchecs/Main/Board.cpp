@@ -2,7 +2,6 @@
 #include "../Global.h"
 #include "../Fonctions.h"
 #include "../IsPossible.h"
-#include "../Main/CaseID.h"
 #include "../canMove.h"
 
 std::vector<Type> pnoir;

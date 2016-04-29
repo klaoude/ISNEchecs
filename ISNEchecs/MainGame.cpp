@@ -94,7 +94,6 @@ void MainGame::disableSurbrillance(int id)
 
 MainGame::MainGame(): _debugMode(false), _selectedPiece(nullptr), _isAPieceSelected(false), _isMyTurn(false), _clientColor()
 {
-
 }
 
 MainGame::~MainGame()
@@ -240,7 +239,6 @@ void MainGame::gameLoop()
 			break;
 		case Playing:
 		case Joining:
-			m_chat.init();
 			serverManager();
 			handleInput();
 			draw();
@@ -268,9 +266,7 @@ void MainGame::serverManager()
 		{
 			m_board.movePiece(m_board.getCase(abs(add - pieceID)).getPiece(), m_board.getCase(abs(add - caseID)));
 			_isMyTurn = true;
-			debug("is my turn");
-		}
-		
+		}		
 	}
 	if (!_client.isConnected())
 	{
@@ -304,16 +300,20 @@ void MainGame::serverManager()
 void MainGame::handleInput()
 {
 	sf::Event event;
-
 	while (_window.pollEvent(event))
-	{
+	{		
 		if (event.type == sf::Event::TextEntered)
 		{
-			std::cout << static_cast<char>(event.text.unicode) << std::endl;
-			m_chat.update(static_cast<char>(event.text.unicode));
-		}			
+			if (event.text.unicode == 8)
+				m_chat.pop();
+			else if (event.text.unicode == 13)
+				m_chat.send();
+			else
+				m_chat.update(static_cast<char>(event.text.unicode));
+		}
+			
 		if (event.type == sf::Event::EventType::Closed)
-			_window.close();		
+			_window.close();	
 		if (event.type == sf::Event::MouseButtonPressed)
 		{
 			if (_gameState == VersusIA)
@@ -463,17 +463,7 @@ void MainGame::draw()
 
 	_gameObjectManager.draw(_window);
 
-	m_chat.draw();
-
-	sf::Text text;
-	sf::Font font;
-	font.loadFromFile("Font/CSMS.ttf");
-	text.setFont(font);
-	text.setString("bite");
-	text.setColor(sf::Color::Red);
-	text.setPosition(450, 450);
-
-	_window.draw(text);
+	m_chat.draw(_window);
 
 	_window.display();
 }
@@ -488,12 +478,15 @@ void MainGame::showMenu()
 		_gameState = Exiting;
 		break;
 	case MainMenu::Play:
+		m_chat.init(_gameObjectManager);
 		_gameState = Playing;
 		break;
 	case MainMenu::Join:
+		m_chat.init(_gameObjectManager);
 		_gameState = Joining;
 		break;
 	case MainMenu::Debug:
+		m_chat.init(_gameObjectManager);
 		_debugMode = true;
 		_gameState = Debugging;
 		m_board = Board(&_gameObjectManager, NOIR);

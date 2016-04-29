@@ -2,17 +2,20 @@
 #include <vector>
 #include <SFML\Graphics.hpp>
 
+class GameObjectManager;
+
 class Chat
 {
 public:
 	Chat();
 	~Chat();
 
-	void init();
+	void init(GameObjectManager& gom);
 	void update(char character);
+	void pop();
 	void draw(sf::RenderWindow& window);
 
-	void send(std::string msg);
+	void send();
 	void recv();
 private:
 	std::vector<sf::Text> m_chatBuffer;
