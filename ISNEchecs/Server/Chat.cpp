@@ -44,6 +44,13 @@ void Chat::send()
 	m_currentMsg.clear();
 }
 
+void Chat::recv(sf::String msg)
+{
+	sf::Text text;
+	text.setString(msg);
+	m_chatBuffer.push_back(text);
+}
+
 void Chat::draw(sf::RenderWindow& window)
 {
 	for(int i = 0; i < m_chatBuffer.size(); i++)
@@ -63,4 +70,9 @@ void Chat::draw(sf::RenderWindow& window)
 	text.setPosition(4, 480);
 	
 	window.draw(text);
+}
+
+void Chat::clear()
+{
+	m_currentMsg.clear();
 }

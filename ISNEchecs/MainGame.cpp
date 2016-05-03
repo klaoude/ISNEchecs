@@ -260,13 +260,25 @@ void MainGame::serverManager()
 		if (_clientColor == BLANC)
 			add = 63;
 		sf::Packet packet = _client.recv();
-		int pieceID, caseID;
-		packet >> pieceID >> caseID;
-		if (pieceID < 64 && pieceID > -1)
+		int type, pieceID, caseID;
+		packet >> type;
+		if (type == 1)
 		{
-			m_board.movePiece(m_board.getCase(abs(add - pieceID)).getPiece(), m_board.getCase(abs(add - caseID)));
-			_isMyTurn = true;
-		}		
+			packet >> pieceID >> caseID;
+			if (pieceID < 64 && pieceID > -1)
+			{
+				m_board.movePiece(m_board.getCase(abs(add - pieceID)).getPiece(), m_board.getCase(abs(add - caseID)));
+				_isMyTurn = true;
+			}
+		}
+		else if (type == 2)
+		{
+			std::cout << "recv packet with code 2 !" << std::endl;
+			std::string msg;
+			packet >> msg;
+			std::cout << "recv msg = " << msg << std::endl;
+			m_chat.recv(msg);
+		}
 	}
 	if (!_client.isConnected())
 	{
@@ -307,7 +319,16 @@ void MainGame::handleInput()
 			if (event.text.unicode == 8)
 				m_chat.pop();
 			else if (event.text.unicode == 13)
-				m_chat.send();
+			{
+				if (_client.isConnected())
+				{
+					m_chat.send();
+					_client.send(m_chat.getCurrentMsg());
+					m_chat.clear();
+				}					
+				else
+					m_chat.send();
+			}				
 			else
 				m_chat.update(static_cast<char>(event.text.unicode));
 		}
@@ -327,7 +348,6 @@ void MainGame::handleInput()
 							if (m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece()->getColor() != _clientColor)
 							{
 								_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
-								//m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
 								if (_selectedPiece != new Piece())
 									enableSurbrillance(*_selectedPiece);
 								_isAPieceSelected = true;
@@ -369,7 +389,6 @@ void MainGame::handleInput()
 								if (m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece()->getColor() == _clientColor)
 								{
 									_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
-									//m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
 									enableSurbrillance(*_selectedPiece);
 									_isAPieceSelected = true;
 								}
@@ -384,10 +403,10 @@ void MainGame::handleInput()
 								if (_clientColor == BLANC)
 									add = 63;
 								sf::Packet packet;
+								packet << 1;
 								packet << abs(add - oldPieceID);
 								packet << abs(add - m_board.getCase(event.mouseButton.x, event.mouseButton.y).getID());
 								_client.send(packet);
-								//m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
 								_isAPieceSelected = false;
 								_isMyTurn = false;
 								debug("is not my turn");
@@ -415,7 +434,6 @@ void MainGame::handleInput()
 							if (m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece()->getColor() != _clientColor)
 							{
 								_selectedPiece = m_board.getCase(event.mouseButton.x, event.mouseButton.y).getPiece();
-								//m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
 								if (_selectedPiece != new Piece())
 									enableSurbrillance(*_selectedPiece);
 								_isAPieceSelected = true;
@@ -437,8 +455,6 @@ void MainGame::handleInput()
 							packet << abs(add - oldPieceID);
 							packet << abs(add - m_board.getCase(event.mouseButton.x, event.mouseButton.y).getID());
 							_client.send(packet);
-							//m_board.getCase(event.mouseButton.x, event.mouseButton.y).debugCase();
-
 							_selectedPiece = new Piece();
 							disableSurbrillance();
 							_isAPieceSelected = false;

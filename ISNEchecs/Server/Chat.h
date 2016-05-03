@@ -10,17 +10,22 @@ public:
 	Chat();
 	~Chat();
 
+	std::string getCurrentMsg() { return m_currentMsg; }
+
 	void init(GameObjectManager& gom);
 	void update(char character);
 	void pop();
 	void draw(sf::RenderWindow& window);
 
 	void send();
-	void recv();
+	void recv(sf::String msg);
+
+	void clear();
 private:
 	std::vector<sf::Text> m_chatBuffer;
 	std::string m_currentMsg;
 
 	sf::Font m_font;
+
 };
 
