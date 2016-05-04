@@ -13,38 +13,39 @@ Client::~Client()
 sf::Packet Client::recv()
 {
 	sf::Packet packet;
-	if (_socket.receive(packet) == sf::Socket::NotReady)
+	if (m_socket.receive(packet) == sf::Socket::NotReady)
 		packet << -1;
 	return packet;
 }
 
 void Client::send(sf::Packet packet)
 {
-	_socket.send(packet);
-	std::cout << "i send : " << packet << std::endl;
+	m_socket.send(packet);
 }
 
 void Client::send(std::string msg)
 {
 	sf::Packet packet;
-	packet << 2 << msg;
-	_socket.send(packet);
+	packet << 2;
+	packet << msg;
+	m_socket.send(packet);
+	std::cout << "send string " << msg << std::endl;
 }
 
 void Client::connect(sf::IpAddress ip, unsigned short port)
 {
-	_socket.connect(ip, port);
+	m_socket.connect(ip, port);
 	std::cout << "connected to " << ip << std::endl;
 	_connected = true;
-	_socket.setBlocking(false);
+	m_socket.setBlocking(false);
 }
 
 void Client::createServer()
 {
 	std::cout << "i'm waiting for someone to connect" << std::endl;
 	_listener.listen(1337);
-	_listener.accept(_socket);
-	_socket.setBlocking(false);
+	_listener.accept(m_socket);
+	m_socket.setBlocking(false);
 
 	std::cout << "client connected" << std::endl;
 	_connected = true;	

@@ -262,6 +262,7 @@ void MainGame::serverManager()
 		sf::Packet packet = _client.recv();
 		int type, pieceID, caseID;
 		packet >> type;
+		if (type != -1) std::cout << type << std::endl;
 		if (type == 1)
 		{
 			packet >> pieceID >> caseID;
@@ -273,10 +274,20 @@ void MainGame::serverManager()
 		}
 		else if (type == 2)
 		{
-			std::cout << "recv packet with code 2 !" << std::endl;
 			std::string msg;
 			packet >> msg;
-			std::cout << "recv msg = " << msg << std::endl;
+			m_chat.recv(msg);
+		}
+	}
+	else
+	{
+		sf::Packet packet = _client.recv();
+		int type;
+		packet >> type;
+		if (type == 2)
+		{
+			std::string msg;
+			packet >> msg;
 			m_chat.recv(msg);
 		}
 	}
@@ -290,6 +301,7 @@ void MainGame::serverManager()
 			_isMyTurn = true;
 			_clientColor = BLANC;
 			m_board = Board(&_gameObjectManager, _clientColor);
+			m_imServer = true;
 			break;
 		case Joining:			
 			std::cout << "IP : ";
@@ -322,8 +334,8 @@ void MainGame::handleInput()
 			{
 				if (_client.isConnected())
 				{
-					m_chat.send();
 					_client.send(m_chat.getCurrentMsg());
+					m_chat.send();					
 					m_chat.clear();
 				}					
 				else

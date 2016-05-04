@@ -15,11 +15,11 @@ public:
 
 	void connect(sf::IpAddress ip, unsigned short port);
 	void send(sf::Packet packet);
-	void send(std::string);
+	void send(std::string str);
 
 	void createServer();
 private:
-	sf::TcpSocket _socket;
+	sf::TcpSocket m_socket;
 
 	sf::TcpListener _listener;
 

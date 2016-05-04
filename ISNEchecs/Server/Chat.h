@@ -10,7 +10,7 @@ public:
 	Chat();
 	~Chat();
 
-	std::string getCurrentMsg() { return m_currentMsg; }
+	std::string getCurrentMsg() const { return m_currentMsg; }
 
 	void init(GameObjectManager& gom);
 	void update(char character);
