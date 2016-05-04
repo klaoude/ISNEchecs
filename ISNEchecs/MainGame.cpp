@@ -507,14 +507,17 @@ void MainGame::showMenu()
 		break;
 	case MainMenu::Play:
 		m_chat.init(_gameObjectManager);
+		m_trashbin.init(_gameObjectManager);
 		_gameState = Playing;
 		break;
 	case MainMenu::Join:
 		m_chat.init(_gameObjectManager);
+		m_trashbin.init(_gameObjectManager);
 		_gameState = Joining;
 		break;
 	case MainMenu::Debug:
 		m_chat.init(_gameObjectManager);
+		m_trashbin.init(_gameObjectManager);
 		_debugMode = true;
 		_gameState = Debugging;
 		m_board = Board(&_gameObjectManager, NOIR);

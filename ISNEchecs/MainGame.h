@@ -8,6 +8,7 @@
 #include "Server\Client.h"
 #include "AI.h"
 #include "Server\Chat.h"
+#include "Graphics\Trashbin.h"
 
 class MainGame
 {
@@ -62,5 +63,7 @@ private:
 	AI _ai;
 
 	Chat m_chat;
+
+	Trashbin m_trashbin;
 };
 

@@ -75,9 +75,6 @@
     <ClCompile Include="Server\JSONValue.cpp">
       <Filter>Fichiers sources\Server</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics\MainMenu.cpp">
-      <Filter>Fichiers sources\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="AI.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -86,6 +83,12 @@
     </ClCompile>
     <ClCompile Include="Server\Chat.cpp">
       <Filter>Fichiers sources\Server</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Trashbin.cpp">
+      <Filter>Fichiers sources\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\MainMenu.cpp">
+      <Filter>Fichiers sources\Main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +154,9 @@
     </ClInclude>
     <ClInclude Include="Server\Chat.h">
       <Filter>Fichiers d%27en-tête\Server</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Trashbin.h">
+      <Filter>Fichiers d%27en-tête\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

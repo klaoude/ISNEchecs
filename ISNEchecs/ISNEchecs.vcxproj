@@ -91,6 +91,7 @@
     <ClCompile Include="Graphics\GameObject.cpp" />
     <ClCompile Include="Graphics\GameObjectManager.cpp" />
     <ClCompile Include="Graphics\MainMenu.cpp" />
+    <ClCompile Include="Graphics\Trashbin.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="Main\Board.cpp" />
@@ -112,6 +113,7 @@
     <ClInclude Include="Graphics\GameObject.h" />
     <ClInclude Include="Graphics\GameObjectManager.h" />
     <ClInclude Include="Graphics\MainMenu.h" />
+    <ClInclude Include="Graphics\Trashbin.h" />
     <ClInclude Include="IsPossible.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Main\Board.h" />
