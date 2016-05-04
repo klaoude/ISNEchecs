@@ -716,8 +716,10 @@ inline std::vector<Piece*> lb(Board* board, Couleur mastercolor)
 			}
 		}
 
-		for (int i = 1; i < roi % 8; i++) //depl diag gauche
+		for (int i = 1; i < (roi % 8) + 1; i++) //depl diag gauche /////////////////////////////////// + 1
 		{
+			if (i == 4)
+				std::cout << "shit" << std::endl;
 			if (roi + i * 7 < 64 && dbg == 1)
 			{
 				if (board->getBoard().at(roi + i * 7).getPiece()->getColor() == NOIR && (board->getBoard().at(roi + i * 7).getPiece()->getType() == FOU || board->getBoard().at(roi + i * 7).getPiece()->getType() == REINE))
@@ -734,8 +736,8 @@ inline std::vector<Piece*> lb(Board* board, Couleur mastercolor)
 					dhd = 0;
 			}
 			if (roi + i * 7 > 63)
-				if (roi - i * 9 > 63)
-					break;
+			if (roi - i * 9 > 63)
+				break;
 		}
 
 		for (int i = 1; i < 8 - roi % 8; i++) //depl diag droite
