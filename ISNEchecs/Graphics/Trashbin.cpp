@@ -21,5 +21,18 @@ void Trashbin::add(Piece* piece)
 
 void Trashbin::draw(sf::RenderWindow& window)
 {
-
+	int nbPieceBlanche = 0;
+	for(int i = 0; i < m_pieces.size(); i++)
+	{
+		m_pieces[i]->scale(1, 1);
+		if(m_pieces[i]->getColor() == BLANC)
+		{
+			m_pieces[i]->setPosition(400, 50 * nbPieceBlanche);
+			nbPieceBlanche++;
+		}
+		else
+		{
+			m_pieces[i]->setPosition(450, 50 * (i - nbPieceBlanche));
+		}
+	}
 }

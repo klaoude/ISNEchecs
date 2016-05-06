@@ -3,6 +3,7 @@
 #include "../Fonctions.h"
 #include "../IsPossible.h"
 #include "../canMove.h"
+#include "../Graphics/Trashbin.h"
 
 std::vector<Type> pnoir;
 std::vector<Type> pblanc;
@@ -65,7 +66,7 @@ Board::Board(): _gom(nullptr), _masterColor(), _hitmarker(nullptr), s_oldCaseID(
 	s_pieceB = nullptr;
 }
 
-Board::Board(GameObjectManager* gom, Couleur mc) : _gom(gom)
+Board::Board(GameObjectManager* gom, Couleur mc, Trashbin& trash) : _gom(gom), m_trash(&trash)
 {
 	_hitmarker = new Son("Sound/hitmarker.wav");
 	_hitmarker->setBuffer();
@@ -403,6 +404,8 @@ bool Board::movePiece(Piece* piece, Case caze)
 			mangePiece(piece, caze);
 		}
 
+		
+
 		return true;
 	}
 	return false;
@@ -477,7 +480,8 @@ void Board::mangePiece(Piece* piece, Case caze)
 	if (piece->getColor() == NOIR)
 	{
 		pblanc.push_back(caze.getPiece()->getType()); //push type in corbeile
-		_gom->remove(caze.getPiece()->getTextureID()); //del sprite
+		m_trash->add(caze.getPiece());
+		//_gom->remove(caze.getPiece()->getTextureID()); //del sprite
 		caze.delPiece(); // del m_piece
 		m_board.at(piece->getID()).setEmpty(true); //setempty old
 		m_board.at(piece->getID()).delPiece(); //delpiece old
@@ -490,7 +494,8 @@ void Board::mangePiece(Piece* piece, Case caze)
 	else if (piece->getColor() == BLANC)
 	{
 		pnoir.push_back(caze.getPiece()->getType()); //push type in corbeile
-		_gom->remove(caze.getPiece()->getTextureID()); //del sprite
+		m_trash->add(caze.getPiece());
+		//_gom->remove(caze.getPiece()->getTextureID()); //del sprite
 		caze.delPiece(); // del m_piece
 		m_board.at(piece->getID()).setEmpty(true); //setempty old
 		m_board.at(piece->getID()).delPiece(); //delpiece old

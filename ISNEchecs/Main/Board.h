@@ -9,11 +9,13 @@
 #include "../Main/PieceInfo.h"
 #include "../Son.h"
 
+class Trashbin;
+
 class Board
 {
 public:
 	Board();
-	Board(GameObjectManager* gom, Couleur mc);
+	Board(GameObjectManager* gom, Couleur mc, Trashbin& trash);
 	~Board();
 
 	void setPiece(Piece* piece); 
@@ -40,6 +42,7 @@ private:
 	GameObjectManager* _gom;
 	Couleur _masterColor;
 	Son* _hitmarker;
+	Trashbin* m_trash;
 
 	std::vector<Piece*> _alivePiece;
 	std::vector<Piece*> _aliveNoir;
