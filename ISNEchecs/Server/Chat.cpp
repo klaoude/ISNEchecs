@@ -32,11 +32,8 @@ void Chat::pop()
 
 void Chat::send()
 {
-	if (m_chatBuffer.size() > 4)
-	{
-		//m_chatBuffer[0] = m_chatBuffer.end();
-		m_chatBuffer.pop_back();
-	}		
+	if (m_chatBuffer.size() >= 4)
+		m_chatBuffer.erase(m_chatBuffer.begin());	
 
 	sf::Text text;
 	text.setString(m_currentMsg);
@@ -48,6 +45,7 @@ void Chat::recv(sf::String msg)
 {
 	sf::Text text;
 	text.setString(msg);
+	text.setColor(sf::Color::Black);
 	m_chatBuffer.push_back(text);
 }
 

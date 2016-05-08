@@ -262,7 +262,6 @@ void MainGame::serverManager()
 		sf::Packet packet = _client.recv();
 		int type, pieceID, caseID;
 		packet >> type;
-		if (type != -1) std::cout << type << std::endl;
 		if (type == 1)
 		{
 			packet >> pieceID >> caseID;
