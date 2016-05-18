@@ -11,7 +11,7 @@
 
 #include "Fonctions.h"
 #include "canMove.h"
-#include "Graphics/MainMenu.h"
+#include "Graphics/MenuManager.h"
 
 void debug(std::string debugstring)
 {
@@ -499,24 +499,24 @@ void MainGame::draw()
 
 void MainGame::showMenu()
 {
-	MainMenu mainMenu;
-	MainMenu::MenuResult result = mainMenu.Show(_window);
+	MenuManager menuManager;
+	MenuResult result = menuManager.getState(_window);
 	switch (result)
 	{
-	case MainMenu::Exit:
+	case Exit:
 		_gameState = Exiting;
 		break;
-	case MainMenu::Play:
+	case LANHOST:
 		m_chat.init(_gameObjectManager);
 		m_trashbin.init(_gameObjectManager);
 		_gameState = Playing;
 		break;
-	case MainMenu::Join:
+	case LANJOIN:
 		m_chat.init(_gameObjectManager);
 		m_trashbin.init(_gameObjectManager);
 		_gameState = Joining;
 		break;
-	case MainMenu::Debug:
+	case DEBUG:
 		m_chat.init(_gameObjectManager);
 		m_trashbin.init(_gameObjectManager);
 		_debugMode = true;
