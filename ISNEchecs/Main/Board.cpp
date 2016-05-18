@@ -436,8 +436,8 @@ void Board::movePieceTo(Piece* piece, Case caze, Couleur color)
 		if (piece->getColor() == BLANC && piece->getType() == PION && piece->getID() >= 56 && piece->getID() < 64)
 		{
 			std::string type;
-			std::cin >> type;
-
+			while (type == "roi" || type == "" || type == "ROI")
+				std::cin >> type;
 			Type typef = strToType(type);
 			piece->setType(typef);
 			_setTexture(_gom, piece);
@@ -445,8 +445,8 @@ void Board::movePieceTo(Piece* piece, Case caze, Couleur color)
 		else if (piece->getColor() == NOIR && piece->getType() == PION && piece->getID() >= 0 && piece->getID() < 8)
 		{
 			std::string type;
-			std::cin >> type;
-
+			while (type == "roi" || type == "" || type == "ROI")
+				std::cin >> type;
 			Type typef = strToType(type);
 			piece->setType(typef);
 			_setTexture(_gom, piece);
@@ -457,6 +457,7 @@ void Board::movePieceTo(Piece* piece, Case caze, Couleur color)
 		if (piece->getColor() == BLANC && piece->getType() == PION && piece->getID() >= 0 && piece->getID() < 8)
 		{
 			std::string type;
+			while (type == "roi" || type == "" || type == "ROI")
 			std::cin >> type;
 
 			Type typef = strToType(type);
@@ -466,6 +467,7 @@ void Board::movePieceTo(Piece* piece, Case caze, Couleur color)
 		else if (piece->getColor() == NOIR && piece->getType() == PION && piece->getID() >= 56 && piece->getID() < 64)
 		{
 			std::string type;
+			while (type == "roi" || type == "" || type == "ROI")
 			std::cin >> type;
 
 			Type typef = strToType(type);
