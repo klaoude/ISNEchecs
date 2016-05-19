@@ -9,7 +9,10 @@
 MenuResult MenuManager::getState(sf::RenderWindow& window)
 {
 	sf::Event event, event2;
-	
+	sf::Text textPorthost, textPortjoin, textIp;
+	bool porthost = false;
+	bool portjoin = false;
+	bool ip = false;
 	while (window.pollEvent(event))
 	{
 		MenuKillian menu;
@@ -67,12 +70,29 @@ MenuResult MenuManager::getState(sf::RenderWindow& window)
 					}
 				}
 			}
-			std::cout << coord << std::endl;
 			if (coord == LAN)
 			{
 				return DEBUG;
 				while (window.waitEvent(event2))
 				{
+					if(event2.type == sf::Event::TextEntered)
+					{
+						if(event2.text.unicode == 13)
+						{
+							porthost = false;
+							portjoin = false;
+							ip = false;
+						}
+						else
+						{
+							if(porthost)
+								textPorthost.setString(textPorthost.getString() + static_cast<char>(event.text.unicode));
+							if(portjoin)
+								textPortjoin.setString(textPortjoin.getString() + static_cast<char>(event.text.unicode));
+							if(ip)
+								textIp.setString(textIp.getString() + static_cast<char>(event.text.unicode));
+						}											
+					}
 					Lan menuLan;
 					menuLan.init(window);
 					if (event2.type == sf::Event::MouseButtonPressed)
@@ -80,7 +100,7 @@ MenuResult MenuManager::getState(sf::RenderWindow& window)
 						coord = menuLan.recevoirCoord(event2.mouseButton.x, event2.mouseButton.y);
 						if (coord == PORTHOST)
 						{
-							//Ecrire dans la zone port de host
+							porthost = true;
 						}
 
 						if (coord == HOST)
@@ -90,12 +110,12 @@ MenuResult MenuManager::getState(sf::RenderWindow& window)
 
 						if (coord == PORTJOIN)
 						{
-							//Ecrire dans la zone port de join
+							portjoin = true;
 						}
 
 						if (coord == IP)
 						{
-							//Ecrire dans la zone IP
+							ip = true;
 						}
 
 						if (coord == JOIN)

@@ -506,6 +506,55 @@ void MainGame::showMenu()
 	case Exit:
 		_gameState = Exiting;
 		break;
+	case SOLONOIR:
+		initAI();
+		_gameState = VersusIA;
+		break;
+	case SOLOBLANC:
+		initAI();
+		_gameState = VersusIA;
+		break;
+	case ONLINESEARCH:
+		sf::IpAddress ip = "90.9.126.153";
+		MSClient client(ip, 4269);
+		
+		std::string username;
+		std::string password;
+		
+		std::cout << "Username : ";
+		std::cin.ignore();
+		std::getline(std::cin, username);
+		std::cout << "Password : ";
+		//std::cin.ignore();
+		std::getline(std::cin, password);
+
+
+		std::cout << (char*)username.c_str() << " " << (char*)password.c_str() << std::endl;
+		client.connect((char*)username.c_str(), (char*)password.c_str());		
+		client.coutRecv();
+
+		client.find();
+		client.coutRecv();
+
+		client.coutRecv();
+
+		client.coutRecv();
+
+		std::string receive = client.recv();
+		if (receive == "create")
+		{
+			init();
+			_gameState = Playing;
+			gameLoop();
+		}
+		else if (receive == "join")
+		{
+			init();
+			_ipaddress = "127.0.0.1";
+			_gameState = Joining;
+			gameLoop();
+		}
+		break;
 	case LANHOST:
 		m_chat.init(_gameObjectManager);
 		m_trashbin.init(_gameObjectManager);
@@ -515,6 +564,8 @@ void MainGame::showMenu()
 		m_chat.init(_gameObjectManager);
 		m_trashbin.init(_gameObjectManager);
 		_gameState = Joining;
+		break;
+	case TEST:
 		break;
 	case DEBUG:
 		m_chat.init(_gameObjectManager);
