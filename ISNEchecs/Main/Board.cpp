@@ -66,8 +66,9 @@ Board::Board(): _gom(nullptr), _masterColor(), _hitmarker(nullptr), s_oldCaseID(
 	s_pieceB = nullptr;
 }
 
-Board::Board(GameObjectManager* gom, Couleur mc, Trashbin& trash) : _gom(gom), m_trash(&trash)
+Board::Board(GameObjectManager* gom, Couleur mc, Trashbin& trash, bool& promote) : _gom(gom), m_trash(&trash)
 {
+	m_promote = &promote;
 	_hitmarker = new Son("Sound/hitmarker.wav");
 	_hitmarker->setBuffer();
 	s_pieceA = nullptr;

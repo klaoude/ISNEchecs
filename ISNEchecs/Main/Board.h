@@ -15,7 +15,7 @@ class Board
 {
 public:
 	Board();
-	Board(GameObjectManager* gom, Couleur mc, Trashbin& trash);
+	Board(GameObjectManager* gom, Couleur mc, Trashbin& trash, bool& promote);
 	~Board();
 
 	void setPiece(Piece* piece); 
@@ -47,6 +47,8 @@ private:
 	std::vector<Piece*> _alivePiece;
 	std::vector<Piece*> _aliveNoir;
 	std::vector<Piece*> _aliveBlanc;
+
+	bool* m_promote;
 
 	//SimuleMove
 	int s_oldCaseID;

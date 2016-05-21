@@ -201,7 +201,7 @@ void MainGame::start()
 
 void MainGame::initAI()
 {
-	m_board = Board(&_gameObjectManager, NOIR, m_trashbin);
+	m_board = Board(&_gameObjectManager, NOIR, m_trashbin, promote);
 	_ai = AI(&m_board);
 	_isMyTurn = true;
 }
@@ -300,7 +300,7 @@ void MainGame::serverManager()
 			_client.createServer();
 			_isMyTurn = true;
 			_clientColor = BLANC;
-			m_board = Board(&_gameObjectManager, _clientColor, m_trashbin);
+			m_board = Board(&_gameObjectManager, _clientColor, m_trashbin, promote);
 			m_imServer = true;
 			break;
 		case Joining:			
@@ -309,7 +309,7 @@ void MainGame::serverManager()
 			_client.connect(ip, 1337);
 			_isMyTurn = false;
 			_clientColor = NOIR;
-			m_board = Board(&_gameObjectManager, _clientColor, m_trashbin);
+			m_board = Board(&_gameObjectManager, _clientColor, m_trashbin, promote);
 			break;
 		case Uninitialized: break;
 		case ShowingMenu: break;
@@ -522,7 +522,7 @@ void MainGame::showMenu()
 		m_trashbin.init(_gameObjectManager);
 		_debugMode = true;
 		_gameState = Debugging;
-		m_board = Board(&_gameObjectManager, NOIR, m_trashbin);
+		m_board = Board(&_gameObjectManager, NOIR, m_trashbin, promote);
 		break;
 	}
 }
