@@ -90,6 +90,27 @@
     <ClCompile Include="Graphics\MainMenu.cpp">
       <Filter>Fichiers sources\Main</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\Lan.cpp">
+      <Filter>Fichiers sources\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\MenuKillian.cpp">
+      <Filter>Fichiers sources\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Online.cpp">
+      <Filter>Fichiers sources\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Options.cpp">
+      <Filter>Fichiers sources\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Solo.cpp">
+      <Filter>Fichiers sources\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\MenuManager.cpp">
+      <Filter>Fichiers sources\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\Promote.cpp">
+      <Filter>Fichiers sources\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -156,6 +177,27 @@
       <Filter>Fichiers d%27en-tête\Server</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\Trashbin.h">
+      <Filter>Fichiers d%27en-tête\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Lan.h">
+      <Filter>Fichiers d%27en-tête\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\MenuKillian.h">
+      <Filter>Fichiers d%27en-tête\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Online.h">
+      <Filter>Fichiers d%27en-tête\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Options.h">
+      <Filter>Fichiers d%27en-tête\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Solo.h">
+      <Filter>Fichiers d%27en-tête\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\MenuManager.h">
+      <Filter>Fichiers d%27en-tête\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Promote.h">
       <Filter>Fichiers d%27en-tête\Graphics</Filter>
     </ClInclude>
   </ItemGroup>

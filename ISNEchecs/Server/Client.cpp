@@ -29,7 +29,6 @@ void Client::send(std::string msg)
 	packet << 2;
 	packet << msg;
 	m_socket.send(packet);
-	std::cout << "send string " << msg << std::endl;
 }
 
 void Client::connect(sf::IpAddress ip, unsigned short port)

@@ -11,7 +11,7 @@
 
 #include "Fonctions.h"
 #include "canMove.h"
-#include "Graphics/MainMenu.h"
+#include "Graphics/MenuManager.h"
 
 void debug(std::string debugstring)
 {
@@ -262,7 +262,6 @@ void MainGame::serverManager()
 		sf::Packet packet = _client.recv();
 		int type, pieceID, caseID;
 		packet >> type;
-		if (type != -1) std::cout << type << std::endl;
 		if (type == 1)
 		{
 			packet >> pieceID >> caseID;
@@ -300,7 +299,7 @@ void MainGame::serverManager()
 			_client.createServer();
 			_isMyTurn = true;
 			_clientColor = BLANC;
-			m_board = Board(&_gameObjectManager, _clientColor, m_trashbin, promote);
+			m_board = Board(&_gameObjectManager, _clientColor, m_trashbin);
 			m_imServer = true;
 			break;
 		case Joining:			
@@ -309,7 +308,7 @@ void MainGame::serverManager()
 			_client.connect(ip, 1337);
 			_isMyTurn = false;
 			_clientColor = NOIR;
-			m_board = Board(&_gameObjectManager, _clientColor, m_trashbin, promote);
+			m_board = Board(&_gameObjectManager, _clientColor, m_trashbin);
 			break;
 		case Uninitialized: break;
 		case ShowingMenu: break;
@@ -500,29 +499,29 @@ void MainGame::draw()
 
 void MainGame::showMenu()
 {
-	MainMenu mainMenu;
-	MainMenu::MenuResult result = mainMenu.Show(_window);
+	MenuManager menuManager;
+	MenuResult result = menuManager.getState(_window);
 	switch (result)
 	{
-	case MainMenu::Exit:
+	case Exit:
 		_gameState = Exiting;
 		break;
-	case MainMenu::Play:
+	case LANHOST:
 		m_chat.init(_gameObjectManager);
 		m_trashbin.init(_gameObjectManager);
 		_gameState = Playing;
 		break;
-	case MainMenu::Join:
+	case LANJOIN:
 		m_chat.init(_gameObjectManager);
 		m_trashbin.init(_gameObjectManager);
 		_gameState = Joining;
 		break;
-	case MainMenu::Debug:
+	case DEBUG:
 		m_chat.init(_gameObjectManager);
 		m_trashbin.init(_gameObjectManager);
 		_debugMode = true;
 		_gameState = Debugging;
-		m_board = Board(&_gameObjectManager, NOIR, m_trashbin, promote);
+		m_board = Board(&_gameObjectManager, NOIR, m_trashbin);
 		break;
 	}
 }

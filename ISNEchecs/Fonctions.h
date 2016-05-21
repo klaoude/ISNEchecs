@@ -1076,11 +1076,11 @@ inline int echecm(Board* board)
 		pathRoiNoir = getPathRoi(board, _ln[0]);
 	//----------------
 
-	if (_lb.size() > 0) //si un piece peut manger le roi blanc
+	/*if (_lb.size() > 0) //si un piece peut manger le roi blanc
 		be++; //alors le roi blanc est en echec
 
 	if (_ln.size() > 0) //si un piece peut manger le roi noir
-		ne++; //alors le roi noir est en echec	
+		ne++; //alors le roi noir est en echec	*/
 
 
 	if (echec(board) == 1) //si roi blanc est en echec
