@@ -108,6 +108,9 @@
     <ClCompile Include="Graphics\MenuManager.cpp">
       <Filter>Fichiers sources\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="Graphics\Promote.cpp">
+      <Filter>Fichiers sources\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h">
@@ -192,6 +195,9 @@
       <Filter>Fichiers d%27en-tête\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Graphics\MenuManager.h">
+      <Filter>Fichiers d%27en-tête\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\Promote.h">
       <Filter>Fichiers d%27en-tête\Graphics</Filter>
     </ClInclude>
   </ItemGroup>

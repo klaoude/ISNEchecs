@@ -96,6 +96,7 @@
     <ClCompile Include="Graphics\MenuManager.cpp" />
     <ClCompile Include="Graphics\Online.cpp" />
     <ClCompile Include="Graphics\Options.cpp" />
+    <ClCompile Include="Graphics\Promote.cpp" />
     <ClCompile Include="Graphics\Solo.cpp" />
     <ClCompile Include="Graphics\Trashbin.cpp" />
     <ClCompile Include="main.cpp" />
@@ -124,6 +125,7 @@
     <ClInclude Include="Graphics\MenuManager.h" />
     <ClInclude Include="Graphics\Online.h" />
     <ClInclude Include="Graphics\Options.h" />
+    <ClInclude Include="Graphics\Promote.h" />
     <ClInclude Include="Graphics\Solo.h" />
     <ClInclude Include="Graphics\Trashbin.h" />
     <ClInclude Include="IsPossible.h" />

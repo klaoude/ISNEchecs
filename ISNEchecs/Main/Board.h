@@ -3,10 +3,12 @@
 #include <vector>
 
 #include "../Graphics/GameObjectManager.h"
+#include "../Graphics/Promote.h"
 
 #include "../Main/Case.h"
 #include "../Main/Piece.h"
 #include "../Main/PieceInfo.h"
+
 #include "../Son.h"
 
 class Trashbin;
@@ -15,7 +17,7 @@ class Board
 {
 public:
 	Board();
-	Board(GameObjectManager* gom, Couleur mc, Trashbin& trash);
+	Board(GameObjectManager* gom, Couleur mc, Trashbin& trash, sf::RenderWindow& window);
 	~Board();
 
 	void setPiece(Piece* piece); 
@@ -38,11 +40,13 @@ public:
 	void undoSimileMove();
 
 private:
+	sf::RenderWindow* m_window;
 	std::vector<Case> m_board;
 	GameObjectManager* _gom;
 	Couleur _masterColor;
 	Son* _hitmarker;
 	Trashbin* m_trash;
+	Promote m_promote;
 
 	std::vector<Piece*> _alivePiece;
 	std::vector<Piece*> _aliveNoir;
