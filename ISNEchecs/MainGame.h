@@ -33,6 +33,8 @@ private:
 	void disableSurbrillance(int id);
 
 	bool m_imServer = false;
+	
+	bool promote = false;
 
 	enum GameState { Uninitialized, ShowingMenu, Playing, Exiting, Joining, Debugging, VersusIA };
 	static GameState _gameState;
