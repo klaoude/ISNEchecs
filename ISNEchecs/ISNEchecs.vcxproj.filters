@@ -78,9 +78,6 @@
     <ClCompile Include="AI.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Son.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="Server\Chat.cpp">
       <Filter>Fichiers sources\Server</Filter>
     </ClCompile>

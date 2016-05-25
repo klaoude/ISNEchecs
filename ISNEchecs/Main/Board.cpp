@@ -60,7 +60,7 @@ void _setTexture(GameObjectManager* _gom, Piece* piece)
 	}
 }
 
-Board::Board(): _gom(nullptr), _masterColor(), _hitmarker(nullptr), s_oldCaseID(0), s_newCaseID(0)
+Board::Board(): _gom(nullptr), _masterColor(), s_oldCaseID(0), s_newCaseID(0)
 {
 	s_pieceA = nullptr;
 	s_pieceB = nullptr;
@@ -68,8 +68,6 @@ Board::Board(): _gom(nullptr), _masterColor(), _hitmarker(nullptr), s_oldCaseID(
 
 Board::Board(GameObjectManager* gom, Couleur mc, Trashbin& trash) : _gom(gom), m_trash(&trash)
 {
-	_hitmarker = new Son("Sound/hitmarker.wav");
-	_hitmarker->setBuffer();
 	s_pieceA = nullptr;
 	s_pieceB = nullptr;
 	_masterColor = mc;

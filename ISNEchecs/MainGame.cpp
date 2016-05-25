@@ -501,33 +501,35 @@ void MainGame::showMenu()
 {
 	MenuManager menuManager;
 	MenuResult result = menuManager.getState(_window);
+	sf::IpAddress ip = "90.9.126.153";
+	MSClient client(ip, 4269);
+	std::string username;
+	std::string password;
+	std::string receive;
 	switch (result)
 	{
 	case Exit:
 		_gameState = Exiting;
 		break;
 	case SOLONOIR:
+		m_chat.init(_gameObjectManager);
+		m_trashbin.init(_gameObjectManager);
 		initAI();
 		_gameState = VersusIA;
 		break;
 	case SOLOBLANC:
+		m_chat.init(_gameObjectManager);
+		m_trashbin.init(_gameObjectManager);
 		initAI();
 		_gameState = VersusIA;
 		break;
-	case ONLINESEARCH:
-		sf::IpAddress ip = "90.9.126.153";
-		MSClient client(ip, 4269);
-		
-		std::string username;
-		std::string password;
-		
+	case ONLINESEARCH:		
 		std::cout << "Username : ";
 		std::cin.ignore();
 		std::getline(std::cin, username);
 		std::cout << "Password : ";
 		//std::cin.ignore();
 		std::getline(std::cin, password);
-
 
 		std::cout << (char*)username.c_str() << " " << (char*)password.c_str() << std::endl;
 		client.connect((char*)username.c_str(), (char*)password.c_str());		
@@ -540,7 +542,7 @@ void MainGame::showMenu()
 
 		client.coutRecv();
 
-		std::string receive = client.recv();
+		receive = client.recv();
 		if (receive == "create")
 		{
 			init();
@@ -564,8 +566,6 @@ void MainGame::showMenu()
 		m_chat.init(_gameObjectManager);
 		m_trashbin.init(_gameObjectManager);
 		_gameState = Joining;
-		break;
-	case TEST:
 		break;
 	case DEBUG:
 		m_chat.init(_gameObjectManager);

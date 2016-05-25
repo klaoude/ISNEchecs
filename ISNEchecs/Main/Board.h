@@ -7,7 +7,6 @@
 #include "../Main/Case.h"
 #include "../Main/Piece.h"
 #include "../Main/PieceInfo.h"
-#include "../Son.h"
 
 class Trashbin;
 
@@ -41,7 +40,6 @@ private:
 	std::vector<Case> m_board;
 	GameObjectManager* _gom;
 	Couleur _masterColor;
-	Son* _hitmarker;
 	Trashbin* m_trash;
 
 	std::vector<Piece*> _alivePiece;

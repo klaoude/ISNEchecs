@@ -109,7 +109,6 @@
     <ClCompile Include="Server\JSONValue.cpp" />
     <ClCompile Include="Server\MSClient.cpp" />
     <ClCompile Include="Server\Server.cpp" />
-    <ClCompile Include="Son.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AI.h" />

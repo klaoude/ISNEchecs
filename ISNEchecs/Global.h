@@ -1,9 +1,9 @@
 #pragma once
 
-static const unsigned int CHAT_HEIGHT = 100;
-static const unsigned int TRASHBIN_WIDTH = 100;
+static const unsigned int CHAT_HEIGHT = 200;
+static const unsigned int TRASHBIN_WIDTH = 200;
 
-static const unsigned int BOARD_SIZE = 400;
+static const unsigned int BOARD_SIZE = 800;
 
 static const unsigned int SCREEN_HEIGHT = BOARD_SIZE + CHAT_HEIGHT;
 static const unsigned int SCREEN_WIDTH = BOARD_SIZE + TRASHBIN_WIDTH;
