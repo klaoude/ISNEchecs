@@ -201,7 +201,7 @@ void MainGame::start()
 
 void MainGame::initAI()
 {
-	m_board = Board(&_gameObjectManager, NOIR, m_trashbin, promote);
+	m_board = Board(&_gameObjectManager, NOIR, m_trashbin);
 	_ai = AI(&m_board);
 	_isMyTurn = true;
 }

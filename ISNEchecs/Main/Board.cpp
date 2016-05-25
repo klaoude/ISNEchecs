@@ -66,7 +66,7 @@ Board::Board() : _gom(nullptr), _masterColor(), _hitmarker(nullptr), s_oldCaseID
 	s_pieceB = nullptr;
 }
 
-Board::Board(GameObjectManager* gom, Couleur mc, Trashbin& trash, bool& promote) : _gom(gom), m_trash(&trash)
+Board::Board(GameObjectManager* gom, Couleur mc, Trashbin& trash) : _gom(gom), m_trash(&trash)
 {
 	m_promote = &promote;
 	_hitmarker = new Son("Sound/hitmarker.wav");
@@ -436,18 +436,18 @@ void Board::movePieceTo(Piece* piece, Case caze, Couleur color)
 	{
 		if (piece->getColor() == BLANC && piece->getType() == PION && piece->getID() >= 56 && piece->getID() < 64)
 		{
-			m_promote.init(*_gom, BLANC);
-			Type promoted = m_promote.getPromote(*m_window);
-			m_promote.remove();
-			piece->setType(promoted);
+			//m_promote.init(*_gom, BLANC);
+			//Type promoted = m_promote.getPromote(*m_window);
+			//m_promote.remove();
+			//piece->setType(promoted);
 			_setTexture(_gom, piece);
 		}
 		else if (piece->getColor() == NOIR && piece->getType() == PION && piece->getID() >= 0 && piece->getID() < 8)
 		{
-			m_promote.init(*_gom, NOIR);
+			/*m_promote.init(*_gom, NOIR);
 			Type promoted = m_promote.getPromote(*m_window);
 			m_promote.remove();
-			piece->setType(promoted);
+			piece->setType(promoted);*/
 			_setTexture(_gom, piece);
 		}
 	}

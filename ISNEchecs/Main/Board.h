@@ -17,7 +17,7 @@ class Board
 {
 public:
 	Board();
-	Board(GameObjectManager* gom, Couleur mc, Trashbin& trash, bool& promote);
+	Board(GameObjectManager* gom, Couleur mc, Trashbin& trash);
 	~Board();
 
 	void setPiece(Piece* piece); 
